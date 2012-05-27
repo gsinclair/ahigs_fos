@@ -2,6 +2,7 @@
 
 module AhigsFos
   class ConfigurationError < StandardError; end
+  class ResultsError < StandardError; end
 end
 
 module AhigsFos; class Err
@@ -28,5 +29,13 @@ module AhigsFos; class Err
     assert args.key?(:label)
     msg = "No directory information provided: #{args[:label]}"
     raise AhigsFos::ConfigurationError, msg
+  end
+
+  def Err.invalid_section(msg)
+    raise AhigsFos::ResultsError, "Invalid Section: #{msg}"
+  end
+
+  def Err.invalid_results_data(msg)
+    raise AhigsFos::ResultsError, msg
   end
 end; end

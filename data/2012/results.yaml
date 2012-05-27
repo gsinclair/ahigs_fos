@@ -1,18 +1,14 @@
 
 - Section: Current Affairs
-  Places:
-    1: Frensham
-    2: Danebank
-    3: PLCS
-    4: Kirribilli
-    5: Normanhurst
+  Places: "1. Frensham  2. Danebank  3. PLCS  4. Kirribilli  5. Normanhurst"
   Nonparticipants:
     - Queenwood
     - Meriden
     - OLMC
 
 - Section: Public Speaking (Junior)
-  Places:
-    1: MLC
-    2: Monte
-    3: Brigidine
+  Places: "1. MLC  1. Monte  3. Brigidine  4. StClares  5. SCEGGS"
+  Participants:
+    - Frensham
+    - StVincents
+    - Monte

@@ -82,31 +82,45 @@ module AhigsFos
       @schools_by_abbreviation, @schools_by_name = _process_schools(data["schools"])
         # { "OLMC" -> School, "PLCS" -> School, ... } and
         # { "Our Lady of Mercy College" -> School, "PLC Sydney" -> School, ... }
-      @schools = @schools_by_abbreviation.values.to_set
-      @school_names = @schools.map { |s| s.name }.to_set
+      @schools_set = @schools_by_abbreviation.values.to_set
+      @schools_list = @schools_set.to_a
       self.freeze
     end
     # ["Reading (Junior)", "Reading (Senior)", ...]
     def sections
       @sections
     end
-    # List of schools (School objects)
-    def schools
-      @schools
+    def section?(str)
+      @sections.include? str
     end
-    def school_names
-      @schools.map { |s| s.name }
+    # List of schools (School objects)
+    def schools_list
+      @schools_list
+    end
+    def schools_set
+      @schools_set
     end
     # school("OLMC") or school("Our Lady of Mercy College")
-    # Returns School object or raises error.
+    # Returns School object or nil.
     def school(string)
       if @schools_by_abbreviation.key?(string)
         @schools_by_abbreviation[string]
       elsif @schools_by_name.key?(string)
         @schools_by_name[string]
       else
-        Err.school_not_found(string)
+        nil
       end
+    end
+    # Generates a list of School objects from a list of abbreviations or names,
+    # raising an error if any doesn't exist.
+    def school_list(abbrs)
+      abbrs.map { |abbr|
+        s = school(abbr)
+        if s.nil?
+          Err.nonexistent_school(abbr)
+        end
+        s
+      }
     end
     # Argument: 1 to 5 (integer)
     def points_for_place(n)
@@ -140,32 +154,5 @@ module AhigsFos
     end
     private :_process_schools, :_process_points
   end  # class FestivalInfo
-
-
-  class Results
-    def initialize(festival_info)
-      @festival_info = festival_info
-      process_results
-    end
-    def process_results
-      path = Dirs.instance.current_year_data_directory + "results.yaml"
-      data = YAML.load(path)
-    end
-  end  # class Results
-
-
-  class Report
-    def initialize(results)
-      @results = results
-    end
-    def write(directory)
-      timestamp = Time.now.to_i
-      path = directory + "#{timestamp}.txt"
-      path.open('w') do |f|
-        f.puts "Report... #{Time.now}"
-      end
-      puts "Wrote file: #{path}"
-    end
-  end  # class Report
 
 end  # module AhigsFos
