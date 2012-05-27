@@ -1,5 +1,8 @@
-comp-scorer
-===========
+ahigs_fos
+=========
+
+(AHIGS Festival of Speech -- a public speaking competition between NSW
+independent girls schools)
 
 
 DESCRIPTION
@@ -7,12 +10,10 @@ DESCRIPTION
 
 Calculate scores and produce reports in a complex, multi-event competition,
 where there are many entrants, many events, and each event pays points for
-first, second, third (configurable), and participation.
+first, second, ... fifth, and participation.
 
-I am creating it for a particular purpose (AHIGS Festival of Speeech: a
-competition comprising all sorts of public speaking for NSW independent girls'
-schools), but it is entirely configurable within the parameters set out in the
-paragraph above.  Therefore, it may be of interest to other people.
+It is fairly configurable, so may be of interest to other people, but it _is_
+geared towards the needs of a particular competition.
 
 The idea is that results are recorded in text files, and this program reads the
 results and produces a report (HTML, PDF ... haven't decided) showing the
@@ -36,23 +37,24 @@ When given a hand-completed slip that says
      3. PLC Sydney
      4. Loreto Kirribilli
      5. Loreto Normanhurst
+   (details of other participants)
 
-I want to be able to record something like the following in a file [1]
+I record the following in a file (results.yaml):
 
-   - Current Affairs
-     - Frensham
-     - Danebank
-     - PLC Sydney
-     - Loreto Kirribilli
-     - Loreto Normanhurst
+   - Section: Current Affairs
+     Places: 1. Frensham  2. Danebank  3. PLCS  4. Kirribilli  5. Normanhurst
+     Nonparticipants:
+      - StVincents
+      - SCEGGS
+      - Roseville
 
-and run a program -- comp-scorer.rb -- that reads all input files and generates a
+and run a program -- ahigs_fos.rb -- that reads all input files and generates a
 complete report of all results (including points obtained) and a points list for
 all schools.
 
-[1] There could be one file for each event or, more likely, there would be
-"debating.events" and "other.events".  The contents may need to be more
-structured than this but they should be simple and human-readable (for
+[1] There could be one file for each event or, more likely, there might be
+"debating-results.events" and "other-results.yaml".  The contents may need to be
+more structured than this but they should be simple and human-readable (for
 double-checking).
 
 
@@ -60,7 +62,7 @@ double-checking).
 REPORTING
 
 
-The report would be completely comprehensive so that it can be scrutinised.  It
+The report should be completely comprehensive so that it can be scrutinised.  It
 would contain:
  * A complete description of the configuration: what events are being tracked,
    and how many points are awarded for position numbers 1-5 and participation.
@@ -72,7 +74,7 @@ would contain:
  * A list of outstanding events.
 
 The report could be generated in text AND html AND (perhaps) PDF.  When a report
-is generated, two copies are made:
+is generated, two copies are made, for example:
   Dropbox/AHIGS/report.txt
   Dropbox/AHIGS/reports/2011-08-30/report-1432.txt
 
@@ -123,14 +125,12 @@ debating-specific knowledge could be coded or configured.
 DATA ENTRY
 
 
-The data is simply text.  The program is flexible enough to read all ".event"
-files, so it's up to the operator how many files to maintain.  They should be
-periodically backed up as a guard against accidental overwriting.  BUT... there
-is always the handwritten submissions to check against.  Nonetheless, some
-backup is a good idea.  It could be automatic by the reporting program; it could
-be manual or semiautomatic using a separate command; it could use a local git
-repository or it could just make a timestamped copy of event files to a backup
-directory.
+The data is simply text files.  They should be periodically backed up as a guard
+against accidental overwriting.  BUT... there is always the handwritten
+submissions to check against.  Nonetheless, some backup is a good idea.  It
+could be automatic by the reporting program; it could be manual or semiautomatic
+using a separate command; it could use a local git repository or it could just
+make a timestamped copy of event files to a backup directory.
 
 The reports generated will contain enough information to check the data entry
 and recreate any damaged ".event" files.
@@ -139,29 +139,12 @@ and recreate any damaged ".event" files.
 
 EXAMPLE OF CONFIGURATION
 
+
+(Deleted; see actual configuration files.)
+
   
-  Events:
-   - Current Affairs: [5,4,3]
-   - Religious & Ethical Questions: [5,4,3]
-   - Poetry Readings: [3,2,1]
-   - ...
-  Schools:
-   - Danebank
-   - PLC
-   - PLC Sydney
-   - ...
-
-
-
 OTHER STUFF
 
 
-I think there may be other points to consider: participation, getting to the
-next round of debating, ...  Need to find out.
-
-Participation earns one point, I think, so each event needs to record who
-participated.  This could potentially be done on an inclusion or an exclusion
-basis.
-
-
+Debating is a multi-round competition and will need its own code.
 
