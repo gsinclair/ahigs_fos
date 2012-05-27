@@ -22,7 +22,7 @@ module AhigsFos
     def run
       festival_info = FestivalInfo.new
       puts "\n\n\n"
-      ap festival_info
+      pp festival_info
       puts "\n\n\n"
       results = Results.new(festival_info)
       report = Report.new(results)
