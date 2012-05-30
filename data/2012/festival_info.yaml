@@ -5,15 +5,29 @@
 #   "schools": list of schools
 #   "points": hash of points (keys: 1,2,3,4,5,participation)
 
+year: 2012
+
+# sections:
+#  - Reading (Junior)
+#  - Poetry (Junior)
+#  - Public Speaking (Junior)
+#  - Reading (Senior)
+#  - Poetry (Senior)
+#  - Public Speaking (Senior)
+#  - Current Affairs
+#  - Religious and Ethical Questions
+
 sections:
- - Reading (Junior)
- - Reading (Senior)
- - Poetry (Junior)
- - Poetry (Senior)
- - Public Speaking (Junior)
- - Public Speaking (Senior)
- - Current Affairs
- - Religious and Ethical Questions
+  junior:
+    - Reading (Junior)
+    - Poetry (Junior)
+    - Public Speaking (Junior)
+  senior:
+    - Reading (Senior)
+    - Poetry (Senior)
+    - Public Speaking (Senior)
+    - Current Affairs
+    - Religious and Ethical Questions
 
 schools:
  - Abbotsleigh

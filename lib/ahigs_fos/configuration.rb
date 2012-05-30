@@ -77,8 +77,9 @@ module AhigsFos
       path = Dirs.instance.current_year_data_directory + "festival_info.yaml"
       data = path.read
       data = YAML.load(data)
+      @year = data["year"]
       @points_for_place, @points_for_participation = _process_points(data["points"])
-      @sections = data["sections"]
+      @sections = _process_sections(data["sections"])
       @schools_by_abbreviation, @schools_by_name = _process_schools(data["schools"])
         # { "OLMC" -> School, "PLCS" -> School, ... } and
         # { "Our Lady of Mercy College" -> School, "PLC Sydney" -> School, ... }
@@ -86,12 +87,21 @@ module AhigsFos
       @schools_list = @schools_set.to_a
       self.freeze
     end
+    def year
+      @year
+    end
     # ["Reading (Junior)", "Reading (Senior)", ...]
-    def sections
-      @sections
+    def sections(division=nil)
+      case division
+      when :junior   then @sections[:junior]
+      when :senior   then @sections[:senior]
+      when nil, :all then @sections[:all]
+      else
+        Err.argument_error("FestivalInfo#sections: #{division}")
+      end
     end
     def section?(str)
-      @sections.include? str
+      @sections[:all].include? str
     end
     # List of schools (School objects)
     def schools_list
@@ -129,6 +139,13 @@ module AhigsFos
     end
     def points_for_participation
       @points_for_participation
+    end
+    def _process_sections(hash)
+      h = {}
+      h[:junior] = hash["junior"]
+      h[:senior] = hash["senior"]
+      h[:all] = h[:junior] + h[:senior]
+      h
     end
     def _process_schools(list)
       by_abbrev, by_name = {}, {}

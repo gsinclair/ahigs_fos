@@ -1,0 +1,77 @@
+[This file shows what a long-format text report should look like.]
+
+AHIGS Festival of Speech 2012 score report
+
+20 May 2012 (1.37pm)
+
+Status:
+  Reading (Junior)                 : completed (105 points total)
+  Poetry (Junior)                  : waiting
+  Public Speaking (Junior)         : completed (110 points total) TIE
+  Poetry (Senior)                  : waiting
+  Reading (Senior)                 : completed (105 points total)
+  Public Speaking (Senior)         : completed (105 points total)
+  Religious and Ethical Questions  : waiting
+  
+
+==================== S U M M A R Y ====================
+
+                Junior    Senior     Total
+  Abbotsleigh     35        25          60
+  Ascham          15         0          15
+  ...
+  (abbreviated names)
+
+
+  JUNIOR
+    1. OLMC              85 points
+    2. Abbotsleigh       60 points
+    ...
+    5. Roseville          5 points
+
+  SENIOR
+    1. MLC              135 points
+    2. PLCS             105 points
+    ...
+    5. Vincents          45 points
+
+  TOTAL
+    1. ...
+    ...
+    5. ...
+
+==================== S E C T I O N S ====================
+
+  Section: READING (Junior)
+  Places:
+    1. Frensham (30)
+    2. Danebank (25)
+    ...
+    Participants (5):
+      Abbotsleigh Ascham Brigidine ...
+        [wrapped to max 80 chars]
+    Non-participants:
+      Calrossy Kincoppal Armidale Santa Tara
+
+  etc.
+
+==================== S C H O O L S ====================
+
+  Abbotsleigh            (J: 25  S: 30  T: 55)
+    Junior
+      Reading            20 points (3rd place)
+      Poetry              0 points (dnp)
+      Public Speaking     5 points (p)
+    Senior
+      Reading             5 points (p)
+      Poetry             10 points (5th place)
+      Public Speaking     -        [not yet available]
+      Current Affairs     -        [not yet available]
+      Religious and ...  15 points (4th place)
+
+  etc.
+
+========================================================
+
+20 May 2012 (1.37pm)
+

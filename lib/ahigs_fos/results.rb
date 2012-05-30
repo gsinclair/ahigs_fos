@@ -15,6 +15,7 @@ module AhigsFos
     def initialize(string, festival_info)
       @tie = false
       @places = _process_places_string(string, festival_info)
+        # -> { "Meriden" => 1, "Calrossy" => 2, ... }
       @schools = @places.keys.to_set
       self.freeze
     end
@@ -32,7 +33,12 @@ module AhigsFos
       }.join(', ')
     end
     alias to_s inspect
+    # e.g. [1,2,3,4,5] or [1,1,3,4,5]
+    def places_awarded
+      @places.values.sort
+    end
 
+    private
     def _process_places_string(string, festival_info)
       hash = {}
       words = string.split
@@ -75,7 +81,6 @@ module AhigsFos
     def err(message, string)
       Err.invalid_place_string(message, string)
     end
-    private :_process_places_string, :_check_valid_place_numbers, :err
   end  # class Places
 
 
@@ -98,6 +103,10 @@ module AhigsFos
       "Participants: #{p}\nNon-participants: #{np}"
     end
     alias to_s inspect
+    def size
+      @participants_set.size
+    end
+    private
     def _process(participants, nonparticipants, places, festival_info)
       # Exactly one of participants and nonparticipants must be nil. The other
       # must be a list of strings.
@@ -129,28 +138,37 @@ module AhigsFos
     def err(msg)
       Err.invalid_section(msg)
     end
-    private :_process, :err
   end  # class Participants
 
 
   class Results
     def initialize(festival_info)
+      @festival_info = festival_info
       @section_results = _process_results(festival_info)
     end
     def inspect
       out = StringIO.new
       out.puts "Results:"
-      @section_results.each do |sr|
-        out.puts sr.to_s.indent(2)
+      @section_results.each do |sec, res|
+        out.puts res.to_s.indent(2)
       end
       out.string
     end
     alias to_s inspect
+    def for_section(str)
+      if @festival_info.section? str
+        @section_results[str]
+      else
+        Err.invalid_section(str)
+      end
+    end
+    private
     def _process_results(festival_info)
       path = Dirs.instance.current_year_data_directory + "results.yaml"
       data = YAML.load(path.read)
       _validate_data(data)
-      data.map { |hash|
+      results = {}
+      data.each do |hash|
         section = hash["Section"]
         err "Invalid section: #{section}" unless festival_info.section?(section)
         places_str = hash["Places"]
@@ -160,8 +178,9 @@ module AhigsFos
         places = Places.new(places_str, festival_info)
         p, nonp = hash.values_at("Participants", "Nonparticipants")
         participants = Participants.new(p, nonp, places, festival_info)
-        SectionResult.new(section, places, participants)
-      }
+        results[section] = SectionResult.new(section, places, participants, festival_info)
+      end
+      results
     end
     # 'data' is expected to be an array of hashes, each of which contains
     # keys "Sections", "Places", and optionally "Participants" or
@@ -189,10 +208,11 @@ module AhigsFos
   # That way, each school can iterate over each section to find out their total
   # points tally.
   class SectionResult
-    def initialize(section, places, participants)
+    def initialize(section, places, participants, festival_info)
       @section, @places, @participants = section, places, participants
-      puts "* Section result created"
-      p self
+      @festival_info = festival_info
+      puts "* Section result created (@section)"
+      #p self
       self.freeze
     end
     def inspect
@@ -203,6 +223,17 @@ module AhigsFos
       out.string
     end
     alias to_s inspect
+    def total_points
+      total = 0
+      @places.places_awarded.each do |p|
+        total += @festival_info.points_for_place(p)
+      end
+      total += @participants.size * @festival_info.points_for_participation
+      total
+    end
+    def tie?
+      @places.places_awarded.uniq.size != @places.places_awarded.size
+    end
   end  # class SectionResult
 
 end  # module AhigsFos

@@ -21,12 +21,15 @@ module AhigsFos
     end
     def run
       festival_info = FestivalInfo.new
-      puts "\n\n\n"
-      pp festival_info
-      puts "\n\n\n"
+      #pp festival_info
+      puts "\n\n"
       results = Results.new(festival_info)
-      report = Report.new(results)
+      p results
+      puts "\n\n"
+      report = Report::Report.new(results, festival_info)
       report.write(Dirs.instance.current_year_reports_directory)
+      puts "\n\n"
+      puts report.string
     end
   end
 end
