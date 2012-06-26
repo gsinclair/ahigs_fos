@@ -153,21 +153,18 @@ module AhigsFos
     end
     def junior
       pr "  JUNIOR"
-      @results.top_five_schools(:junior) do |pos, school, points|
-        line = _fmt_jnr_sen_tot(pos, school.abbreviation, points)
-        pr line.indent(4)
-      end
+      _top_five_schools(:junior)
     end
     def senior
       pr "  SENIOR"
-      @results.top_five_schools(:senior) do |pos, school, points|
-        line = _fmt_jnr_sen_tot(pos, school.abbreviation, points)
-        pr line.indent(4)
-      end
+      _top_five_schools(:senior)
     end
     def total
       pr "  TOTAL"
-      @results.top_five_schools(:all) do |pos, school, points|
+      _top_five_schools(:all)
+    end
+    def _top_five_schools(division)
+      @results.top_five_schools(division) do |pos, school, points|
         line = _fmt_jnr_sen_tot(pos, school.abbreviation, points)
         pr line.indent(4)
       end
@@ -177,7 +174,7 @@ module AhigsFos
       label.ljust(width)
     end
     def _fmt_jnr_sen_tot(position, schoolname, points)
-      points_str = points.to_s.ljust(6) + " points"
+      points_str = points.to_s.rjust(6) + " points"
       "#{position}. #{_fmt_school_label(schoolname)} #{points_str}"
     end
   end  # class Report::Summary

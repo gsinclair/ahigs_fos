@@ -146,6 +146,7 @@ module AhigsFos
     def initialize(festival_info)
       @festival_info = festival_info
       @section_results = _process_results(festival_info)
+      @leaderboards = _generate_leaderboards
     end
     def inspect
       out = StringIO.new
@@ -174,15 +175,8 @@ module AhigsFos
       }
     end
     # Yields: position (1-5), school (School), points (int).
-    def top_five_schools(division)
-      results = @festival_info.schools_list.map { |sch|
-        [sch, points_for_school(sch, division)]
-      }
-      results = results.sort_by { |sch, pts| [-pts, sch.abbreviation] }
-      # todo: handle ties
-      results[0..4].each.with_index do |(school, points), idx|
-        yield [idx+1, school, points]
-      end
+    def top_five_schools(division, &block)
+      @leaderboards[division].top_schools(5, &block)
     end
     private
     def _process_results(festival_info)
@@ -204,6 +198,16 @@ module AhigsFos
       end
       results
     end
+    def _generate_leaderboards
+      leaderboards = {}
+      [:junior, :senior, :all].each do |division|
+        results = @festival_info.schools_list.map { |school|
+          [school, points_for_school(school, division)]
+        }
+        leaderboards[division] = SchoolLeaderboard.new(division, results)
+      end
+      leaderboards
+    end
     # 'data' is expected to be an array of hashes, each of which contains
     # keys "Sections", "Places", and optionally "Participants" or
     # "Nonparticipants".
@@ -218,7 +222,6 @@ module AhigsFos
       end
     end
     def err(str) Err.invalid_results_data(str) end
-    private :_process_results, :_validate_data, :err
   end  # class Results
 
 
@@ -267,5 +270,25 @@ module AhigsFos
       @places.places_awarded.uniq.size != @places.places_awarded.size
     end
   end  # class SectionResult
+
+  
+  class SchoolLeaderboard
+    # division: junior, senior, all
+    # results: array of [school, points].
+    def initialize(division, results)
+      @division = division
+      @results = results.sort_by { |sch, pts| [-pts, sch.abbreviation.downcase] }
+    end
+    # Yields: position (1-5), school (School), points (int).
+    def top_schools(n)
+      # todo: handle ties
+      @results[0...n].each.with_index do |(school, points), idx|
+        yield [idx+1, school, points]
+      end
+    end
+    def schools(starting_position)
+      @results[starting_position-1..-1].map { |school, _| school }
+    end
+  end  # class SchoolLeaderboard
 
 end  # module AhigsFos
