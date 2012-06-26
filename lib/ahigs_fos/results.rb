@@ -97,6 +97,7 @@ module AhigsFos
     def participated?(school)
       @participants_set.include? school
     end
+    alias include? participated?
     def inspect
       p = @participants_set.to_a.map { |sch| sch.abbreviation }.sort.join(', ')
       np = @nonparticipants_set.to_a.map { |sch| sch.abbreviation }.sort.join(', ')
@@ -162,6 +163,27 @@ module AhigsFos
         Err.invalid_section(str)
       end
     end
+    def points_for_school(school, division)
+      section_results(division).map { |sec|
+        sec && sec.points_for_school(school) || 0
+      }.sum
+    end
+    def section_results(division)
+      @festival_info.sections(division).map { |sec|
+        @section_results[sec]
+      }
+    end
+    # Yields: position (1-5), school (School), points (int).
+    def top_five_schools(division)
+      results = @festival_info.schools_list.map { |sch|
+        [sch, points_for_school(sch, division)]
+      }
+      results = results.sort_by { |sch, pts| [-pts, sch.abbreviation] }
+      # todo: handle ties
+      results[0..4].each.with_index do |(school, points), idx|
+        yield [idx+1, school, points]
+      end
+    end
     private
     def _process_results(festival_info)
       path = Dirs.instance.current_year_data_directory + "results.yaml"
@@ -223,12 +245,22 @@ module AhigsFos
       out.string
     end
     alias to_s inspect
+    def points_for_school(school)
+      if place = @places.place(school)
+        @festival_info.points_for_place(place)
+      elsif @participants.include?(school)
+        @festival_info.points_for_participation
+      else
+        0
+      end
+    end
     def total_points
       total = 0
       @places.places_awarded.each do |p|
         total += @festival_info.points_for_place(p)
       end
       total += @participants.size * @festival_info.points_for_participation
+        # FIXME: this could be counting winners as participants as well
       total
     end
     def tie?

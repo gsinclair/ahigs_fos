@@ -110,6 +110,12 @@ module AhigsFos
     def schools_set
       @schools_set
     end
+    def max_abbreviation_length
+      @schools_list.map { |s| s.abbreviation.length }.max
+    end
+    def max_school_name_length
+      @schools_list.map { |s| s.name.length }.max
+    end
     # school("OLMC") or school("Our Lady of Mercy College")
     # Returns School object or nil.
     def school(string)
