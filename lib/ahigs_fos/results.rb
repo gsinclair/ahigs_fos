@@ -244,7 +244,6 @@ module AhigsFos
     def initialize(section, places, participants, festival_info)
       @section, @places, @participants = section, places, participants
       @festival_info = festival_info
-      puts "* Section result created: #{@section}"
       self.freeze
     end
     def inspect

@@ -67,7 +67,7 @@ module AhigsFos
         path.open('w') do |f|
           f.puts @out.string
         end
-        puts "Wrote file: #{path}"
+        STDERR.puts "Wrote file: #{path}"
       end
     end
     def header()     Report::Header.new(@results, @festival_info).report end
