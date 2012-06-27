@@ -37,6 +37,12 @@ module AhigsFos
     def places_awarded
       @places.values.sort
     end
+    # Yields: place, school
+    def each_place
+      @places.sort_by { |s,p| [p, s.name] }.each do |school, place|
+        yield [place, school]
+      end
+    end
 
     private
     def _process_places_string(string, festival_info)
@@ -107,6 +113,8 @@ module AhigsFos
     def size
       @participants_set.size
     end
+    def participants() @participants_set end
+    def nonparticipants() @nonparticipants_set end
     private
     def _process(participants, nonparticipants, places, festival_info)
       # Exactly one of participants and nonparticipants must be nil. The other
@@ -236,8 +244,7 @@ module AhigsFos
     def initialize(section, places, participants, festival_info)
       @section, @places, @participants = section, places, participants
       @festival_info = festival_info
-      puts "* Section result created (@section)"
-      #p self
+      puts "* Section result created: #{@section}"
       self.freeze
     end
     def inspect
@@ -268,6 +275,18 @@ module AhigsFos
     end
     def tie?
       @places.places_awarded.uniq.size != @places.places_awarded.size
+    end
+    # Yields: position, school, points awarded
+    def places
+      @places.each_place do |pos, school|
+        yield [pos, school, @festival_info.points_for_place(pos)]
+      end
+    end
+    def participants
+      @participants.participants
+    end
+    def nonparticipants
+      @participants.nonparticipants
     end
   end  # class SectionResult
 

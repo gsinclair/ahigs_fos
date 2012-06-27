@@ -5,6 +5,8 @@ require 'pp'
 require 'yaml'
 require 'pathname'
 
+require 'debuglog'
+
 require 'ahigs_fos'
 
 module AhigsFos
@@ -24,7 +26,6 @@ module AhigsFos
       #pp festival_info
       puts "\n\n"
       results = Results.new(festival_info)
-      p results
       puts "\n\n"
       report = Report::Report.new(results, festival_info)
       report.write(Dirs.instance.current_year_reports_directory)

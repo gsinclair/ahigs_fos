@@ -13,7 +13,6 @@ module AhigsFos
 
   class Report::Base
     def initialize(results, festival_info)
-      puts "Report::Base.initialize called (#{self.class})"
       @results, @festival_info = results, festival_info
       @out = StringIO.new
       @written = false
@@ -44,9 +43,7 @@ module AhigsFos
   end  # class Report::Base
 
   class Report::Report
-#    def initialize(r, fi)
-#      puts "Report::Report.initialize called"
-#    end
+    WRITE_TO_FILE = false
     def write(directory)
       if @out.nil?
         puts "@out is nil!"
@@ -64,10 +61,12 @@ module AhigsFos
       pr footer
       timestamp = Time.now.to_i
       path = directory + "#{timestamp}.txt"
-      path.open('w') do |f|
-        f.puts @out.string
+      if WRITE_TO_FILE
+        path.open('w') do |f|
+          f.puts @out.string
+        end
+        puts "Wrote file: #{path}"
       end
-      puts "Wrote file: #{path}"
     end
     def header()     Report::Header.new(@results, @festival_info).report end
     def status()     Report::Status.new(@results, @festival_info).report end
@@ -78,7 +77,6 @@ module AhigsFos
   end  # class Report::Report
 
   class Report::Header #< Report::Base
-    # No need for initialize, I hope.
     def report
       nl
       pr "AHIGS Festival of Speech #{@festival_info.year} score report"
@@ -182,7 +180,48 @@ module AhigsFos
   class Report::Sections
     def report
       pr heading("Sections")
+      [:junior, :senior].each do |division|
+        @festival_info.sections(division).each do |section|
+          results = @results.for_section(section)
+          next if results.nil?
+          nl
+          pr "  Section: #{_upcase(section)}"
+          pr "  Places:"
+          results.places do |pos, school, pts|
+            pr "    #{pos}. #{school.abbreviation} (#{pts})"
+          end
+          pr "  Participants (#{@festival_info.points_for_participation}):"
+          pr _wrap(results.participants, 76).indent(4)
+          pr "  Non-participants:"
+          pr _wrap(results.nonparticipants, 76).indent(4)
+        end
+      end
       string
+    end
+    # Change the string, up to and not including a bracket, to upper case.
+    def _upcase(string)
+      string.split.map { |word|
+        if word.start_with? '('
+          word
+        else
+          word.upcase
+        end
+      }.join(' ')
+    end
+    def _wrap(schools, limit)
+      schools = schools.map { |sch| sch.abbreviation }.sort_by { |str| str.downcase }
+      lines = []
+      lines << schools.shift.dup
+      loop do
+        if schools.empty?
+          return lines.join("\n")
+        end
+        if lines.last.length + 1 + schools.first.size <= limit
+          lines.last << " " << schools.shift.dup
+        else
+          lines << schools.shift.dup
+        end
+      end
     end
   end  # class Report::Sections
 
