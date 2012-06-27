@@ -3,3 +3,6 @@
 Gemfile.lock
 pkg/*
 reports/2012/*.txt
+debug.log
+out
+nil
