@@ -49,7 +49,10 @@ module AhigsFos
   # A School value object simply contains an abbreviation and a name.
   class School
     def initialize(abbreviation, name)
-      @abbreviation, @name = abbreviation, name
+      @abbreviation, @name = abbreviation.dup, name.dup
+      Err.invalid_abbreviation(abbreviation) if abbreviation[/\s/]
+      STDERR.puts "*** School object created: {#{abbreviation}} {#{name}}"
+      self.freeze
     end
     attr_reader :abbreviation, :name
     def hash() [self.class, @abbreviation, @name].hash end

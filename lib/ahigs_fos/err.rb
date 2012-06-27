@@ -38,4 +38,17 @@ module AhigsFos; class Err
   def Err.invalid_results_data(msg)
     raise AhigsFos::ResultsError, msg
   end
+
+  def Err.invalid_abbreviation(abbr)
+    raise AhigsFos::ConfigurationError, "Invalid school abbreviation: #{abbr.inspect}"
+  end
+
+  def Err.invalid_place_string(msg, str)
+    message = "Invalid place string: #{str.inspect} (#{msg})"
+    raise AhigsFos::ResultsError, message
+  end
+
+  def Err.nonexistent_school(string)
+    raise AhigsFos::ConfigurationError, "School does not exist: #{string.inspect}"
+  end
 end; end
