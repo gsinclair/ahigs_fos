@@ -255,15 +255,24 @@ module AhigsFos
       out.string
     end
     alias to_s inspect
-    def points_for_school(school)
+    # Return the result and the number of points. Examples:
+    #   [3, 20]
+    #   [:p, 5]   (participated)
+    #   [:dnp, 0] (did not participate)
+    def result_for_school(school)
       if place = @places.place(school)
-        @festival_info.points_for_place(place)
+        [place, @festival_info.points_for_place(place)]
       elsif @participants.include?(school)
-        @festival_info.points_for_participation
+        [:p, @festival_info.points_for_participation]
       else
-        0
+        [:dnp, 0]
       end
     end
+    # Return just the number of points the school got in this section.
+    def points_for_school(school)
+      result_for_school(school).last
+    end
+    # Total points awarded in this section.
     def total_points
       total = 0
       @places.places_awarded.each do |p|

@@ -42,6 +42,8 @@ module AhigsFos
     end
   end  # class Report::Base
 
+  # ====================================================================== #
+
   class Report::Report
     WRITE_TO_FILE = false
     def write(directory)
@@ -76,6 +78,8 @@ module AhigsFos
     def footer()     Report::Footer.new(@results, @festival_info).report end
   end  # class Report::Report
 
+  # ====================================================================== #
+
   class Report::Header #< Report::Base
     def report
       nl
@@ -85,6 +89,8 @@ module AhigsFos
       string
     end
   end  # class Report::Header
+
+  # ====================================================================== #
 
   class Report::Status
     def report
@@ -116,6 +122,8 @@ module AhigsFos
       pr line.indent(2)
     end
   end  # class Report::Status
+
+  # ====================================================================== #
 
   class Report::Summary
     def report
@@ -177,6 +185,8 @@ module AhigsFos
     end
   end  # class Report::Summary
 
+  # ====================================================================== #
+
   class Report::Sections
     def report
       pr heading("Sections")
@@ -225,12 +235,91 @@ module AhigsFos
     end
   end  # class Report::Sections
 
+  # ====================================================================== #
+
   class Report::Schools
     def report
       pr heading("Schools")
+      @festival_info.schools_list.sort_by { |s| s.name }.each do |school|
+        nl
+        report_school(school)
+      end
       string
     end
+    private
+    def report_school(school)
+      pr _school_name_and_points(school).indent(2)
+      pr _report_sections(school, :junior).indent(4)
+      pr _report_sections(school, :senior).indent(4)
+    end
+    def _school_name_and_points(school)
+      line = school.name.ljust(27)
+      jnr  = @results.points_for_school(school, :junior)
+      snr  = @results.points_for_school(school, :senior)
+      tot  = jnr + snr
+      line << _fmt_points(jnr, snr, tot)
+      line
+    end
+    def _fmt_points(jnr, snr, tot)
+      "(J: #{jnr}  S: #{snr}  T: #{tot})"
+    end
+    def _report_sections(school, division)
+      out = StringIO.new
+      out.puts _division_heading(division)
+      @festival_info.sections(division).each do |section|
+        line = _fmt_section_name(section)
+        section_result = @results.for_section(section)
+        if section_result.nil?
+          line << " -        [not yet available]"
+        else
+          result, points = section_result.result_for_school(school)
+          line << _fmt_results(result, points)
+        end
+        out.puts line.indent(2)
+      end
+      out.string
+    end
+    def _division_heading(division)
+      case division
+      when :junior then "Junior"
+      when :senior then "Senior"
+      end
+    end
+    def _fmt_section_name(section)
+      section =
+        if idx = section.index('(')
+          section[0...idx].strip
+        elsif section.start_with? "Religious"
+          "Religious and ..."
+        else
+          section
+        end
+      section.ljust(23)
+    end
+    def _fmt_results(result, points)
+      desc =
+        case result
+        when Integer then "#{_ordinal(result)} place"
+        when Symbol  then "#{result}"
+        else
+          Err.invalid_section_result(result)
+        end
+      "#{points.to_s.rjust(2)} points (#{desc})"
+    end
+    def _ordinal(n)
+      case n
+      when 1 then "1st"
+      when 2 then "2nd"
+      when 3 then "3rd"
+      when 4 then "4th"
+      when 5 then "5th"
+      else
+        Err.invalid_place(n)
+      end
+    end
   end  # class Report::Schools
+
+  # ====================================================================== #
 
   class Report::Footer
     def report
