@@ -46,7 +46,7 @@ module AhigsFos
 
   class Report::Report
     WRITE_TO_FILE = false
-    def write(directory)
+    def write
       if @out.nil?
         puts "@out is nil!"
       end
@@ -61,6 +61,7 @@ module AhigsFos
       pr schools
       nl
       pr footer
+      directory = @festival_info.dirs.current_year_reports_directory
       timestamp = Time.now.to_i
       path = directory + "#{timestamp}.txt"
       if WRITE_TO_FILE

@@ -1,12 +1,5 @@
 # app/comp-scorer.rb -- the main file
 
-require 'ap'
-require 'pp'
-require 'yaml'
-require 'pathname'
-
-require 'debuglog'
-
 require 'ahigs_fos'
 
 module AhigsFos
@@ -22,10 +15,10 @@ module AhigsFos
     def initialize
     end
     def run
-      festival_info = FestivalInfo.new
+      festival_info = FestivalInfo.new(Constants::DIRECTORIES_CONFIG_FILE_NAME)
       results = Results.new(festival_info)
       report = Report::Report.new(results, festival_info)
-      report.write(Dirs.instance.current_year_reports_directory)
+      report.write
       puts report.string
     end
   end

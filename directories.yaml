@@ -1,4 +1,3 @@
 directories:
-  config:  "config"
   data:    "data"
   reports: "reports"

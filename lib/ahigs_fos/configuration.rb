@@ -7,16 +7,18 @@ module AhigsFos
 
   # class Dirs
   #
-  # Provides an interface to the data and reports directories.  Is responsible
-  # for configuring itself (single instance) from the standard configuration
-  # file.
+  # Provides an interface to the data and reports directories. It configures
+  # itself from a yaml file that looks like:
+  #
+  #   directories:
+  #     config:  "config"
+  #     data:    "data"
+  #     reports: "reports"
   #
   class Dirs
-    include Singleton
-
-    def initialize
+    def initialize(config_file_path)
       begin
-        data = File.read( Constants::DIRECTORIES_CONFIG_FILE_NAME )
+        data = File.read(config_file_path)
       rescue
         Err.no_configuration_file
       end
@@ -74,10 +76,11 @@ module AhigsFos
   # rounds and must be considered separately (and I don't know the details at
   # the moment).
   class FestivalInfo
-    def initialize
-      path = Dirs.instance.current_year_data_directory + "festival_info.yaml"
-      data = path.read
-      data = YAML.load(data)
+    def initialize(config_file_path)
+      @dirs = Dirs.new(config_file_path)
+      path  = @dirs.current_year_data_directory + "festival_info.yaml"
+      data  = path.read
+      data  = YAML.load(data)
       @year = data["year"]
       @points_for_place, @points_for_participation = _process_points(data["points"])
       @sections = _process_sections(data["sections"])
@@ -87,6 +90,9 @@ module AhigsFos
       @schools_set = @schools_by_abbreviation.values.to_set
       @schools_list = @schools_set.to_a
       self.freeze
+    end
+    def dirs
+      @dirs
     end
     def year
       @year

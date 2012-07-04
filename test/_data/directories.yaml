@@ -1,0 +1,3 @@
+directories:
+  data:    "test/_data/data"
+  reports: "test/_data/reports"

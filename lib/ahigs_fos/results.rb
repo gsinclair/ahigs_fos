@@ -188,7 +188,7 @@ module AhigsFos
     end
     private
     def _process_results(festival_info)
-      path = Dirs.instance.current_year_data_directory + "results.yaml"
+      path = @festival_info.dirs.current_year_data_directory + "results.yaml"
       data = YAML.load(path.read)
       _validate_data(data)
       results = {}

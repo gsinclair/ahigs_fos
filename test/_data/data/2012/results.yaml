@@ -1,0 +1,82 @@
+# These are the 2011 results with the following changes:
+#  - debating excluded
+#  - "Prose reading" simply called "Reading"
+#  - NEGS removed from the results as they are not participating in 2012
+#  - Current Affairs modified to have two 4th places instead of two 5th places
+#    (12355 is not a valid place string; 12344 is)
+
+- Section: Poetry (Junior)
+  Places: "1. SCEGGS  2. Kirribilli  3. Calrossy  4. PLCS  5. Tangara"
+  Nonparticipants:
+    - MLC
+    - OLMC
+    - Roseville
+    - StClares
+
+# Called "Prose reading" in 2011, appears to be called just "Reading" in 2012.
+
+- Section: Reading (Junior)
+  Places: "1. Kincoppal  2. Calrossy  3. StCatherines  4. Ravenswood  5. Wenona"
+  Nonparticipants:
+    - StClares
+
+- Section: Public Speaking (Junior)
+  Places: "1. Kirribilli  2. Tara  3. Kincoppal  4. Tangara  5. SCEGGS"
+  Nonparticipants:
+    - Danebank
+    - MLC
+    - Roseville
+
+- Section: Current Affairs
+  Places: "1. PLCS  2. Pymble  3. Abbotsleigh  4. Canberra  4. StVincents"
+  Nonparticipants:
+    - Calrossy
+    - Danebank
+    - Kincoppal
+    - Kirribilli
+    - MLC
+    - OLMC
+    - Queenwood
+    - Roseville
+    - StClares
+    - Tara
+    - Wenona
+
+- Section: Poetry (Senior)
+  Places: "1. PLCS  2. Ravenswood  3. Meriden  4. SCEGGS  5. Pymble"
+  Nonparticipants:
+    - Danebank
+    - Kirribilli
+    - OLMC
+    - Santa
+    - StClares
+    - Tara
+
+- Section: Reading (Senior) 
+  Places: "1. MLC  2. PLCS  3. Pymble  4. Danebank  5. Armidale"
+  Nonparticipants:
+    - Kirribilli
+    - OLMC
+    - Roseville
+    - StClares
+    - Tara
+
+- Section: Public Speaking (Senior)
+  Places: "1. StCatherines  2. PLCS  3. Normanhurst  4. MLC  4. Ravenswood"
+  Nonparticipants:
+    - Danebank
+    - Kirribilli
+    - StVincents
+
+- Section: Religious and Ethical Questions
+  Places: "1. Canberra  2. Kambala  3. Normanhurst  3. Monte  5. Armidale"
+  Nonparticipants:
+    - Calrossy
+    - Danebank
+    - Kirribilli
+    - MLC
+    - OLMC
+    - Roseville
+    - Santa
+    - StCatherines
+    - StClares
