@@ -91,6 +91,62 @@ D "Results (building blocks)" do
   end  # D "Places"
 
   D "Participants" do
+    string = "1. Frensham 2. Danebank  3. PLCS    4.  Kirribilli  5.  Normanhurst"
+    @places = Places.new(string, @f)
+    D "Defined by who's participating" do
+      list = ["Queenwood", "Ravenswood", "Meriden", "OLMC", "Pymble"]
+      @p = Participants.new(list, nil, @places, @f)
+      D "query whether a school participated ('participated?')" do
+        T @p.participated?(School.new("Ravenswood", "Ravenswood"))
+        T @p.participated?(School.new("Meriden", "Meriden"))
+        T @p.participated?(School.new("Pymble", "Pymble Ladies College"))
+        T @p.participated?(School.new("OLMC", "Our Lady of Mercy College"))
+        F @p.participated?(School.new("StClares", "St Clare's"))
+        D "those who placed DID participate, whether listed or not" do
+          T @p.participated?(School.new("Frensham", "Frensham"))
+          T @p.participated?(School.new("Danebank", "Danebank"))
+          T @p.participated?(School.new("PLCS", "PLC Sydney"))
+          T @p.participated?(School.new("Kirribilli", "Loreto Kirribilli"))
+          T @p.participated?(School.new("Normanhurst", "Loreto Normanhurst"))
+        end
+        D "size" do
+          Eq @p.size, 10
+        end
+        D "participants() and nonparticipants() return set of schools" do
+          Ko @p.participants, Set
+          Eq @p.participants.size, 10
+          Ko @p.nonparticipants, Set
+          Eq @p.nonparticipants.size, 19
+          T  @p.nonparticipants.include?(School.new("StClares", "St Clare's"))
+        end
+      end
+    end
+    D "Defined by who's NOT participating" do
+      list = ["Queenwood", "Ravenswood", "Meriden", "OLMC", "Pymble"]
+      @p = Participants.new(nil, list, @places, @f)
+      D "same tests as above" do
+        # "query whether a school participated ('participated?')"
+        F @p.participated?(School.new("Ravenswood", "Ravenswood"))
+        F @p.participated?(School.new("Meriden", "Meriden"))
+        F @p.participated?(School.new("Pymble", "Pymble Ladies College"))
+        F @p.participated?(School.new("OLMC", "Our Lady of Mercy College"))
+        T @p.participated?(School.new("StClares", "St Clare's"))
+        # "those who placed DID participate, whether listed or not"
+        T @p.participated?(School.new("Frensham", "Frensham"))
+        T @p.participated?(School.new("Danebank", "Danebank"))
+        T @p.participated?(School.new("PLCS", "PLC Sydney"))
+        T @p.participated?(School.new("Kirribilli", "Loreto Kirribilli"))
+        T @p.participated?(School.new("Normanhurst", "Loreto Normanhurst"))
+        # "size"
+        Eq @p.size, 24
+        # "participants() and nonparticipants() return set of schools"
+        Ko @p.participants, Set
+        Eq @p.participants.size, 24
+        Ko @p.nonparticipants, Set
+        Eq @p.nonparticipants.size, 5
+        T  @p.nonparticipants.include?(School.new("Queenwood", "Queenwood"))
+      end
+    end
   end  # D "Participants"
 
 end  # D "Results (building blocks)"
