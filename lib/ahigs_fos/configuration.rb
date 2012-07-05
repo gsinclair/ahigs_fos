@@ -5,7 +5,7 @@ require 'set'
 
 module AhigsFos
 
-  # class Dirs
+  # class Directories
   #
   # Provides an interface to the data and reports directories. It configures
   # itself from a yaml file that looks like:
@@ -15,7 +15,7 @@ module AhigsFos
   #     data:    "data"
   #     reports: "reports"
   #
-  class Dirs
+  class Directories
     def initialize(config_file_path)
       begin
         data = File.read(config_file_path)
@@ -45,7 +45,7 @@ module AhigsFos
       path
     end
     private :_check
-  end  # class Dirs
+  end  # class Directories
 
 
   # A School value object simply contains an abbreviation and a name.
@@ -56,11 +56,14 @@ module AhigsFos
     end
     attr_reader :abbreviation, :name
     def hash() [self.class, @abbreviation, @name].hash end
-    def ==(other)
-      other.class == self.class and
-        other.abbreviation == self.abbreviation and
-        other.name == self.name
+    def eql?(other)
+      self.equal? other or (
+        other.class == self.class and
+          other.abbreviation == self.abbreviation and
+          other.name == self.name
+      )
     end
+    alias == eql?
     def to_s
       "School[#{abbreviation}, #{name}]"
     end
@@ -77,7 +80,7 @@ module AhigsFos
   # the moment).
   class FestivalInfo
     def initialize(config_file_path)
-      @dirs = Dirs.new(config_file_path)
+      @dirs = Directories.new(config_file_path)
       path  = @dirs.current_year_data_directory + "festival_info.yaml"
       data  = path.read
       data  = YAML.load(data)
