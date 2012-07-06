@@ -139,6 +139,7 @@ module AhigsFos
     end
     # Generates a list of School objects from a list of abbreviations or names,
     # raising an error if any doesn't exist.
+    # TODO: better name
     def school_list(abbrs)
       abbrs.map { |abbr|
         s = school(abbr)
@@ -147,6 +148,10 @@ module AhigsFos
         end
         s
       }
+    end
+    # Simply raise an error if the school doesn't exist.
+    def check_school(school)
+      Err.nonexistent_school(school.abbreviation) unless @schools_set.include? school
     end
     # Argument: 1 to 5 (integer)
     def points_for_place(n)

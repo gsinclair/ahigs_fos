@@ -23,8 +23,11 @@ module AhigsFos
     def place(school)
       @places[school]
     end
+    def include?(school)
+      @places.key?(school)
+    end
     # List of schools that gained a place (School objects).
-    def list
+    def school_list
       @schools.to_a
     end
     def inspect
@@ -98,6 +101,7 @@ module AhigsFos
     def initialize(participants, nonparticipants, places, festival_info)
       @participants_set = _process(participants, nonparticipants, places, festival_info)
       @nonparticipants_set = festival_info.schools_list.to_set - @participants_set
+      @strict_participants_set = @participants_set - places.school_list
       @self.freeze
     end
     def participated?(school)
@@ -115,6 +119,7 @@ module AhigsFos
     end
     def participants() @participants_set end
     def nonparticipants() @nonparticipants_set end
+    def strict_participants() @strict_participants_set end
     private
     def _process(participants, nonparticipants, places, festival_info)
       # Exactly one of participants and nonparticipants must be nil. The other
@@ -133,7 +138,7 @@ module AhigsFos
         # include schools that placed, regardless of whether they are in the
         # participant list.
         list = festival_info.school_list(participants)
-        list = (list + places.list).uniq
+        list = (list + places.school_list).uniq
       elsif nonparticipants
         unless Array === nonparticipants and nonparticipants.all? { |x| String === x }
           err "Nonparticipants: not array of strings: #{nonparticipants.inspect}"
@@ -259,6 +264,7 @@ module AhigsFos
     #   [:p, 5]   (participated)
     #   [:dnp, 0] (did not participate)
     def result_for_school(school)
+      @festival_info.check_school(school)
       if place = @places.place(school)
         [place, @festival_info.points_for_place(place)]
       elsif @participants.include?(school)
@@ -273,13 +279,20 @@ module AhigsFos
     end
     # Total points awarded in this section.
     def total_points
-      total = 0
+      # There are two ways to calculate the total:
+      #   1. Points awarded for each place + points awarded for participating schools.
+      #   2. Total of points awarded to all schools (less efficient to calculate).
+      # We do both totals as a check and raise an error if they're not the same.
+      total1 = 0
       @places.places_awarded.each do |p|
-        total += @festival_info.points_for_place(p)
+        total1 += @festival_info.points_for_place(p)
       end
-      total += @participants.size * @festival_info.points_for_participation
-        # FIXME: this could be counting winners as participants as well
-      total
+      total1 += @participants.strict_participants.size * @festival_info.points_for_participation
+      total2 = @festival_info.schools_list.map { |sc| points_for_school(sc) }.sum
+      unless total1 == total2
+        Err.inconsistent_total_points_for_section_result(total1, total2)
+      end
+      total1
     end
     def tie?
       @places.places_awarded.uniq.size != @places.places_awarded.size
@@ -295,6 +308,9 @@ module AhigsFos
     end
     def nonparticipants
       @participants.nonparticipants
+    end
+    def strict_participants
+      @participants.strict_participants
     end
   end  # class SectionResult
 

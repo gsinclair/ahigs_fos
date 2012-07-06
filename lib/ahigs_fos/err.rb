@@ -51,4 +51,10 @@ module AhigsFos; class Err
   def Err.nonexistent_school(string)
     raise AhigsFos::ConfigurationError, "School does not exist: #{string.inspect}"
   end
+
+  def Err.inconsistent_total_points_for_section_result(section, total1, total2)
+    message =  "Total points for section #{section.inspect} is different depending\n"
+    message += "on the way it is calculated: #{total1} vs #{total2}."
+    raise AhigsFos::ResultsError, message
+  end
 end; end
