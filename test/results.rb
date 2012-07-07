@@ -238,8 +238,7 @@ D "Results" do
           @places.each_place do |pl, sc|
             Eq @sr.result_for_school(sc), [pl, @f.points_for_place(pl)]
           end
-          @participants.participants.each do |sc|
-            next if @places.include?(sc)
+          @participants.strict_participants.each do |sc|
             Eq @sr.result_for_school(sc), [:p, @f.points_for_participation]
           end
           @participants.nonparticipants.each do |sc|
@@ -278,7 +277,6 @@ D "Results" do
         F @sr.tie?
       end
       D "places() yields position, school, points awarded" do
-        # "1. Frensham 2. Danebank 3. PLCS 4. Kirribilli 5. Normanhurst"
         values = [ [1, School.new("Frensham", "Frensham"), 30],
                    [2, School.new("Danebank", "Danebank"), 25],
                    [3, School.new("PLCS", "PLC Sydney"), 20],
@@ -299,8 +297,87 @@ D "Results" do
       end
     end  # "Broad test of a specific instance"
 
-    D "Various other tests of above functionality" do
-      # ...
+    D "Tests with tied places (12244) and participants based on exclusion" do
+      @places = Places.new("1. StClares 2. Roseville 2. Danebank 4. Canberra 4. MLC", @f)
+      list = ["Tara", "Kincoppal", "Ascham", "OLMC"]
+      @participants = Participants.new(nil, list, @places, @f)
+      @sr = SectionResult.new("Reading (Junior)", @places, @participants, @f)
+      # "'result_for_school' -> result (1..5,:p,:dnp) and points" do
+        # "hardcoded outcomes" do
+      Eq @sr.result_for_school(s.abbotsleigh), [:p, 5]
+      Eq @sr.result_for_school(s.ascham), [:dnp, 0]
+      Eq @sr.result_for_school(s.brigidine), [:p, 5]
+      Eq @sr.result_for_school(s.calrossy), [:p, 5]
+      Eq @sr.result_for_school(s.canberra), [4, 15]
+      Eq @sr.result_for_school(s.danebank), [2, 25]
+      Eq @sr.result_for_school(s.frensham), [:p, 5]
+      Eq @sr.result_for_school(s.kambala), [:p, 5]
+      Eq @sr.result_for_school(s.kincoppal), [:dnp, 0]
+      Eq @sr.result_for_school(s.kirribilli), [:p, 5]
+      Eq @sr.result_for_school(s.normanhurst), [:p, 5]
+      Eq @sr.result_for_school(s.meriden), [:p, 5]
+      Eq @sr.result_for_school(s.mlc), [4, 15]
+      Eq @sr.result_for_school(s.monte), [:p, 5]
+      Eq @sr.result_for_school(s.olmc), [:dnp, 0]
+      Eq @sr.result_for_school(s.plcs), [:p, 5]
+      Eq @sr.result_for_school(s.armidale), [:p, 5]
+      Eq @sr.result_for_school(s.pymble), [:p, 5]
+      Eq @sr.result_for_school(s.queenwood), [:p, 5]
+      Eq @sr.result_for_school(s.ravenswood), [:p, 5]
+      Eq @sr.result_for_school(s.roseville), [2, 25]
+      Eq @sr.result_for_school(s.santa), [:p, 5]
+      Eq @sr.result_for_school(s.sceggs), [:p, 5]
+      Eq @sr.result_for_school(s.stcatherines), [:p, 5]
+      Eq @sr.result_for_school(s.stclares), [1, 30]
+      Eq @sr.result_for_school(s.stvincents), [:p, 5]
+      Eq @sr.result_for_school(s.tangara), [:p, 5]
+      Eq @sr.result_for_school(s.tara), [:dnp, 0]
+      Eq @sr.result_for_school(s.wenona), [:p, 5]
+        # "programmatic outcomes (check consistency with places and participants)" do
+      @places.each_place do |pl, sc|
+        Eq @sr.result_for_school(sc), [pl, @f.points_for_place(pl)]
+      end
+      @participants.strict_participants.each do |sc|
+        Eq @sr.result_for_school(sc), [:p, @f.points_for_participation]
+      end
+      @participants.nonparticipants.each do |sc|
+        Eq @sr.result_for_school(sc), [:dnp, 0]
+      end
+        # "error on unknown school" do
+      E { @sr.result_for_school(School.new("Foo", "Bar")) }
+      Mt Whitestone.exception.message, /school does not exist/i
+      # "points_for_school -> number of points" do
+      Eq @sr.points_for_school(s.stclares), 30
+      Eq @sr.points_for_school(s.roseville), 25
+      Eq @sr.points_for_school(s.danebank), 25
+      Eq @sr.points_for_school(s.canberra), 15
+      Eq @sr.points_for_school(s.mlc), 15
+      Eq @sr.points_for_school(s.frensham), 5
+      Eq @sr.points_for_school(s.calrossy), 5
+      Eq @sr.points_for_school(s.tara), 0
+      Eq @sr.points_for_school(s.kincoppal), 0
+      Eq @sr.points_for_school(s.ascham), 0
+      Eq @sr.points_for_school(s.olmc), 0
+      E { @sr.points_for_school(School.new("Foo", "Bar")) }
+      Mt Whitestone.exception.message, /school does not exist/i
+      # "calculate the total points awarded in this section ('total_points')" do
+      Eq @sr.total_points, 210  # 110 in places + 20 participants
+      # "tie?" do
+      Eq @sr.tie?, true
+      # "places() yields position, school, points awarded" do
+      values = [ [1, s.stclares, 30], [2, s.danebank, 25], [2, s.roseville, 25],
+                 [4, s.canberra, 15], [4, s.mlc, 15] ]  # note alphabetic order when tied
+      @sr.places do |pos, sch, pts|
+        expected_value = values.shift
+        Eq pos, expected_value[0]
+        Eq sch, expected_value[1]
+        Eq pts, expected_value[2]
+      end
+      T values.empty?
+      # "{,non,strict_}participants() delegate appropriately" do
+      Eq @sr.participants, @participants.participants
+      Eq @sr.nonparticipants, @participants.nonparticipants
+      Eq @sr.strict_participants, @participants.strict_participants
     end
   end  # D "SectionResult"
 
