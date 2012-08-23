@@ -381,6 +381,36 @@ D "Results" do
     end
   end  # D "SectionResult"
 
+  D "SchoolLeaderboard" do
+    D "Without ties" do
+      results = [ [s.mlc, 70], [s.plcs, 55], [s.calrossy, 20], [s.olmc, 60],
+                  [s.tara, 5], [s.frensham, 35], [s.ascham, 40] ]
+      @slb = SchoolLeaderboard.new(:junior, results)
+      D "iterate over top n schools [pos, sch, pts] ('top_schools')" do
+        values = [ [1, s.mlc, 70], [2, s.olmc, 60], [3, s.plcs, 55], [4, s.ascham, 40] ]
+        @slb.top_schools(4) do |pos, sch, pts|
+          expected_value = values.shift
+          Eq pos, expected_value[0]
+          Eq sch, expected_value[1]
+          Eq pts, expected_value[2]
+        end
+        T values.empty?
+      end
+      D "retrieve rest of schools ('schools')" do
+        Eq @slb.schools(4), [s.ascham, s.frensham, s.calrossy, s.tara]
+        Eq @slb.schools(5), [s.frensham, s.calrossy, s.tara]
+        Eq @slb.schools(6), [s.calrossy, s.tara]
+        Eq @slb.schools(7), [s.tara]
+        Eq @slb.schools(8), []
+        Eq @slb.schools(9), []
+        Eq @slb.schools(50), []
+      end
+    end
+    D "With ties" do
+      
+    end
+  end
+
   D "Results" do
   end  # D "Results"
 

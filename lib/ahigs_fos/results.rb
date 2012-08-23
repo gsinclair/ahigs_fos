@@ -322,15 +322,17 @@ module AhigsFos
       @division = division
       @results = results.sort_by { |sch, pts| [-pts, sch.abbreviation.downcase] }
     end
-    # Yields: position (1-5), school (School), points (int).
+    # Yields: position (1-n), school (School), points (int).
     def top_schools(n)
       # todo: handle ties
       @results[0...n].each.with_index do |(school, points), idx|
         yield [idx+1, school, points]
       end
     end
+    # Returns a list of schools starting at the given position.
+    # E.g. schools(6) -> [school_in_position_6, school_in_position_7, ...]
     def schools(starting_position)
-      @results[starting_position-1..-1].map { |school, _| school }
+      (@results[starting_position-1..-1] || []).map { |school, _| school }
     end
   end  # class SchoolLeaderboard
 
