@@ -28,7 +28,7 @@
     - Roseville
 
 - Section: Current Affairs
-  Places: "1. PLCS  2. Pymble  3. Abbotsleigh  4. Canberra  4. StVincents"
+  Places: "1. PLCS  2. Pymble  3. Abbotsleigh  3. Meriden  5. StCatherines"
   Nonparticipants:
     - Calrossy
     - Danebank
@@ -41,6 +41,18 @@
     - StClares
     - Tara
     - Wenona
+
+- Section: Drama
+  Places: "1. Kambala  2. Brigidine  3. Armidale  4. StCatherines  5. Pymble"
+  Nonparticipants:
+    - Danebank
+    - Kirribilli
+    - MLC
+    - Monte
+    - OLMC
+    - Ravenswood
+    - Roseville
+    - StClares
 
 - Section: Poetry (Senior)
   Places: "1. PLCS  2. Ravenswood  3. Meriden  4. SCEGGS  5. Pymble"
@@ -76,6 +88,7 @@
     - Kirribilli
     - MLC
     - OLMC
+    - Queenwood
     - Roseville
     - Santa
     - StCatherines
