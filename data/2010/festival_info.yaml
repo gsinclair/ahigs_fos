@@ -5,7 +5,7 @@
 #   "schools": list of schools
 #   "points": hash of points (keys: 1,2,3,4,5,participation)
 
-year: 2012
+year: 2010
 
 # sections:
 #  - Reading (Junior)
@@ -26,13 +26,11 @@ sections:
     - Reading (Senior)
     - Poetry (Senior)
     - Public Speaking (Senior)
-    - Drama
     - Current Affairs
     - Religious and Ethical Questions
 
 schools:
  - Abbotsleigh
- - Ascham
  - Brigidine
  - Calrossy
  - Canberra (Canberra Girls Grammar)
@@ -44,22 +42,31 @@ schools:
  - Normanhurst (Loreto Normanhurst)
  - Meriden
  - MLC (MLC Sydney)
- - Monte (Monte Sant' Angelo)
+ - "Monte (Monte Sant' Angelo)"
+ - "NEGS (New England Girls' School)"
  - OLMC (Our Lady of Mercy College)
- - PLCS (PLC Sydney)
  - Armidale (PLC Armidale)
+ - PLCS (PLC Sydney)
  - Pymble (Pymble Ladies College)
  - Queenwood
  - Ravenswood
  - Roseville (Roseville College)
  - Santa (Santa Sabina College)
  - SCEGGS (SCEGGS Darlinghurst)
- - StCatherines (St Catherine's)
- - StClares (St Clare's)
- - StVincents (St Vincent's)
+ - "StCatherines (St Catherine's)"
+ - "StClares (St Clare's)"
+ - "StVincents (St Vincent's)"
  - Tangara
  - Tara
  - Wenona
+
+#points:
+#  1: 30
+#  2: 25
+#  3: 20
+#  4: 15
+#  5: 10
+#  participation: 5
 
 points:
   1: 15

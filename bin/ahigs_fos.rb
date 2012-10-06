@@ -8,6 +8,7 @@ module AhigsFos
   end
 
   # What does the app do when it is run?
+  # * Take note of a calendar year passed on the command line
   # * Read the configuration file (create a Configuration object)
   # * Process the results from the relevant YAML file(s) (Results object)
   # * Produce and write a report (Report object)
@@ -15,11 +16,22 @@ module AhigsFos
     def initialize
     end
     def run
-      festival_info = FestivalInfo.new(Constants::DIRECTORIES_CONFIG_FILE_NAME)
+      calyear = get_calendar_year(ARGV)
+      festival_info = FestivalInfo.new(Constants::DIRECTORIES_CONFIG_FILE_NAME, calyear)
       results = Results.new(festival_info)
       report = Report::Report.new(results, festival_info)
       report.write
       puts report.string
+    end
+    private
+    def get_calendar_year(args)
+      if args.first and args.first =~ /\d\d\d\d/
+        calyear = args.shift
+        puts "Calendar year set to #{calyear}"
+        calyear
+      else
+        Time.now.year.to_s
+      end
     end
   end
 end

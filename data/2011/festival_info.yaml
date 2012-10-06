@@ -1,0 +1,71 @@
+# AHIGS Festival of Speech configuration 2012
+#
+# Configuration items:
+#   "sections": list of sections (events)
+#   "schools": list of schools
+#   "points": hash of points (keys: 1,2,3,4,5,participation)
+
+year: 2011
+
+# sections:
+#  - Reading (Junior)
+#  - Poetry (Junior)
+#  - Public Speaking (Junior)
+#  - Reading (Senior)
+#  - Poetry (Senior)
+#  - Public Speaking (Senior)
+#  - Current Affairs
+#  - Religious and Ethical Questions
+
+sections:
+  junior:
+    - Reading (Junior)
+    - Poetry (Junior)
+    - Public Speaking (Junior)
+  senior:
+    - Reading (Senior)
+    - Poetry (Senior)
+    - Public Speaking (Senior)
+    - Drama
+    - Current Affairs
+    - Religious and Ethical Questions
+
+schools:
+ - Abbotsleigh
+ - Ascham
+ - Brigidine
+ - Calrossy
+ - Canberra (Canberra Girls Grammar)
+ - Danebank
+ - Frensham
+ - Kambala
+ - Kincoppal (Kincoppal Rose Bay)
+ - Kirribilli (Loreto Kirribilli)
+ - Normanhurst (Loreto Normanhurst)
+ - Meriden
+ - MLC (MLC Sydney)
+ - Monte (Monte Sant' Angelo)
+ - OLMC (Our Lady of Mercy College)
+ - PLCS (PLC Sydney)
+ - Armidale (PLC Armidale)
+ - Pymble (Pymble Ladies College)
+ - Queenwood
+ - Ravenswood
+ - Roseville (Roseville College)
+ - Santa (Santa Sabina College)
+ - SCEGGS (SCEGGS Darlinghurst)
+ - StCatherines (St Catherine's)
+ - StClares (St Clare's)
+ - StVincents (St Vincent's)
+ - Tangara
+ - Tara
+ - Wenona
+
+points:
+  1: 15
+  2: 12
+  3: 10
+  4: 8
+  5: 6
+  participation: 3
+

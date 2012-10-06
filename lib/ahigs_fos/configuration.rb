@@ -16,7 +16,7 @@ module AhigsFos
   #     reports: "reports"
   #
   class Directories
-    def initialize(config_file_path)
+    def initialize(config_file_path, calyear)
       begin
         data = File.read(config_file_path)
       rescue
@@ -26,7 +26,7 @@ module AhigsFos
       dirs = data['directories'] || Err.invalid_config("No 'directories' config")
       @data_directory    = _check('directories/data',    dirs['data'])
       @reports_directory = _check('directories/reports', dirs['reports'])
-      @year = Date.today.year.to_s
+      @year = calyear
     end
     def current_year_data_directory
       @data_directory + @year
@@ -79,12 +79,13 @@ module AhigsFos
   # rounds and must be considered separately (and I don't know the details at
   # the moment).
   class FestivalInfo
-    def initialize(config_file_path)
-      @dirs = Directories.new(config_file_path)
+    def initialize(config_file_path, calyear)
+      @dirs = Directories.new(config_file_path, calyear)
       path  = @dirs.current_year_data_directory + "festival_info.yaml"
       data  = path.read
       data  = YAML.load(data)
       @year = data["year"]
+      raise "Year mismatch between command-line and data" unless @year.to_s == calyear
       @points_for_place, @points_for_participation = _process_points(data["points"])
       @sections = _process_sections(data["sections"])
       @schools_by_abbreviation, @schools_by_name = _process_schools(data["schools"])
