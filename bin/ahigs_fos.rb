@@ -26,9 +26,7 @@ module AhigsFos
     private
     def get_calendar_year(args)
       if args.first and args.first =~ /\d\d\d\d/
-        calyear = args.shift
-        puts "Calendar year set to #{calyear}"
-        calyear
+        args.shift
       else
         Time.now.year.to_s
       end
