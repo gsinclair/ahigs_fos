@@ -1,0 +1,187 @@
+# Sample debating report, to get the idea of how it might be presented.  Using
+# the results in "debating-results-sample-2.yaml" for this report.
+
+================== L E A D E R B O A R D =================
+
+  Frensham      (3,2,2,3,5,5 -> 20)
+  Normanhurst   (3,2,2,3,5 -> 15)
+  PLCS          (3,2,2,3 -> 10)
+  Tara          (3,2,2,3 -> 10)
+  Kambala       (3,2,2 -> 7)
+  Santa         (3,2,2 -> 7)
+  StCatherines  (3,2,2 -> 7)
+  Abbotsleigh   (3,2 -> 5)
+  Armidale      (3,0,2 -> 5)
+  Ascham        (3,2 -> 5)
+  Brigidine     (3,0,2 -> 5)
+  Kincoppal     (3,2 -> 5)
+  MLC           (3,0,2 -> 5)
+  Meriden       (3,0,2 -> 5)
+  Monte         (3,2 -> 5)
+  Queenwood     (3,0,2 -> 5)   [Bye]
+  SCEGGS        (3,2 -> 5)
+  StClares      (3,0,2 -> 5)
+  Tangara       (3,0,2 -> 5)
+  Wenona        (3,2 -> 5)
+  Calrossy      (3)
+  Danebank      (3)
+  Kirribilli    (3)
+  Pymble        (3)
+  Roseville     (3)
+  StVincents    (3)
+
+
+=====================  S U M M A R Y  ====================
+
+  School          R1  R2A  R2B  QF   SF   GF     Points
+
+  Abbotsleigh     1    -                              10
+  Armidale        -         2B                        10
+  Ascham          1    -                              10
+  Brigidine       -         2B                        10
+  Calrossy        -         -                          5
+    
+  Danebank        -         -                          5
+  Frensham        1    2A        Q    S   GF          30
+  Kambala         1    2A        -                    15
+  Kincoppal       1    -                              10
+  Kirribilli      -         -                          5
+
+  MLC             -         2B                        10
+  Meriden         -         2B                        10
+  Monte           1    -                              10
+  Normanhurst     1    2A        Q    S   --          25
+  OLMC (dnp)                                           0
+
+  NEGS (dnp)                                           0
+  PLCS            1    2A        Q    -               20
+  Pymble          -         -                          5
+  Queenwood       -        Bye                        10   points for bye?
+  Ravenswood (dnp)                                     0
+
+  Roseville       -         -                          5
+  SCEGGS          1    -                              10
+  Santa           1    2A        -                    15
+  StCatherines    1    2A        -                    15
+  StClares        -         2B                        10
+
+  StVincents      -         -                          5
+  Tangara         -         2B   -*                   10
+  Tara            1    2A        Q    -               20
+  Wenona          1    -                              10
+
+
+======================  R O U N D S  =====================
+
+Participants (3pts):
+
+  Abbotsleigh   (3)             PLCS          (3)
+  Armidale      (3)             Pymble        (3)
+  Ascham        (3)             Queenwood     (3)
+  Brigidine     (3)             Roseville     (3)
+  Calrossy      (3)             SCEGGS        (3)
+  Danebank      (3)             Santa         (3)
+  Frensham      (3)             StCatherines  (3)
+  Kambala       (3)             StClares      (3)
+  Kincoppal     (3)             StVincents    (3)
+  Kirribilli    (3)             Tangara       (3)
+  MLC           (3)             Tara          (3)
+  Meriden       (3)             Wenona        (3)
+  Normanhurst   (3)
+
+Round 1 (2pts):
+
+  Abbotsleigh   (3,2 -> 5)
+  Ascham        (3,2 -> 5)
+  Frensham      (3,2 -> 5)
+  Kambala       (3,2 -> 5)
+  Kincoppal     (3,2 -> 5)
+  Monte         (3,2 -> 5)
+  Normanhurst   (3,2 -> 5)
+  PLCS          (3,2 -> 5)
+  SCEGGS        (3,2 -> 5)
+  Santa         (3,2 -> 5)
+  StCatherines  (3,2 -> 5)
+  Tara          (3,2 -> 5)
+  Wenona        (3,2 -> 5)
+
+Round 2A (2pts):
+
+  Frensham      (3,2,2 -> 7)
+  Kambala       (3,2,2 -> 7)
+  Normanhurst   (3,2,2 -> 7)
+  PLCS          (3,2,2 -> 7)
+  Santa         (3,2,2 -> 7)
+  StCatherines  (3,2,2 -> 7)
+  Tara          (3,2,2 -> 7)
+
+Round 2B (2pts):
+
+  Armidale      (3,0,2 -> 5)
+  Brigidine     (3,0,2 -> 5)
+  MLC           (3,0,2 -> 5)
+  Meriden       (3,0,2 -> 5)
+  Queenwood     (3,0,2 -> 5)   [Bye]
+  StClares      (3,0,2 -> 5)
+  Tangara       (3,0,2 -> 5)
+
+Quarter final (3pts):
+
+  Frensham      (3,2,2,3 -> 10)
+  Normanhurst   (3,2,2,3 -> 10)
+  PLCS          (3,2,2,3 -> 10)
+  Tara          (3,2,2,3 -> 10)
+
+Semi final (5pts):
+
+  Frensham      (3,2,2,3,5 -> 15)
+  Normanhurst   (3,2,2,3,5 -> 15)
+
+Grand final (5pts):
+
+  Frensham      (3,2,2,3,5,5 -> 20)
+
+
+===================== S C H O O L S ======================
+ 
+Abbotsleigh (10)
+  1:  Abbotsleigh def StClares
+  2A: Tara        def Abbotsleigh
+
+Armidale (10)
+  1:  PLCS        def Armidale
+  2B: Armidale    def Calrossy
+
+Ascham (10)
+  1:  Ascham      def Kirribilli
+  2A: Normanhurst def Ascham
+
+Brigidine (10)
+  1:  Normanhurst def Brigidine
+  2B: Brigidine   def Kirribilli
+
+Calrossy (5)
+  1:  Wenona      def Calrossy
+  2B: Armidale    def Calrossy
+
+Danebank (5)
+  1:  Monte       def Danebank
+  2B: MLC         def Danebank
+
+Frensham (30)
+  1:  Frensham    def MLC
+  2A: Frensham    def Monte
+  QF: Frensham    def Tangara
+  SF: Frensham    def Tara
+  GF: Frensham    def Normanhurst
+
+# ...
+
+OLMC (0)
+  Did not participate
+
+# ...
+
+Wenona (10)
+  1:  Wenona      def Calrossy
+  2A: PLCS        def Wenona

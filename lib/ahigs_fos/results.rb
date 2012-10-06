@@ -191,6 +191,15 @@ module AhigsFos
     def top_five_schools(division, &block)
       @leaderboards[division].top_schools(5, &block)
     end
+    # Yields: school, junior, senior, total
+    def all_schools_by_total_desc
+      @leaderboards[:all].schools(1).each do |sch|
+        jnr   = points_for_school(sch, :junior)
+        snr   = points_for_school(sch, :senior)
+        tot   = jnr + snr
+        yield sch, jnr, snr, tot
+      end
+    end
     private
     def _process_results(festival_info)
       path = @festival_info.dirs.current_year_data_directory + "results.yaml"

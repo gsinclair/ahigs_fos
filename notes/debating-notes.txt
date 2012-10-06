@@ -1,0 +1,86 @@
+To process debating results, we need to keep track of each round: the
+participants, who debated whom, and of course the results.  Complicating
+factors: byes, a wildcard entry into the quarter final, and an unpredictable
+number of participants.
+
+class DebatingConfig
+  # Knows what rounds there are and how many schools can be in each round.
+  # Knows the conditions for being in a round.  For instance:
+  conditions = {
+    R1: "<= 28",
+    R2A: "<=14; won R1",
+    R2A: "<=14; lost R1",
+    QF: "=8; won R2A or wildcard",
+    SF: "=4; won QF",
+    GF: "=2; won SF"
+  }
+end
+
+class DebatingResults
+  # Analogous to class Results, which aggregates results from each section
+  # (instances of class SectionResult) and provides the Report classes with the
+  # information they need.
+
+  # Responsibilities:
+  #  * read the YAML file
+  #  * raise an error if there are any logical flaws in the file
+       (e.g. a nonparticipating school in the results; a loser in QF appearing
+       in SF, etc.)
+  #  * organise the data into logical objects
+
+  # Capabilities of this class:
+  #  * list the schools who participated or did not participate
+  #  * list the results for a given round (in what form?)
+  #  * list the debating results for a school
+  #    e.g. results_for_school("Tara")
+  #         -> { '1' => DebatingResult, '2A' => DebatingResult, '2B' => :na,
+  #              'QF' => DebatingResult, 'SF' => :na, 'GF' => :na }
+  #    e.g. results_for_school("Wenona")
+  #         -> { '1' => :dnp, '2A' => :na, '2B' => :na, ... }
+  #    e.g. results_for_school("StClares")
+  #         -> { '1' => DebatingResult, '2A' => :no_information, ... }
+  #  * points_for_school(school)
+
+  # Collaborations:
+  #  * a collection of DebatingRound objects: { '1' => ..., '2A' => ..., etc. }
+  #    * may be incomplete; must handle that gracefully
+end
+
+class DebatingResult
+  # Records a single result: round, winner, loser.
+  # Loser could be a bye.
+  # One of the entrants could be a wildcard, although I'm going to assume that
+  # can be handled globally.
+  # Methods: participants, winner, loser, round
+             won?(school), lost?(school)
+end
+
+class DebatingRound
+  # Each round (1, 2A, 2B, QF, SF, GF) is an instance of this class.
+  # A round contains a collection of DebatingResult objects.
+  # A round knows if there is a wildcard entry.
+  # A round knows who the participants are (in advance, so it can detect
+  # erroneous result data).
+end
+
+
+
+Results and reports
+-------------------
+
+The code in report.rb has lines like
+
+      results = @results.for_section(section)
+
+I think Debating has to be treated just like another section (well, two
+sections: junior and senior), with a subclass that provides all the necessary
+methods (total_points, points_for_school, etc.). So the festival_info file can
+simply list Junior->Debating and Senior->Debating as sections, and the
+construction code will look out for them and create the appropriate objects.
+
+The results should be kept in files debating_junior.yaml and
+debating_senior_yaml.
+
+The reporting could be quite extensive, or perhaps I can limit it to the table
+and the schools.  Or maybe it's better off with separate files for junior
+debating and senior debating.

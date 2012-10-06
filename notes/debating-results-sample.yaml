@@ -1,0 +1,69 @@
+# For 2013, I will need to record Debating.  This is a multi-round competition,
+# so needs its own way of recording the results, almost certainly in a separate
+# file from the other sections.  This is an idea of what it could look like.
+# There is no need to identify "debating" in the contents of the file; it would
+# have a special filename.
+
+Nonparticipants:
+ - NEGS
+ - OLMC
+ - Ravenswood
+
+# 26 teams -> 13 winners, 13 losers
+# I don't know what would happen if there were an odd number of teams. It seems
+# unfair to hand 5 points to a random team for a bye, and it seems unfair NOT to
+# give them points, too. So I'm assuming an even number of teams at the moment.
+# Also, the guidelines say 28 teams start.  What if there are 29 or 30 teams
+# participating?
+Round1:   
+ - "PLCS         def Armidale"
+ - "Wenona       def Calrossy"
+ - "Monte        def Danebank"
+ - "Frensham     def MLC"
+ - "StCatherines def StVincents"
+ - "Kincoppal    def Tangara"
+ - "Abbotsleigh  def StClares"
+ - "Tara         def Pymble"
+ - "Ascham       def Kirribilli"
+ - "Normanhurst  def Brigidine"
+ - "Kambala      def Meriden"
+ - "SCEGGS       def Roseville"
+ - "Santa        def Queenwood"
+
+Round2A:
+ - "PLCS         def Wenona"
+ - "Frensham     def Monte"
+ - "StCatherines def Kincoppal"
+ - "Tara         def Abbotsleigh"
+ - "Normanhurst  def Ascham"
+ - "Kambala      def SCEGGS"
+ - "Santa        def (BYE)"
+
+Round2B:
+ - "Armidale     def Calrossy"
+ - "MLC          def Danebank"
+ - "Tangara      def StVincents"
+ - "StClares     def Pymble"
+ - "Brigidine    def Kirribilli"
+ - "Meriden      def Roseville"
+ - "Queenwood    def (BYE)"
+
+# If the above actually happened, Santa should compete against Queenwood in
+# Round 2A (or 2B, or perhaps it doesn't matter) instead of both schools getting
+# a bye.
+
+QuarterFinals:
+  Participants: "PLCS Frensham StCatherines Tara Normanhurst Kambala Santa"
+  Wildcard: "Tangara"
+  Results:
+   - "Normanhurst   def Santa"
+   - "PLCS          def StCatherines"
+   - "Tara          def Kambala"
+   - "Frensham      def Tangara"
+
+SemiFinals:
+ - "Normanhurst def PLCS"
+ - "Frensham    def Tara"
+
+GrandFinal:
+ - "Frensham    def Normanhurst"

@@ -143,14 +143,19 @@ module AhigsFos
     def table
       header = _fmt_school_label("") + "Junior    Senior    Total"
       pr header.indent(2)
-      @festival_info.schools_list.each do |sch|
+      @results.all_schools_by_total_desc do |sch, jnr, snr, tot|
         label = sch.abbreviation
-        jnr   = @results.points_for_school(sch, :junior)
-        snr   = @results.points_for_school(sch, :senior)
-        tot   = jnr + snr
         line  = _fmt_school_label(label) + _fmt_table(jnr, snr, tot)
         pr line.indent(2)
       end
+      # @festival_info.schools_list.each do |sch|
+      #   label = sch.abbreviation
+      #   jnr   = @results.points_for_school(sch, :junior)
+      #   snr   = @results.points_for_school(sch, :senior)
+      #   tot   = jnr + snr
+      #   line  = _fmt_school_label(label) + _fmt_table(jnr, snr, tot)
+      #   pr line.indent(2)
+      # end
     end
     def _fmt_table(jnr, snr, tot)
       jnr, snr, tot = [jnr,snr,tot].map { |n| n.zero? && '-' || n }
