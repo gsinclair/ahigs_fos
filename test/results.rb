@@ -1,6 +1,6 @@
 
 D "Results (building blocks)" do
-  @f = FestivalInfo.new(AhigsFosTest::DIRECTORIES_YAML)
+  @f = FestivalInfo.new(AhigsFosTest::DIRECTORIES_YAML, "2012")
   D "Places" do
     D "Regular test (places 1-5 awarded)" do
       string = "1. Frensham 2. Danebank  3. PLCS    4.  Kirribilli  5.  Normanhurst"
@@ -195,7 +195,7 @@ end  # D "Results (building blocks)"
 D "Results" do
 
   D "SectionResult" do
-    @f = FestivalInfo.new(AhigsFosTest::DIRECTORIES_YAML)
+    @f = FestivalInfo.new(AhigsFosTest::DIRECTORIES_YAML, "2012")
 
     D "Broad test of a specific instance" do
       @places = Places.new("1. Frensham 2. Danebank 3. PLCS 4. Kirribilli 5. Normanhurst", @f)

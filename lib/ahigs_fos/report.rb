@@ -45,7 +45,7 @@ module AhigsFos
   # ====================================================================== #
 
   class Report::Report
-    WRITE_TO_FILE = false
+    WRITE_TO_FILE = true
     def write
       if @out.nil?
         puts "@out is nil!"
@@ -62,12 +62,13 @@ module AhigsFos
       nl
       pr footer
       directory = @festival_info.dirs.current_year_reports_directory
-      timestamp = Time.now.to_i
+      timestamp = Time.now.strftime("%Y-%m%d-%H%M%S")
       path = directory + "#{timestamp}.txt"
       if WRITE_TO_FILE
         path.open('w') do |f|
           f.puts @out.string
         end
+        write_html_file(directory, timestamp)
         STDERR.puts "Wrote file: #{path}"
       end
     end
@@ -77,6 +78,23 @@ module AhigsFos
     def sections() Report::Sections.new(@results, @festival_info).report end
     def schools()   Report::Schools.new(@results, @festival_info).report end
     def footer()     Report::Footer.new(@results, @festival_info).report end
+    private
+    def write_html_file(directory, timestamp)
+      files = directory.children.select { |p| p.to_s =~ /\.txt$/ }.
+              sort_by { |p| p.to_s }.reverse
+      require 'builder'
+      b = Builder::XmlMarkup.new(indent: 2)
+      html = b.html {
+        b.head { b.title "AHIGS Festival of Speech results (#{timestamp})" }
+        b.body {
+          files.each do |file|
+            b.p { b.a( { href: file.basename }, file.basename ) }
+          end
+        }
+      }
+      path = directory + "ahigs.html"
+      path.open('wt') { |f| f.write html }
+    end
   end  # class Report::Report
 
   # ====================================================================== #

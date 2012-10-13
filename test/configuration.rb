@@ -19,13 +19,13 @@ D "Configuration" do
   end
 
   D "Directories" do
-    @d = Directories.new(AhigsFosTest::DIRECTORIES_YAML)
+    @d = Directories.new(AhigsFosTest::DIRECTORIES_YAML, "2012")
     Eq @d.current_year_data_directory, Pathname.new("test/_data/data/2012")
     Eq @d.current_year_reports_directory, Pathname.new("test/_data/reports/2012")
   end
 
   D "FestivalInfo" do
-    @f = FestivalInfo.new(AhigsFosTest::DIRECTORIES_YAML)
+    @f = FestivalInfo.new(AhigsFosTest::DIRECTORIES_YAML, "2012")
     D "knows what year it is configured for" do
       Eq @f.year, 2012
     end
