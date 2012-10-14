@@ -213,7 +213,7 @@ module AhigsFos
     end
     # Yields: position (1-5), SchoolResult
     def top_five_schools(division, &block)
-      leaderboard(division).top_schools(5, &block)
+      leaderboard(division).top_schools(20, &block)
     end
     # Yields: school, junior, senior, total
     def all_schools_by_total_desc
@@ -385,13 +385,13 @@ module AhigsFos
       end
     end
     def full_participant?
-      n_entered = @results.count { |r| r.participated? }
+      n_entered = @results.values.count { |r| r.participated? }
       ca, req = "Current Affairs", "Religious and Ethical Questions"
       n_entered >= 5 and [ca, req].any? { |sec| @results[sec].participated? }
     end
     def eligible?(division)
       results = results_for_division(division)
-      n_entered = results.count { |r| r.participated? }
+      n_entered = results.values.count { |r| r.participated? }
       # todo -- configure this in festival_info.yaml
       case division
       when :junior

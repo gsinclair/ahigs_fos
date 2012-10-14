@@ -199,7 +199,7 @@ module AhigsFos
       @results.top_five_schools(division) do |pos, school_result|
         sr = school_result
         line = _fmt_jnr_sen_tot( pos, sr.school.abbreviation, sr.score(division),
-                                 sr.point_list(division) )
+                                 sr.eligible?(division), sr.point_list(division) )
         pr line.indent(4)
       end
     end
@@ -207,9 +207,13 @@ module AhigsFos
       width = @festival_info.max_abbreviation_length + 3
       label.ljust(width)
     end
-    def _fmt_jnr_sen_tot(position, schoolname, score, results)
+    def _fmt_jnr_sen_tot(position, schoolname, score, eligible, results)
+      position_str = position.to_s.rjust(2)
       score_str = score.to_s.rjust(6) + " points"
-      "#{position}. #{_fmt_school_label(schoolname)} #{score_str}   #{results.inspect}"
+      eligible_str = eligible ? '[e]' : '[ ]'
+      results_str = results.inspect.gsub(' ', '')
+      "#{position_str}. #{_fmt_school_label(schoolname)} #{score_str}" +
+        "     #{eligible_str}    #{results_str}"
     end
   end  # class Report::Summary
 
@@ -285,6 +289,14 @@ module AhigsFos
       jnr  = @results.points_for_school(school, :junior)
       snr  = @results.points_for_school(school, :senior)
       tot  = jnr + snr
+      # todo -- indicate whether the school is a full participant [fp]
+      #         or an observer [ob]
+      #      -- need to use SchoolResults for this, but we could use
+      #         SchoolResults for obtaining the points as well:
+      #
+      #           sr = @results.school(school)
+      #           jnr, snr, tot = sr.points(:junior, :senior, :total)
+      #           status = sr.full_participant? ? '[fp]' : '[ob]'
       line << _fmt_points(jnr, snr, tot)
       line
     end
