@@ -155,11 +155,28 @@ module AhigsFos
   end  # class Participants
 
 
+  # The result that a school achieved in one section.
+  # Contains the outcome (1,2,3,4,5,:p,:dnp) and the points (e.g. 30,25,...,5,0).
+  class Result
+    attr_reader :outcome, :points
+    def initialize(outcome, points)
+      @outcome, @points = outcome, points
+    end
+    def participated?
+      outcome == :p or Integer === outcome
+    end
+  end
+
+
   class Results
     def initialize(festival_info)
       @festival_info = festival_info
-      @section_results = _process_results(festival_info)
-      @leaderboards = _generate_leaderboards
+      @section_results = _process_section_results(festival_info)
+        # -> { "Readings (Junior)" => SectionResult,
+        #      "Current Affairs" => SectionResult, ... }
+      @school_results = _process_school_results(festival_info, @section_results)
+        # -> { "Ascham" => SchoolResults, "Monte" => SchoolResults, ... }
+      debug "Results object created"
     end
     def inspect
       out = StringIO.new
@@ -177,58 +194,75 @@ module AhigsFos
         Err.invalid_section(str)
       end
     end
-    def points_for_school(school, division)
+    # -> [15,0,5,10,5,5,5]
+    # todo -- maybe can this; we have SchoolResults and FestivalAwardsLeaderboard
+    def results_for_school(school, division)
       section_results(division).map { |sec|
         sec && sec.points_for_school(school) || 0
-      }.sum
+      }
+    end
+    # -> 45
+    # todo -- maybe can this; we have SchoolResults and FestivalAwardsLeaderboard
+    def points_for_school(school, division)
+      results_for_school(school, division).sum
     end
     def section_results(division)
       @festival_info.sections(division).map { |sec|
         @section_results[sec]
       }
     end
-    # Yields: position (1-5), school (School), points (int).
+    # Yields: position (1-5), SchoolResult
     def top_five_schools(division, &block)
-      @leaderboards[division].top_schools(5, &block)
+      leaderboard(division).top_schools(5, &block)
     end
     # Yields: school, junior, senior, total
     def all_schools_by_total_desc
-      @leaderboards[:all].schools(1).each do |sch|
+      leaderboard(:all).schools(1).each do |sch|
         jnr   = points_for_school(sch, :junior)
         snr   = points_for_school(sch, :senior)
         tot   = jnr + snr
         yield sch, jnr, snr, tot
       end
     end
+    def leaderboard(division)
+      FestivalAwardsLeaderboard.new(division, @school_results.values)
+    end
     private
-    def _process_results(festival_info)
+    def _process_section_results(festival_info)
       path = @festival_info.dirs.current_year_data_directory + "results.yaml"
       data = YAML.load(path.read)
       _validate_data(data)
-      results = {}
+      section_results = {}
       data.each do |hash|
         section = hash["Section"]
         err "Invalid section: #{section}" unless festival_info.section?(section)
         places_str = hash["Places"]
-        unless String === places_str and places_str["1."]
-          err "Invalid places string: #{places_str}"
-        end
-        places = Places.new(places_str, festival_info)
-        p, nonp = hash.values_at("Participants", "Nonparticipants")
-        participants = Participants.new(p, nonp, places, festival_info)
-        results[section] = SectionResult.new(section, places, participants, festival_info)
+        section_results[section] =
+          if String === places_str and places_str["1."]
+            places = Places.new(places_str, festival_info)
+            p, nonp = hash.values_at("Participants", "Nonparticipants")
+            participants = Participants.new(p, nonp, places, festival_info)
+            SectionResult.new(section, places, participants, festival_info)
+          elsif String === places_str and places_str.empty?
+            nil
+          else
+            err "Invalid places string: #{places_str}"
+          end
       end
-      results
+      section_results
     end
-    def _generate_leaderboards
-      leaderboards = {}
-      [:junior, :senior, :all].each do |division|
-        results = @festival_info.schools_list.map { |school|
-          [school, points_for_school(school, division)]
-        }
-        leaderboards[division] = SchoolLeaderboard.new(division, results)
+    # note: this method will error out at line * if any section doesn't have
+    # results
+    def _process_school_results(festival_info, section_results)
+      school_results = {}
+      festival_info.schools_set.each do |school|
+        results = {}
+        section_results.each do |name, sr|
+          results[name] = sr.result_for_school(school)   # (*)
+        end
+        school_results[school] = SchoolResults.new(festival_info, school, results)
       end
-      leaderboards
+      school_results
     end
     # 'data' is expected to be an array of hashes, each of which contains
     # keys "Sections", "Places", and optionally "Participants" or
@@ -275,16 +309,16 @@ module AhigsFos
     def result_for_school(school)
       @festival_info.check_school(school)
       if place = @places.place(school)
-        [place, @festival_info.points_for_place(place)]
+        Result.new(place, @festival_info.points_for_place(place))
       elsif @participants.include?(school)
-        [:p, @festival_info.points_for_participation]
+        Result.new(:p, @festival_info.points_for_participation)
       else
-        [:dnp, 0]
+        Result.new(:dnp, 0)
       end
     end
     # Return just the number of points the school got in this section.
     def points_for_school(school)
-      result_for_school(school).last
+      result_for_school(school).points
     end
     # Total points awarded in this section.
     def total_points
@@ -323,26 +357,92 @@ module AhigsFos
     end
   end  # class SectionResult
 
-  
-  class SchoolLeaderboard
-    # division: junior, senior, all
-    # results: array of [school, points].
-    def initialize(division, results)
-      @division = division
-      @results = results.sort_by { |sch, pts| [-pts, sch.abbreviation.downcase] }
+
+  # This class aggregates all the results for a given school. This is the place
+  # to determine whether a school is a full participant of the festival, whether
+  # it is eligible for each award, and its point score for each of the awards.
+  #
+  # For example:
+  #   s = SchoolResults.new(<Monte>, { "Current Affairs" => Result,
+  #                                    "Readings (Junior) => Result, ... })
+  class SchoolResults
+    attr_reader :school
+    def initialize(festival_info, school, results_hash)
+      @festival_info = festival_info
+      @school, @results = school, results_hash
     end
-    # Yields: position (1-n), school (School), points (int).
+    def result_for_section(section)
+      @results[section]
+    end
+    # division: junior, senior, all
+    # returns: hash (subset of the @results hash)
+    def results_for_division(division)
+      if division == :all
+        @results
+      else
+        sections = @festival_info.sections(division)
+        @results.select { |section, result| sections.include? section }
+      end
+    end
+    def full_participant?
+      n_entered = @results.count { |r| r.participated? }
+      ca, req = "Current Affairs", "Religious and Ethical Questions"
+      n_entered >= 5 and [ca, req].any? { |sec| @results[sec].participated? }
+    end
+    def eligible?(division)
+      results = results_for_division(division)
+      n_entered = results.count { |r| r.participated? }
+      # todo -- configure this in festival_info.yaml
+      case division
+      when :junior
+        n_entered == 3
+      when :senior
+        n_entered >= 4
+      when :all
+        full_participant?
+      end
+    end
+    # The score for a festival award in a certain division is the sum of the best N
+    # results, where N varies by division.  We do not consider eligibility here; we just
+    # add up the scores.  Eligibility is for others to consider.
+    def score(division)
+      # todo -- configure this in festival_info.yaml
+      n = case division
+          when :junior then 3
+          when :senior then 3
+          when :all then @results.size
+          end
+      point_list(division).sort.reverse.take(n).sum
+    end
+    def point_list(division)
+      results_for_division(division).values.map { |r| r.points }
+    end
+  end  # class SchoolResults
+
+  
+  # This class contains the results for all schools in a single division
+  # (junior, senior, all).
+  class FestivalAwardsLeaderboard
+    # division: junior, senior or all (symbol)
+    # school_results: [ SchoolResult ]
+    def initialize(division, school_results)
+      @division = division
+      @leaderboard = school_results.sort_by { |r|
+        [ -r.score(division), r.school.abbreviation.downcase ]
+      }
+    end
+    # Yields: position (1-n), SchoolResult object
     def top_schools(n)
-      # todo: handle ties
-      @results[0...n].each.with_index do |(school, points), idx|
-        yield [idx+1, school, points]
+      @leaderboard.take(n).each.with_index do |schoolresult, idx|
+        yield [idx+1, schoolresult]
       end
     end
     # Returns a list of schools starting at the given position.
     # E.g. schools(6) -> [school_in_position_6, school_in_position_7, ...]
     def schools(starting_position)
-      (@results[starting_position-1..-1] || []).map { |school, _| school }
+      (@leaderboard.drop(starting_position-1) || []).map { |sr| sr.school }
     end
+    private
   end  # class SchoolLeaderboard
 
 end  # module AhigsFos

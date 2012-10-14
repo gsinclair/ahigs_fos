@@ -59,3 +59,9 @@ points:
   5: 10
   participation: 5
 
+full_participant: "must enter 5; must enter CA or REQ"
+
+awards:
+  junior:  "must enter 3; count best 3"
+  senior:  "must enter 4; count best 3"
+  overall: "full participant; count all"

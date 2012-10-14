@@ -63,11 +63,13 @@ module AhigsFos
       pr footer
       directory = @festival_info.dirs.current_year_reports_directory
       timestamp = Time.now.strftime("%Y-%m%d-%H%M%S")
-      path = directory + "#{timestamp}.txt"
       if WRITE_TO_FILE
+        path = directory + "#{timestamp}.txt"
         path.open('w') do |f|
           f.puts @out.string
         end
+        latest = directory + "latest.txt"
+        latest.open('w') do |f| f.puts @out.string end
         write_html_file(directory, timestamp)
         STDERR.puts "Wrote file: #{path}"
       end
@@ -194,8 +196,10 @@ module AhigsFos
       _top_five_schools(:all)
     end
     def _top_five_schools(division)
-      @results.top_five_schools(division) do |pos, school, points|
-        line = _fmt_jnr_sen_tot(pos, school.abbreviation, points)
+      @results.top_five_schools(division) do |pos, school_result|
+        sr = school_result
+        line = _fmt_jnr_sen_tot( pos, sr.school.abbreviation, sr.score(division),
+                                 sr.point_list(division) )
         pr line.indent(4)
       end
     end
@@ -203,9 +207,9 @@ module AhigsFos
       width = @festival_info.max_abbreviation_length + 3
       label.ljust(width)
     end
-    def _fmt_jnr_sen_tot(position, schoolname, points)
-      points_str = points.to_s.rjust(6) + " points"
-      "#{position}. #{_fmt_school_label(schoolname)} #{points_str}"
+    def _fmt_jnr_sen_tot(position, schoolname, score, results)
+      score_str = score.to_s.rjust(6) + " points"
+      "#{position}. #{_fmt_school_label(schoolname)} #{score_str}   #{results.inspect}"
     end
   end  # class Report::Summary
 
@@ -296,8 +300,8 @@ module AhigsFos
         if section_result.nil?
           line << " -        [not yet available]"
         else
-          result, points = section_result.result_for_school(school)
-          line << _fmt_results(result, points)
+          result = section_result.result_for_school(school)
+          line << _fmt_results(result)
         end
         out.puts line.indent(2)
       end
@@ -320,15 +324,16 @@ module AhigsFos
         end
       section.ljust(23)
     end
-    def _fmt_results(result, points)
+    def _fmt_results(result)
+      outcome = result.outcome
       desc =
-        case result
-        when Integer then "#{_ordinal(result)} place"
-        when Symbol  then "#{result}"
+        case result.outcome
+        when Integer then "#{_ordinal(outcome)} place"
+        when Symbol  then "#{outcome}"
         else
-          Err.invalid_section_result(result)
+          Err.invalid_section_result(outcome)
         end
-      "#{points.to_s.rjust(2)} points (#{desc})"
+      "#{result.points.to_s.rjust(2)} points (#{desc})"
     end
     def _ordinal(n)
       case n
