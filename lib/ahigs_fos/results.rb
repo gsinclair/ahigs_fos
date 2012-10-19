@@ -251,14 +251,17 @@ module AhigsFos
       end
       section_results
     end
-    # note: this method will error out at line * if any section doesn't have
-    # results
     def _process_school_results(festival_info, section_results)
       school_results = {}
       festival_info.schools_set.each do |school|
         results = {}
         section_results.each do |name, sr|
-          results[name] = sr.result_for_school(school)   # (*)
+          results[name] =
+            if sr.nil?
+              nil
+            else
+              sr.result_for_school(school)
+            end
         end
         school_results[school] = SchoolResults.new(festival_info, school, results)
       end
@@ -385,13 +388,15 @@ module AhigsFos
       end
     end
     def full_participant?
-      n_entered = @results.values.count { |r| r.participated? }
+      n_entered = @results.values.count { |r| r && r.participated? }
       ca, req = "Current Affairs", "Religious and Ethical Questions"
-      n_entered >= 5 and [ca, req].any? { |sec| @results[sec].participated? }
+      n_entered >= 5 and [ca, req].any? { |sec|
+        (r = @results[sec]) && r.participated?
+      }
     end
     def eligible?(division)
       results = results_for_division(division)
-      n_entered = results.values.count { |r| r.participated? }
+      n_entered = results.values.count { |r| r && r.participated? }
       # todo -- configure this in festival_info.yaml
       case division
       when :junior
@@ -415,7 +420,7 @@ module AhigsFos
       point_list(division).sort.reverse.take(n).sum
     end
     def point_list(division)
-      results_for_division(division).values.map { |r| r.points }
+      results_for_division(division).values.map { |r| r && r.points || 0 }
     end
   end  # class SchoolResults
 
