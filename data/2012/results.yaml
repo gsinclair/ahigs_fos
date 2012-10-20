@@ -1,55 +1,97 @@
 # Results for the Festival of Speech 2012
 #  - no Debating this year
-#  - nonparticipants taken from "section participation.xlsx" dated 6 Sep 2012
+#  - nonparticipants taken from "Entries v4.xlsx" dated 19 Oct 2012
 
-- Section: Poetry (Junior)
-  Places: ""
-  Nonparticipants:
-   - OLMC
-   - StClares
+# Schools 2012:
+# - Abbotsleigh
+# - Ascham
+# - Brigidine
+# - Calrossy
+# - Canberra (Canberra Girls Grammar)
+# - Danebank
+# - Frensham
+# - Kambala
+# - Kincoppal (Kincoppal Rose Bay)
+# - Kirribilli (Loreto Kirribilli)
+# - Normanhurst (Loreto Normanhurst)
+# - Meriden
+# - MLC (MLC Sydney)
+# - Monte (Monte Sant' Angelo)
+# - OLMC (Our Lady of Mercy College)
+# - PLCS (PLC Sydney)
+# - Pymble (Pymble Ladies College)
+# - Queenwood
+# - Ravenswood
+# - Roseville (Roseville College)
+# - Santa (Santa Sabina College)
+# - SCEGGS (SCEGGS Darlinghurst)
+# - StCatherines (St Catherine's)
+# - StClares (St Clare's)
+# - StVincents (St Vincent's)
+# - Tangara
+# - Tara
+# - Wenona
+
+# ------------------ J u n i o r ----------------------------------- #
 
 - Section: Reading (Junior)
-  Places: ""
+  Places: "1. Santa  2. PLCS  3. Calrossy  4. SCEGGS  5. Abbotsleigh"
   Nonparticipants:
    - Ascham
+   - OLMC
+   - Roseville
+   - StClares
+   - StVincents
+
+- Section: Poetry (Junior)
+  Places: "1. Queenwood  2. Monte  3. Brigidine  4. Ravenswood  5. Calrossy"
+  Nonparticipants:
    - OLMC
    - StClares
 
 - Section: Public Speaking (Junior)
-  Places: ""
+  Places: "1. PLCS  2. StCatherines  3. Monte  4. SCEGGS  5. Kirribilli"
   Nonparticipants: []
 
-- Section: Current Affairs
-  Places: ""
+# ------------------ S e n i o r ----------------------------------- #
+
+- Section: Reading (Senior) 
+  Places: "1. Brigidine  2. Monte  3. MLC  4. SCEGGS  5. PLCS"
   Nonparticipants:
+   - Ascham
+   - OLMC
+   - Roseville
+   - StClares
+
+- Section: Poetry (Senior)
+  Places: "1. Kirribilli  2. SCEGGS  3. Abbotsleigh  4. Ascham  5. Ravenswood"
+  Nonparticipants:
+   - MLC
+   - OLMC
+   - StClares
+
+- Section: Public Speaking (Senior)
+  Places: "1. Abbotsleigh  2. SCEGGS  3. PLCS  4. StVincents  5. Canberra"
+  Nonparticipants:
+   - Danebank
+   - StClares
+
+# ------------------ O t h e r ------------------------------------- #
+
+- Section: Current Affairs
+  Places: "1. Ravenswood  2. SCEGGS  3. MLC  4. Brigidine  5. Kirribilli"
+  Nonparticipants:
+   - Calrossy
    - Danebank
    - Kincoppal
    - OLMC
    - Queenwood
 
-- Section: Poetry (Senior)
-  Places: ""
-  Nonparticipants:
-   - OLMC
-   - StClares
-
-- Section: Reading (Senior) 
-  Places: ""
-  Nonparticipants:
-   - Ascham
-   - OLMC
-   - StClares
-
-- Section: Public Speaking (Senior)
-  Places: ""
-  Nonparticipants: []
-
 - Section: Religious and Ethical Questions
-  Places: ""
+  Places: "1. Normanhurst  2. PLCS  3. Canberra  4. Monte  5. Ravenswood"
   Nonparticipants:
    - Ascham
-   - Danebank
-   - Monte
+   - Calrossy
    - OLMC
    - Queenwood
    - StClares
