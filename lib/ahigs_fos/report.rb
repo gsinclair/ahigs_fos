@@ -251,6 +251,7 @@ module AhigsFos
       }.join(' ')
     end
     def _wrap(schools, limit)
+      return "(none)" if schools.empty?
       schools = schools.map { |sch| sch.abbreviation }.sort_by { |str| str.downcase }
       lines = []
       lines << schools.shift.dup
