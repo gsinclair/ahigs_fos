@@ -3,7 +3,7 @@ require 'yaml'
 require 'pathname'
 
 require 'debuglog'
-require 'pry'
+#require 'pry'
 
 require 'facets/string/indent'
 

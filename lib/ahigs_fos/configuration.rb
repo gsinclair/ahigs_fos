@@ -67,10 +67,6 @@ module AhigsFos
     def to_s
       "School[#{abbreviation}, #{name}]"
     end
-    def <=>(other)
-      self.abbreviation <=> other.abbreviation
-    end
-    include Comparable
   end  # class School
 
 

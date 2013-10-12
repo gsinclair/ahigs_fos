@@ -163,7 +163,7 @@ module AhigsFos
     def table
       header = _fmt_school_label("") + "Junior    Senior    Total"
       pr header.indent(2)
-      @results.all_schools_by_alpha do |sch, jnr, snr, tot|
+      @results.all_schools_by_total_desc do |sch, jnr, snr, tot|
         label = sch.abbreviation
         line  = _fmt_school_label(label) + _fmt_table(jnr, snr, tot)
         pr line.indent(2)
@@ -211,7 +211,7 @@ module AhigsFos
       position_str = position.to_s.rjust(2)
       score_str = score.to_s.rjust(6) + " points"
       eligible_str = eligible ? '[e]' : '[ ]'
-      results_str = results.sort.reverse.inspect.gsub(' ', '')
+      results_str = results.inspect.gsub(' ', '')
       "#{position_str}. #{_fmt_school_label(schoolname)} #{score_str}" +
         "     #{eligible_str}    #{results_str}"
     end
@@ -251,7 +251,9 @@ module AhigsFos
       }.join(' ')
     end
     def _wrap(schools, limit)
-      return "(none)" if schools.empty?
+      if schools.empty?
+        return ""
+      end
       schools = schools.map { |sch| sch.abbreviation }.sort_by { |str| str.downcase }
       lines = []
       lines << schools.shift.dup

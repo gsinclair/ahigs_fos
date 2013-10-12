@@ -213,21 +213,11 @@ module AhigsFos
     end
     # Yields: position (1-5), SchoolResult
     def top_five_schools(division, &block)
-      leaderboard(division).top_schools(-1, &block)
+      leaderboard(division).top_schools(20, &block)
     end
     # Yields: school, junior, senior, total
     def all_schools_by_total_desc
       leaderboard(:all).schools(1).each do |sch|
-        jnr   = points_for_school(sch, :junior)
-        snr   = points_for_school(sch, :senior)
-        tot   = jnr + snr
-        yield sch, jnr, snr, tot
-      end
-    end
-    # Yields: school, junior, senior, total
-    def all_schools_by_alpha
-      schools = @school_results.keys.sort
-      schools.each do |sch|
         jnr   = points_for_school(sch, :junior)
         snr   = points_for_school(sch, :senior)
         tot   = jnr + snr
@@ -378,10 +368,6 @@ module AhigsFos
   # For example:
   #   s = SchoolResults.new(<Monte>, { "Current Affairs" => Result,
   #                                    "Readings (Junior) => Result, ... })
-  #
-  # There is a conceptual conflict here. The class is called SchoolResults but
-  # the methods that return point scores specifically calculate results for
-  # festival awards, not generally.
   class SchoolResults
     attr_reader :school
     def initialize(festival_info, school, results_hash)
@@ -452,8 +438,7 @@ module AhigsFos
     end
     # Yields: position (1-n), SchoolResult object
     def top_schools(n)
-      list = (n > 0) ? @leaderboard.take(n) : @leaderboard
-      list.each.with_index do |schoolresult, idx|
+      @leaderboard.take(n).each.with_index do |schoolresult, idx|
         yield [idx+1, schoolresult]
       end
     end
