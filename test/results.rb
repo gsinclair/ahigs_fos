@@ -204,45 +204,45 @@ D "Results" do
       @sr = SectionResult.new("Current Affairs", @places, @participants, @f)
       D "'result_for_school' -> result (1..5,:p,:dnp) and points" do
         D "hardcoded outcomes" do
-          Eq @sr.result_for_school(School.new("Frensham", "Frensham")), [1, 30]
-          Eq @sr.result_for_school(School.new("Danebank", "Danebank")), [2, 25]
-          Eq @sr.result_for_school(School.new("PLCS", "PLC Sydney")), [3, 20]
-          Eq @sr.result_for_school(School.new("Kirribilli", "Loreto Kirribilli")), [4, 15]
-          Eq @sr.result_for_school(School.new("Normanhurst", "Loreto Normanhurst")), [5, 10]
-          Eq @sr.result_for_school(School.new("Queenwood", "Queenwood")), [:p, 5]
-          Eq @sr.result_for_school(School.new("Ravenswood", "Ravenswood")), [:p, 5]
-          Eq @sr.result_for_school(School.new("Meriden", "Meriden")), [:p, 5]
-          Eq @sr.result_for_school(School.new("OLMC", "Our Lady of Mercy College")), [:p, 5]
-          Eq @sr.result_for_school(School.new("Pymble", "Pymble Ladies College")), [:p, 5]
-          Eq @sr.result_for_school(School.new("Abbotsleigh", "Abbotsleigh")), [:dnp, 0]
-          Eq @sr.result_for_school(School.new("Ascham", "Ascham")), [:dnp, 0]
-          Eq @sr.result_for_school(School.new("Brigidine", "Brigidine")), [:dnp, 0]
-          Eq @sr.result_for_school(School.new("Calrossy", "Calrossy")), [:dnp, 0]
-          Eq @sr.result_for_school(School.new("Canberra", "Canberra Girls Grammar")), [:dnp, 0]
-          Eq @sr.result_for_school(School.new("Kambala", "Kambala")), [:dnp, 0]
-          Eq @sr.result_for_school(School.new("Kincoppal", "Kincoppal Rose Bay")), [:dnp, 0]
-          Eq @sr.result_for_school(School.new("MLC", "MLC Sydney")), [:dnp, 0]
-          Eq @sr.result_for_school(School.new("Monte", "Monte Sant' Angelo")), [:dnp, 0]
-          Eq @sr.result_for_school(School.new("Armidale", "PLC Armidale")), [:dnp, 0]
-          Eq @sr.result_for_school(School.new("Roseville", "Roseville College")), [:dnp, 0]
-          Eq @sr.result_for_school(School.new("Santa", "Santa Sabina College")), [:dnp, 0]
-          Eq @sr.result_for_school(School.new("SCEGGS", "SCEGGS Darlinghurst")), [:dnp, 0]
-          Eq @sr.result_for_school(School.new("StCatherines", "St Catherine's")), [:dnp, 0]
-          Eq @sr.result_for_school(School.new("StClares", "St Clare's")), [:dnp, 0]
-          Eq @sr.result_for_school(School.new("StVincents", "St Vincent's")), [:dnp, 0]
-          Eq @sr.result_for_school(School.new("Tangara", "Tangara")), [:dnp, 0]
-          Eq @sr.result_for_school(School.new("Tara", "Tara")), [:dnp, 0]
-          Eq @sr.result_for_school(School.new("Wenona", "Wenona")), [:dnp, 0]
+          Eq @sr.result_for_school(s.frensham).to_a, [1, 30]
+          Eq @sr.result_for_school(s.danebank).to_a, [2, 25]
+          Eq @sr.result_for_school(s.plcs).to_a, [3, 20]
+          Eq @sr.result_for_school(s.kirribilli).to_a, [4, 15]
+          Eq @sr.result_for_school(s.normanhurst).to_a, [5, 10]
+          Eq @sr.result_for_school(s.queenwood).to_a, [:p, 5]
+          Eq @sr.result_for_school(s.ravenswood).to_a, [:p, 5]
+          Eq @sr.result_for_school(s.meriden).to_a, [:p, 5]
+          Eq @sr.result_for_school(s.olmc).to_a, [:p, 5]
+          Eq @sr.result_for_school(s.pymble).to_a, [:p, 5]
+          Eq @sr.result_for_school(s.abbotsleigh).to_a, [:dnp, 0]
+          Eq @sr.result_for_school(s.ascham).to_a, [:dnp, 0]
+          Eq @sr.result_for_school(s.brigidine).to_a, [:dnp, 0]
+          Eq @sr.result_for_school(s.calrossy).to_a, [:dnp, 0]
+          Eq @sr.result_for_school(s.canberra).to_a, [:dnp, 0]
+          Eq @sr.result_for_school(s.kambala).to_a, [:dnp, 0]
+          Eq @sr.result_for_school(s.kincoppal).to_a, [:dnp, 0]
+          Eq @sr.result_for_school(s.mlc).to_a, [:dnp, 0]
+          Eq @sr.result_for_school(s.monte).to_a, [:dnp, 0]
+          Eq @sr.result_for_school(s.armidale).to_a, [:dnp, 0]
+          Eq @sr.result_for_school(s.roseville).to_a, [:dnp, 0]
+          Eq @sr.result_for_school(s.santa).to_a, [:dnp, 0]
+          Eq @sr.result_for_school(s.sceggs).to_a, [:dnp, 0]
+          Eq @sr.result_for_school(s.stcatherines).to_a, [:dnp, 0]
+          Eq @sr.result_for_school(s.stclares).to_a, [:dnp, 0]
+          Eq @sr.result_for_school(s.stvincents).to_a, [:dnp, 0]
+          Eq @sr.result_for_school(s.tangara).to_a, [:dnp, 0]
+          Eq @sr.result_for_school(s.tara).to_a, [:dnp, 0]
+          Eq @sr.result_for_school(s.wenona).to_a, [:dnp, 0]
         end
         D "programmatic outcomes (check consistency with places and participants)" do
           @places.each_place do |pl, sc|
-            Eq @sr.result_for_school(sc), [pl, @f.points_for_place(pl)]
+            Eq @sr.result_for_school(sc).to_a, [pl, @f.points_for_place(pl)]
           end
           @participants.strict_participants.each do |sc|
-            Eq @sr.result_for_school(sc), [:p, @f.points_for_participation]
+            Eq @sr.result_for_school(sc).to_a, [:p, @f.points_for_participation]
           end
           @participants.nonparticipants.each do |sc|
-            Eq @sr.result_for_school(sc), [:dnp, 0]
+            Eq @sr.result_for_school(sc).to_a, [:dnp, 0]
           end
         end
         D "error on unknown school" do
@@ -304,44 +304,44 @@ D "Results" do
       @sr = SectionResult.new("Reading (Junior)", @places, @participants, @f)
       # "'result_for_school' -> result (1..5,:p,:dnp) and points" do
         # "hardcoded outcomes" do
-      Eq @sr.result_for_school(s.abbotsleigh), [:p, 5]
-      Eq @sr.result_for_school(s.ascham), [:dnp, 0]
-      Eq @sr.result_for_school(s.brigidine), [:p, 5]
-      Eq @sr.result_for_school(s.calrossy), [:p, 5]
-      Eq @sr.result_for_school(s.canberra), [4, 15]
-      Eq @sr.result_for_school(s.danebank), [2, 25]
-      Eq @sr.result_for_school(s.frensham), [:p, 5]
-      Eq @sr.result_for_school(s.kambala), [:p, 5]
-      Eq @sr.result_for_school(s.kincoppal), [:dnp, 0]
-      Eq @sr.result_for_school(s.kirribilli), [:p, 5]
-      Eq @sr.result_for_school(s.normanhurst), [:p, 5]
-      Eq @sr.result_for_school(s.meriden), [:p, 5]
-      Eq @sr.result_for_school(s.mlc), [4, 15]
-      Eq @sr.result_for_school(s.monte), [:p, 5]
-      Eq @sr.result_for_school(s.olmc), [:dnp, 0]
-      Eq @sr.result_for_school(s.plcs), [:p, 5]
-      Eq @sr.result_for_school(s.armidale), [:p, 5]
-      Eq @sr.result_for_school(s.pymble), [:p, 5]
-      Eq @sr.result_for_school(s.queenwood), [:p, 5]
-      Eq @sr.result_for_school(s.ravenswood), [:p, 5]
-      Eq @sr.result_for_school(s.roseville), [2, 25]
-      Eq @sr.result_for_school(s.santa), [:p, 5]
-      Eq @sr.result_for_school(s.sceggs), [:p, 5]
-      Eq @sr.result_for_school(s.stcatherines), [:p, 5]
-      Eq @sr.result_for_school(s.stclares), [1, 30]
-      Eq @sr.result_for_school(s.stvincents), [:p, 5]
-      Eq @sr.result_for_school(s.tangara), [:p, 5]
-      Eq @sr.result_for_school(s.tara), [:dnp, 0]
-      Eq @sr.result_for_school(s.wenona), [:p, 5]
+      Eq @sr.result_for_school(s.abbotsleigh).to_a, [:p, 5]
+      Eq @sr.result_for_school(s.ascham).to_a, [:dnp, 0]
+      Eq @sr.result_for_school(s.brigidine).to_a, [:p, 5]
+      Eq @sr.result_for_school(s.calrossy).to_a, [:p, 5]
+      Eq @sr.result_for_school(s.canberra).to_a, [4, 15]
+      Eq @sr.result_for_school(s.danebank).to_a, [2, 25]
+      Eq @sr.result_for_school(s.frensham).to_a, [:p, 5]
+      Eq @sr.result_for_school(s.kambala).to_a, [:p, 5]
+      Eq @sr.result_for_school(s.kincoppal).to_a, [:dnp, 0]
+      Eq @sr.result_for_school(s.kirribilli).to_a, [:p, 5]
+      Eq @sr.result_for_school(s.normanhurst).to_a, [:p, 5]
+      Eq @sr.result_for_school(s.meriden).to_a, [:p, 5]
+      Eq @sr.result_for_school(s.mlc).to_a, [4, 15]
+      Eq @sr.result_for_school(s.monte).to_a, [:p, 5]
+      Eq @sr.result_for_school(s.olmc).to_a, [:dnp, 0]
+      Eq @sr.result_for_school(s.plcs).to_a, [:p, 5]
+      Eq @sr.result_for_school(s.armidale).to_a, [:p, 5]
+      Eq @sr.result_for_school(s.pymble).to_a, [:p, 5]
+      Eq @sr.result_for_school(s.queenwood).to_a, [:p, 5]
+      Eq @sr.result_for_school(s.ravenswood).to_a, [:p, 5]
+      Eq @sr.result_for_school(s.roseville).to_a, [2, 25]
+      Eq @sr.result_for_school(s.santa).to_a, [:p, 5]
+      Eq @sr.result_for_school(s.sceggs).to_a, [:p, 5]
+      Eq @sr.result_for_school(s.stcatherines).to_a, [:p, 5]
+      Eq @sr.result_for_school(s.stclares).to_a, [1, 30]
+      Eq @sr.result_for_school(s.stvincents).to_a, [:p, 5]
+      Eq @sr.result_for_school(s.tangara).to_a, [:p, 5]
+      Eq @sr.result_for_school(s.tara).to_a, [:dnp, 0]
+      Eq @sr.result_for_school(s.wenona).to_a, [:p, 5]
         # "programmatic outcomes (check consistency with places and participants)" do
       @places.each_place do |pl, sc|
-        Eq @sr.result_for_school(sc), [pl, @f.points_for_place(pl)]
+        Eq @sr.result_for_school(sc).to_a, [pl, @f.points_for_place(pl)]
       end
       @participants.strict_participants.each do |sc|
-        Eq @sr.result_for_school(sc), [:p, @f.points_for_participation]
+        Eq @sr.result_for_school(sc).to_a, [:p, @f.points_for_participation]
       end
       @participants.nonparticipants.each do |sc|
-        Eq @sr.result_for_school(sc), [:dnp, 0]
+        Eq @sr.result_for_school(sc).to_a, [:dnp, 0]
       end
         # "error on unknown school" do
       E { @sr.result_for_school(School.new("Foo", "Bar")) }
@@ -381,37 +381,23 @@ D "Results" do
     end
   end  # D "SectionResult"
 
-  D "SchoolLeaderboard" do
+  D "FestivalAwardsLeaderboard" do
+    # The code I had here (see commit 2387ffc2b) no longer matched the
+    # implementation of FestivalAwardsLeaderboard (it _was_ SchoolLeaderboard).
+    # So I've removed the code but kept the structure, hoping I can test the
+    # new implementation appropriately one day.
     D "Without ties" do
-      results = [ [s.mlc, 70], [s.plcs, 55], [s.calrossy, 20], [s.olmc, 60],
-                  [s.tara, 5], [s.frensham, 35], [s.ascham, 40] ]
-      @slb = SchoolLeaderboard.new(:junior, results)
       D "iterate over top n schools [pos, sch, pts] ('top_schools')" do
-        values = [ [1, s.mlc, 70], [2, s.olmc, 60], [3, s.plcs, 55], [4, s.ascham, 40] ]
-        @slb.top_schools(4) do |pos, sch, pts|
-          expected_value = values.shift
-          Eq pos, expected_value[0]
-          Eq sch, expected_value[1]
-          Eq pts, expected_value[2]
-        end
-        T values.empty?
       end
       D "retrieve rest of schools ('schools')" do
-        Eq @slb.schools(4), [s.ascham, s.frensham, s.calrossy, s.tara]
-        Eq @slb.schools(5), [s.frensham, s.calrossy, s.tara]
-        Eq @slb.schools(6), [s.calrossy, s.tara]
-        Eq @slb.schools(7), [s.tara]
-        Eq @slb.schools(8), []
-        Eq @slb.schools(9), []
-        Eq @slb.schools(50), []
       end
     end
     D "With ties" do
-      
     end
   end
 
   D "Results" do
+    # This has always been empty.
   end  # D "Results"
 
 end  # D "Results"

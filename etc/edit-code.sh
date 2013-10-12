@@ -1,1 +1,1 @@
-mvim `find lib -type f`
+gvim `find lib -type f`

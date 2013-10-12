@@ -22,6 +22,7 @@ module AhigsFos
       rescue
         Err.no_configuration_file
       end
+      debug "Directories object in progress: #{config_file_path.inspect} #{calyear.inspect}"
       data = YAML.load(data)
       dirs = data['directories'] || Err.invalid_config("No 'directories' config")
       @data_directory    = _check('directories/data',    dirs['data'])
@@ -40,6 +41,7 @@ module AhigsFos
       end
       path = Pathname(object)
       unless path.exist? and path.directory?
+        debug "Faulty path: #{path.inspect}"
         Err.directory_doesnt_exist(label: label)
       end
       path
@@ -73,7 +75,9 @@ module AhigsFos
   # The FestivalInfo class (instance) knows such things as:
   # * what schools are participating
   # * what sections (events) are run
-  # * points awarded for places 1-5 and participation
+  # * points awarded for:
+  #   * progression through the round (debating)
+  #   * places 1-5 and participation (other sections)
   #
   # These events are the non-debating events. Debating is competed over several
   # rounds and must be considered separately (and I don't know the details at
@@ -86,7 +90,8 @@ module AhigsFos
       data  = YAML.load(data)
       @year = data["year"]
       raise "Year mismatch between command-line and data" unless @year.to_s == calyear
-      @points_for_place, @points_for_participation = _process_points(data["points"])
+      @points_for_debating = _process_debating_points(data["points"]["debating"])
+      @points_for_place, @points_for_participation = _process_points(data["points"]["other"])
       @sections = _process_sections(data["sections"])
       @schools_by_abbreviation, @schools_by_name = _process_schools(data["schools"])
         # { "OLMC" -> School, "PLCS" -> School, ... } and
@@ -113,6 +118,9 @@ module AhigsFos
     end
     def section?(str)
       @sections[:all].include? str
+    end
+    def debating_included?
+      section?("Debating (Senior)") and section("Debating (Junior)")
     end
     # List of schools (School objects)
     def schools_list
@@ -154,6 +162,11 @@ module AhigsFos
     def check_school(school)
       Err.nonexistent_school(school.abbreviation) unless @schools_set.include? school
     end
+    # E.g. debating_points_for(:QF) gives you the #points you get for winning
+    #      the quarter final, not an overall score.
+    def debating_points_for(round)
+      @points_for_debating[round]
+    end
     # Argument: 1 to 5 (integer)
     def points_for_place(n)
       Err.invalid_place(n) unless (1..5) === n
@@ -191,7 +204,23 @@ module AhigsFos
       participation = hash["participation"]
       [points, participation]
     end
-    private :_process_schools, :_process_points
+    # Returns a map like { :participation => 3, :Round1 => 2, ... }
+    def _process_debating_points(hash)
+      if hash.nil?
+        return Hash.new(1)  # return a default hash where everything maps to 1
+      end
+      unless hash.keys.to_set == Set[*%w{participation Round1 Round2A Round2B
+                                         QuarterFinal SemiFinal GrandFinal}]
+        Err.invalid_debating_points_config(hash.keys)
+      end
+      unless hash.values.all? { |v| Integer === v }
+        Err.invalid_debating_points_config(hash)
+      end
+      hash.graph { |round, score| 
+        [round.intern, score]
+      }
+    end
+    private :_process_schools, :_process_points, :_process_debating_points
   end  # class FestivalInfo
 
 end  # module AhigsFos

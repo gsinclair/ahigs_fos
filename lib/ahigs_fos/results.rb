@@ -157,6 +157,7 @@ module AhigsFos
 
   # The result that a school achieved in one section.
   # Contains the outcome (1,2,3,4,5,:p,:dnp) and the points (e.g. 30,25,...,5,0).
+  # Used (only) as a return value from SectionResult#result_for_school.
   class Result
     attr_reader :outcome, :points
     def initialize(outcome, points)
@@ -165,16 +166,24 @@ module AhigsFos
     def participated?
       outcome == :p or Integer === outcome
     end
+    def to_a
+      [@outcome, @points]
+    end
   end
 
 
+  # This is the main class in this file. It combines the section results and the school results,
+  # and methods to quuery these.
   class Results
     def initialize(festival_info)
       @festival_info = festival_info
       @section_results = _process_section_results(festival_info)
         # -> { "Readings (Junior)" => SectionResult,
         #      "Current Affairs" => SectionResult, ... }
-      @school_results = _process_school_results(festival_info, @section_results)
+      @debating_results = _process_debating_results(festival_info)
+        # -> { "Debating (Junior)" => DebatingResult,
+        #      "Debating (Senior)" => DebatingResult }
+      @school_results = _process_school_results(festival_info, @section_results, @debating_results)
         # -> { "Ascham" => SchoolResults, "Monte" => SchoolResults, ... }
       debug "Results object created"
     end
@@ -231,7 +240,7 @@ module AhigsFos
     def _process_section_results(festival_info)
       path = @festival_info.dirs.current_year_data_directory + "results.yaml"
       data = YAML.load(path.read)
-      _validate_data(data)
+      _validate_section_data(data)
       section_results = {}
       data.each do |hash|
         section = hash["Section"]
@@ -251,7 +260,21 @@ module AhigsFos
       end
       section_results
     end
-    def _process_school_results(festival_info, section_results)
+    def _process_debating_results(festival_info)
+      if festival_info.debating_included?
+        path = @festival_info.dirs.current_year_data_directory + "debating_results.yaml"
+        data = YAML.load(path.read)
+        _validate_debating_data(data)
+        debating_results = {}
+        ["Debating (Junior)", "Debating (Senior)"].each do |x|
+          debating_results[x] = DebatingResult.from_results_data(data[x])
+        end
+        debating_results
+      else
+        {}
+      end
+    end
+    def _process_school_results(festival_info, section_results, debating_results)
       school_results = {}
       festival_info.schools_set.each do |school|
         results = {}
@@ -263,6 +286,7 @@ module AhigsFos
               sr.result_for_school(school)
             end
         end
+        # This next line could include debating results for the school.
         school_results[school] = SchoolResults.new(festival_info, school, results)
       end
       school_results
@@ -270,7 +294,7 @@ module AhigsFos
     # 'data' is expected to be an array of hashes, each of which contains
     # keys "Sections", "Places", and optionally "Participants" or
     # "Nonparticipants".
-    def _validate_data(data)
+    def _validate_section_data(data)
       valid_keys = ['Section', 'Places', 'Participants', 'Nonparticipants']
       err 'not an array of hashes' unless
         Array === data and data.all? { |x| Hash === x }
@@ -279,6 +303,12 @@ module AhigsFos
       unless data.all? { |h| (h.keys - valid_keys).empty? }
         err 'invalid key'
       end
+    end
+    def _validate_debating_data(data)
+      err '(debating) expect keys for junior and senior debating' unless 
+        data.keys.sort == ["Debating (Junior)", "Debating (Senior)"]
+      err '(debating) values are not hashes with Round1, Round2A etc.' unless
+        data.values.all? { |x| Hash === x and x.key?('Round1') }
     end
     def err(str) Err.invalid_results_data(str) end
   end  # class Results
@@ -431,6 +461,7 @@ module AhigsFos
     # division: junior, senior or all (symbol)
     # school_results: [ SchoolResult ]
     def initialize(division, school_results)
+      pp school_results
       @division = division
       @leaderboard = school_results.sort_by { |r|
         [ -r.score(division), r.school.abbreviation.downcase ]
