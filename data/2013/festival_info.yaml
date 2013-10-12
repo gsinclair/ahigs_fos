@@ -1,0 +1,70 @@
+# AHIGS Festival of Speech configuration 2012
+#
+# Configuration items:
+#   "sections": list of sections (events)
+#   "schools": list of schools
+#   "points": hash of points (keys: 1,2,3,4,5,participation)
+
+year: 2013
+
+sections:
+  junior:
+    - Reading (Junior)
+    - Poetry (Junior)
+    - Public Speaking (Junior)
+  senior:
+    - Reading (Senior)
+    - Poetry (Senior)
+    - Public Speaking (Senior)
+    - Drama
+    - Current Affairs
+    - Religious and Ethical Questions
+
+# This school list is from the participation spreadsheet, as of 8 Oct 2013.
+schools:
+ - Abbotsleigh
+ - Ascham
+ - Brigidine
+ - "Canberra (Canberra Girls' Grammar)"
+ - Danebank
+ - Frensham
+ - Kambala
+ - Kincoppal (Kincoppal Rose Bay)
+ - Kirribilli (Loreto Kirribilli)
+ - Normanhurst (Loreto Normanhurst)
+ - Meriden
+ - MLC (MLC Sydney)
+ - "Monte (Monte Sant' Angelo)"
+ - OLMC (Our Lady of Mercy College)
+ - Armidale (PLC Armidale)
+ - PLCS (PLC Sydney)
+ - "Pymble (Pymble Ladies' College)"
+ - Queenwood
+ - Ravenswood
+ - Roseville (Roseville College)
+ - Santa (Santa Sabina College)
+ - SCEGGS (SCEGGS Darlinghurst)
+ - "StCatherines (St Catherine's)"
+ - "StPatricks (St Patrick's)"
+ - "StVincents (St Vincent's)"
+ - Tangara
+ - Tara
+ - Wenona
+
+# New points system starting 2013.
+points:
+  1: 15
+  2: 12
+  3: 10
+  4: 8
+  5: 6
+  participation: 3
+
+# I don't believe the full_participant configuration actually does anything.
+full_participant: "must enter 5; must enter CA or REQ"
+
+# Nor the awards configuration. The rules are written directly into the software.
+awards:
+  junior:  "must enter 3; count best 3"
+  senior:  "must enter 4; count best 3"
+  overall: "full participant; count all"

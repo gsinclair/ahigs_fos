@@ -1,0 +1,215 @@
+# Schools 2013:
+# - Abbotsleigh
+# - Ascham
+# - Brigidine
+# - "Canberra (Canberra Girls' Grammar)"
+# - Danebank
+# - Frensham
+# - Kambala
+# - Kincoppal (Kincoppal Rose Bay)
+# - Kirribilli (Loreto Kirribilli)
+# - Normanhurst (Loreto Normanhurst)
+# - Meriden
+# - MLC (MLC Sydney)
+# - "Monte (Monte Sant' Angelo)"
+# - OLMC (Our Lady of Mercy College)
+# - Armidale (PLC Armidale)
+# - PLCS (PLC Sydney)
+# - "Pymble (Pymble Ladies' College)"
+# - Queenwood
+# - Ravenswood
+# - Roseville (Roseville College)
+# - Santa (Santa Sabina College)
+# - SCEGGS (SCEGGS Darlinghurst)
+# - "StCatherines (St Catherine's)"
+# - "StPatricks (St Patrick's)"
+# - "StVincents (St Vincent's)"
+# - Tangara
+# - Tara
+# - Wenona
+    
+Debating
+--------
+
+* festival_info.yaml
+
+No need to include participating teams in this.  Participation can be
+inferred from the results of Round 1.
+
+* results.yaml
+
+The results for a normal section look like this:
+
+  - Section: Current Affairs
+    Places: "1. Ravenswood  2. SCEGGS  3. MLC  4. Brigidine  5. Kirribilli"
+    Nonparticipants:
+     - Ascham
+     - Kincoppal
+     - OLMC
+     - Queenwood
+     - StPatricks
+
+For debating, it is more complex.  A large amount of data is needed to
+describe the results of each round.  Junior and Senior debating each get
+their own results file.
+
+  Debating (Junior):
+
+    Round1:
+      Participation:  3
+      Win:            2
+      Schools: >
+        Canberra SCEGGS Wenona Tangara Queenwood Meriden Santa Frensham
+        Kincoppal Brigidine Normanhurst StVincents Armidale MLC StCatherines
+        Pymble OLMC Abbotsleigh Danebank Ascham StPatricks Monte Tara
+        PLCS Ravenswood
+      Results:
+        - Canberra    def SCEGGS
+        - Wenona      def Tangara
+        - Queenwood   def Meriden
+        - Santa       def Frensham
+        - Kincoppal   def Kirribilli
+        - Brigidine   def Normanhurst
+        - StVincents  def Armidale
+        - MLC         def StCatherines
+        - Pymble      def OLMC
+        - Abbotsleigh def Danebank
+        - Ascham      def StPatricks
+        - Monte       def Tara
+        - PLCS        def Ravenswood
+
+    Round2A:
+      Win:      2
+      Wildcard: Danebank (added)
+      Schools: >
+        Canberra Wenona Queenwood Santa Kincoppal Brigidine StVincents
+        MLC Pymble Abbotsleigh Ascham Monte PLCS Danebank
+      Results:
+        - Canberra    def Wenona
+        - Santa       def Queenwood
+        - Kincoppal   def Brigidine
+        - StVincents  def MLC
+        - Pymble      def Abbotsleigh
+        - Monte       def Ascham
+        - PLCS        def Danebank
+
+    Round2B:
+      Win: 2
+      Wildcard: Danebank (removed)
+      Schools: >
+        SCEGGS Tangara Meriden Frensham Kirribilli Normanhurst
+        Armidale StCatherines OLMC StPatricks Tara Ravenswood
+      Results:
+        - SCEGGS      def Tangara
+        - Frensham    def Meriden
+        - Kincoppal   def Normanhurst
+        - StVincents  def Armidale
+        - OLMC        def StPatricks
+        - Tara        def Ravenswood
+
+    QuarterFinal:
+      Win: 3
+      Wildcard: Frensham (added)
+      Schools: >
+        Canberra Santa Kincoppal StVincents Pymble Monte PLCS Frensham
+      Results:
+        - Kincoppal   def Monte
+        - Frensham    def PLCS
+        - Pymble      def Canberra
+        - StVincents  def Santa
+
+    SemiFinal:
+      Win: 5
+      Schools: >
+        Kincoppal Monte Pymble StVincents
+      Results:
+        - Kincoppal   def Pymble
+        - StVincents  def Monte
+
+    GrandFinal:
+      Win: 5
+      Schools: >
+        Kincoppal StVincents
+      Results:
+        Kincoppal     def StVincents
+
+And now we come to the output.  For a normal section, the output looks like
+this:
+
+  Status:
+    Reading (Junior)                  : completed (111 points total)
+    Poetry (Junior)                   : completed (117 points total)
+    Public Speaking (Junior)          : completed (120 points total)
+
+  Section: READING (Junior)
+  Places:
+    1. Santa (15)
+    2. PLCS (12)
+    3. Armidale (10)
+    4. SCEGGS (8)
+    5. Abbotsleigh (6)
+  Participants (3):
+    Abbotsleigh Armidale Ascham Brigidine Canberra Danebank Frensham Kincoppal
+    Kirribilli Meriden MLC Monte Normanhurst PLCS Pymble Queenwood Ravenswood
+    Roseville Santa SCEGGS StCatherines StVincents Tangara Tara Wenona
+  Non-participants:
+    Kambala OLMC StPatricks
+
+  Abbotsleigh                (J: 12  S: 37  T: 49)
+    Junior
+      Reading                 6 points (5th place)
+      Poetry                  3 points (p)
+      Public Speaking         3 points (p)
+    Senior
+      Reading                 3 points (p)
+      Poetry                 10 points (3rd place)
+      Public Speaking        15 points (1st place)
+      Drama                   3 points (p)
+      Current Affairs         3 points (p)
+      Religious and ...       3 points (p)
+
+To add debating to this, we would have:
+
+  Status:
+    Debating (Junior)                 : in progress (68 points total)
+    Debating (Senior)                 : in progress (65 points total)
+
+  Section: DEBATING (Junior)
+    Round 1 winners:
+        Abbotsleigh  Canberra   Monte   Queenwood   Wenona
+        Ascham       Kincoppal  PLCS    Santa       
+        Brigidine    MLC        Pymble  StVincents  
+    Round 2A winners:
+        Canberra   Monte  PLCS  Pymble  Santa  StVincents 
+        Kincoppal 
+    Round 2B winners:
+        Frensham   SCEGGS
+        Kincoppal  StVincents
+        OLMC       Tara
+    Quarter Final wildcard:
+        Frensham
+    Quarter Final winners:
+        Frensham
+        Kincoppal
+        Pymble
+        StVincents
+    Semi Final winners:
+        Kincoppal
+        StVincents
+    Grand Final winner:
+        Kincoppal
+
+  Abbotsleigh                (J: 17  S: 47  T: 63)
+    Junior
+      Debating                5 points (p,1)
+      Reading                 6 points (5th place)
+      Poetry                  3 points (p)
+      Public Speaking         3 points (p)
+    Senior
+      Debating               10 points (p,1,2,QF)
+      Reading                 3 points (p)
+      Poetry                 10 points (3rd place)
+      Public Speaking        15 points (1st place)
+      Drama                   3 points (p)
+      Current Affairs         3 points (p)
+      Religious and ...       3 points (p)

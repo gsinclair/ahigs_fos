@@ -1,0 +1,103 @@
+# Results for the Festival of Speech 2013
+#  - Debating is included this year but it's not tracked in this file.
+#  - Drama is included this year, unlike 2012, and it _is_ tracked in this file.
+#  - nonparticipants taken from the participation spreadsheet, dated 8 Oct 2013.
+
+# Schools 2013:
+# - Abbotsleigh
+# - Ascham
+# - Brigidine
+# - "Canberra (Canberra Girls' Grammar)"
+# - Danebank
+# - Frensham
+# - Kambala
+# - Kincoppal (Kincoppal Rose Bay)
+# - Kirribilli (Loreto Kirribilli)
+# - Normanhurst (Loreto Normanhurst)
+# - Meriden
+# - MLC (MLC Sydney)
+# - "Monte (Monte Sant' Angelo)"
+# - OLMC (Our Lady of Mercy College)
+# - Armidale (PLC Armidale)
+# - PLCS (PLC Sydney)
+# - "Pymble (Pymble Ladies' College)"
+# - Queenwood
+# - Ravenswood
+# - Roseville (Roseville College)
+# - Santa (Santa Sabina College)
+# - SCEGGS (SCEGGS Darlinghurst)
+# - "StCatherines (St Catherine's)"
+# - "StPatricks (St Patrick's)"
+# - "StVincents (St Vincent's)"
+# - Tangara
+# - Tara
+# - Wenona
+
+# ------------------ J u n i o r ----------------------------------- #
+
+##
+## NOTE: The results are dummy results to test the software for 2013.
+##
+
+- Section: Reading (Junior)
+  Places: "1. Santa  2. PLCS  3. Armidale  4. SCEGGS  5. Abbotsleigh"
+  Nonparticipants:
+   - Kambala
+   - OLMC
+   - StPatricks
+
+- Section: Poetry (Junior)
+  Places: "1. Monte  2. Brigidine  3. Ravenswood  4. Armidale  5. Normanhurst"
+  Nonparticipants:
+   - OLMC
+
+- Section: Public Speaking (Junior)
+  Places: "1. PLCS  2. StCatherines  3. Monte  4. SCEGGS  5. Kirribilli"
+  Nonparticipants: []
+
+# ------------------ S e n i o r ----------------------------------- #
+
+- Section: Reading (Senior) 
+  Places: "1. Brigidine  2. Monte  3. MLC  4. SCEGGS  5. PLCS"
+  Nonparticipants:
+   - Kambala
+   - OLMC
+   - StPatricks
+
+- Section: Poetry (Senior)
+  Places: "1. Kirribilli  2. SCEGGS  3. Abbotsleigh  4. Ascham  5. Ravenswood"
+  Nonparticipants:
+   - OLMC
+
+- Section: Public Speaking (Senior)
+  Places: "1. Abbotsleigh  2. SCEGGS  3. PLCS  4. StVincents  5. Canberra"
+  Nonparticipants:
+   - Ascham
+
+# ------------------ O t h e r ------------------------------------- #
+
+- Section: Current Affairs
+  Places: "1. Ravenswood  2. SCEGGS  3. MLC  4. Brigidine  5. Kirribilli"
+  Nonparticipants:
+   - Ascham
+   - Kincoppal
+   - OLMC
+   - Queenwood
+   - StPatricks
+
+- Section: Religious and Ethical Questions
+  Places: "1. Normanhurst  2. PLCS  3. Canberra  4. Monte  5. Ravenswood"
+  Nonparticipants:
+   - Ascham
+   - OLMC
+   - Queenwood
+   - StPatricks
+
+# Kambala and Monte are "TBC" for Drama, but both have submitted student names
+# indicating non-participation.
+- Section: Drama
+  Places: "1. Normanhurst  2. PLCS  3. Canberra  4. Monte  5. Ravenswood"
+  Nonparticipants:
+   - Ascham
+   - Kirribilli
+   - Roseville
