@@ -2,6 +2,7 @@
 
 module AhigsFos
   class ConfigurationError < StandardError; end
+  class ArgumentError < StandardError; end
   class ResultsError < StandardError; end
 end
 
@@ -10,6 +11,17 @@ module AhigsFos; class Err
     unless condition
       raise "Assertion failed"
     end
+  end
+
+  def Err.argument(klass, method, *values)
+    x = (values.size == 1) ? values.first.inspect : values.inspect
+    msg = %{
+      | Invalid argument(s) provided:
+      |  class:    #{klass}
+      |  method:   #{method}
+      |  value(s): #{x}
+    }.trim
+    raise AhigsFos::ArgumentError, msg
   end
 
   def Err.no_configuration_file

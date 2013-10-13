@@ -11,6 +11,13 @@ module AhigsFos
 	#   points_for_school(Monte)  -> 15
 	#   points_for_school(OLMC)   -> 8
 	#   participating_schools     -> [...]        (perhaps, if needed)
+  #
+  # Finally, it is important that we can check the correctness of the debating results data.
+  # That is, the winners and losers exactly match the schools registered in each round;
+  # the winners from each round proceed to the appropriate next round, that Rounds 2A and 2B
+  # are handled correctly; that wildcards work.
+  # 
+  # This is done with DebatingResults#check_validity.
 	class DebatingResults
     ROUNDS = [:Round1, :Round2A, :Round2B, :QuarterFinal, :SemiFinal, :GrandFinal]
     ABBREV = {:Round1 => :r1, :Round2A => :r2a, :Round2B => :r2b,
@@ -46,6 +53,11 @@ module AhigsFos
 
     def points_for_school(school)
     	results_for_school(school).map { |x| x[1] }.sum
+    end
+
+    def round(name)
+      Err.argument(DebatingResults, :round, name) unless ROUNDS.include? name
+      @results[name]
     end
 
     private
