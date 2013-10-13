@@ -1,5 +1,3 @@
-include AhigsFos
-
 D "Configuration" do
   D "School" do
     @s = School.new("Pittwater", "Pittwater High School")

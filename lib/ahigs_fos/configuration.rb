@@ -120,7 +120,7 @@ module AhigsFos
       @sections[:all].include? str
     end
     def debating_included?
-      section?("Debating (Senior)") and section("Debating (Junior)")
+      section?("Debating (Senior)") and section?("Debating (Junior)")
     end
     # List of schools (School objects)
     def schools_list

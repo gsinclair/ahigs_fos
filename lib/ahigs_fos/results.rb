@@ -267,7 +267,7 @@ module AhigsFos
         _validate_debating_data(data)
         debating_results = {}
         ["Debating (Junior)", "Debating (Senior)"].each do |x|
-          debating_results[x] = DebatingResult.from_results_data(data[x])
+          debating_results[x] = DebatingResults.from_results_data(data[x])
         end
         debating_results
       else
@@ -275,6 +275,7 @@ module AhigsFos
       end
     end
     def _process_school_results(festival_info, section_results, debating_results)
+      # NOTE: we need to do something with the debating_results parameter
       school_results = {}
       festival_info.schools_set.each do |school|
         results = {}
@@ -321,6 +322,8 @@ module AhigsFos
   #  * what achievement did school X get in this section (e.g. 4, P, -)
   # That way, each school can iterate over each section to find out their total
   # points tally.
+  # NOTE: This class should almost certainly be called SectionResults to match
+  #       DebatingResults and SchoolResults.
   class SectionResult
     def initialize(section, places, participants, festival_info)
       @section, @places, @participants = section, places, participants

@@ -1,4 +1,5 @@
 require 'ahigs_fos'
+include AhigsFos
 
 module AhigsFosTest
   DIRECTORIES_YAML = "test/_data/directories.yaml"

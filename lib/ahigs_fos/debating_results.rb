@@ -21,7 +21,7 @@ module AhigsFos
 			x = ROUNDS.graph { |round|
 				[round, DebatingRound.from_hash(data[round.to_s], festival_info)]
 			}
-			DebatingResults.new(x)
+			DebatingResults.new(x, festival_info)
 		end
 
     # rounds: { :Round1 => DebatingRound, :Round2A => DebatingRound, ... }
@@ -71,7 +71,8 @@ module AhigsFos
 			schools_str = data["Schools"]
 			wildcard_str = data["Wildcard"]
 			results_str_arr = data["Results"]
-			schools = Set.new(@schools_str.strip.split(/\s+/).map { |s| @festival_info.school(s) })
+			schools_list = schools_str.strip.split(/\s+/).map { |s| festival_info.school(s) }
+      schools = schools_list.to_set
 			wildcard = [:not_yet_implemented]
       wins = Set.new
       losses = Set.new
@@ -79,8 +80,8 @@ module AhigsFos
       results_str_arr.each do |result_str|
       	# result_str is something like "SCEGGS  def  Tangara"
       	if result_str =~ /(\w+)\s+def\s+(\w+)/
-      		winner = @festival_info.school($1)
-      		loser  = @festival_info.school($2)
+          winner = festival_info.school($1)
+          loser  = festival_info.school($2)
           wins << winner
           losses << loser
           pairs << [winner, loser]
