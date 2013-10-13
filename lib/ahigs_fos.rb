@@ -12,7 +12,7 @@ require 'facets/enumerable/graph'
 require "ahigs_fos/version"
 require "ahigs_fos/err"
 require "ahigs_fos/configuration"
-require "ahigs_fos/debating_results"
+require "ahigs_fos/debating"
 require "ahigs_fos/results"
 require "ahigs_fos/report"
 
