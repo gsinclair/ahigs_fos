@@ -41,6 +41,7 @@ D "Debating" do
       T  r1.pairs.include? [s.wenona, s.tangara]
       T  r1.pairs.include? [s.abbotsleigh, s.danebank]
       T  r1.pairs.include? [s.plcs, s.ravenswood]
+      N  r1.wildcard
     end
     D "Details of Quarter Final" do
       qf = @dr.round(:QuarterFinal)
@@ -50,7 +51,7 @@ D "Debating" do
       Eq qf.losses,  Set[s.monte, s.plcs, s.canberra, s.santa]
       Eq qf.pairs,   Set[[s.kincoppal, s.monte], [s.frensham, s.plcs],
                          [s.pymble, s.canberra], [s.stvincents, s.santa]]
-      Eq qf.wildcard, [:not_yet_implemented]
+      Eq qf.wildcard, [s.frensham, :added]
     end
     D "Basic details of other rounds" do
       r2a = @dr.round(:Round2A)
@@ -58,10 +59,15 @@ D "Debating" do
       Eq r2a.pairs.size, 7
       Eq r2a.wins.size, 7
       Eq r2a.losses.size, 7
+      Eq r2a.wildcard, [s.danebank, :added]
+      r2b = @dr.round(:Round2B)
+      Eq r2b.schools.size, 12
+      Eq r2b.wildcard, [s.danebank, :removed]
       gf  = @dr.round(:GrandFinal)
       Eq gf.schools, Set[s.kincoppal, s.stvincents]
       Eq gf.wins, Set[s.kincoppal]
       Eq gf.losses, Set[s.stvincents]
+      N  gf.wildcard
     end
     D "Calculation of school results and points" do
       D "Various participating schools" do

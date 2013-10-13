@@ -85,7 +85,15 @@ module AhigsFos
 			results_str_arr = data["Results"]
 			schools_list = schools_str.strip.split(/\s+/).map { |s| festival_info.school(s) }
       schools = schools_list.to_set
-			wildcard = [:not_yet_implemented]
+      # Wildcard string is like "Danebank (added)" or "OLMC (removed)"
+      wildcard =
+        if wildcard_str.nil?
+          nil
+        elsif wildcard_str.strip =~ /(\w+) \((added|removed)\)/
+          [festival_info.school($1), $2.intern]
+        else
+          Err.invalid_value('Debating -> wildcard', wildcard_str, 'Frensham (added/removed)')
+        end
       wins = Set.new
       losses = Set.new
       pairs = Set.new
