@@ -43,6 +43,7 @@ def s
     @s.stvincents = sch("StVincents", "St Vincent's")
     @s.tangara = sch("Tangara")
     @s.tara = sch("Tara")
+    @s.stpatricks = sch("StPatricks", "St Patrick's")
     @s.wenona = sch("Wenona")
     @s.freeze
     @s

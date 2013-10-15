@@ -36,12 +36,26 @@ D "Debating" do
       T  r1.schools.include? s.ravenswood
       T  r1.schools.include? s.wenona
       Eq r1.pairs.size, 13
-      Eq r1.wins.size, 13
-      Eq r1.losses.size, 13
+      Eq r1.wins, Set[s.canberra, s.wenona, s.queenwood, s.santa, s.kincoppal,
+                      s.brigidine, s.stvincents, s.mlc, s.pymble, s.abbotsleigh,
+                      s.ascham, s.monte, s.plcs]
+      Eq r1.losses, Set[s.sceggs, s.tangara, s.meriden, s.frensham, s.kirribilli,
+                        s.normanhurst, s.armidale, s.stcatherines, s.olmc,
+                        s.danebank, s.stpatricks, s.tara, s.ravenswood]
       T  r1.pairs.include? [s.wenona, s.tangara]
       T  r1.pairs.include? [s.abbotsleigh, s.danebank]
       T  r1.pairs.include? [s.plcs, s.ravenswood]
       N  r1.wildcard
+    end
+    D "Details of Round 2A" do
+      r2a = @dr.round(:Round2A)
+      Eq r2a.schools.size, 14
+      w = Set[s.canberra, s.santa, s.kincoppal, s.stvincents, s.pymble, s.monte, s.plcs]
+      l = Set[s.wenona, s.queenwood, s.brigidine, s.mlc, s.abbotsleigh, s.ascham, s.danebank]
+      Eq r2a.schools, (w + l)
+      Eq r2a.wins,   w
+      Eq r2a.losses, l
+      Eq r2a.wildcard, [s.danebank, :added]
     end
     D "Details of Quarter Final" do
       qf = @dr.round(:QuarterFinal)
@@ -89,6 +103,10 @@ D "Debating" do
         Eq @dr.points_for_school(s.roseville),  0
       end
     end
-  end
-end
+    D "No validation errors for this data" do
+      T @dr.round(:Round1).losses.include? s.danebank
+      Eq @dr.validation_errors, []
+    end
+  end # DebatingResults
+end # Debating
 
