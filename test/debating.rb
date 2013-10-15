@@ -14,7 +14,7 @@ D "Debating" do
 	  end
 	end
 
-  D "DebatingResults" do
+  D "DebatingResults (Junior, correct)" do
     path = @f.dirs.current_year_data_directory + "debating_results.yaml"
     data = YAML.load(path.read)
     Eq data.keys.sort, ["Debating (Junior)", "Debating (Senior)"]
@@ -104,9 +104,38 @@ D "Debating" do
       end
     end
     D "No validation errors for this data" do
-      T @dr.round(:Round1).losses.include? s.danebank
       Eq @dr.validation_errors, []
     end
-  end # DebatingResults
+  end # DebatingResults (Junior, correct)
+
+  D "DebatingResults (Senior, with validation errors)" do
+    path = @f.dirs.current_year_data_directory + "debating_results.yaml"
+    data = YAML.load(path.read)
+    Eq data.keys.sort, ["Debating (Junior)", "Debating (Senior)"]
+    @dr = DebatingResults.from_results_data(data["Debating (Senior)"], @f)
+    D "Results data loaded" do
+      Ko @dr, DebatingResults
+      Ko @dr.round(:Round1), DebatingRound
+      Ko @dr.round(:Round2A), DebatingRound
+      Ko @dr.round(:Round2B), DebatingRound
+      Ko @dr.round(:QuarterFinal), DebatingRound
+      Ko @dr.round(:SemiFinal), DebatingRound
+      Ko @dr.round(:GrandFinal), DebatingRound
+      E(AhigsFos::ArgumentError) { @dr.round(:non_existent) }
+    end
+    D "Validation errors" do
+      pp @dr.validation_errors
+      T true
+      Eq @dr.validation_errors,
+      ["Round1: schools doesn't match wins and losses",
+       "Round1: schools doesn't match result pairs",
+       "SemiFinal: schools doesn't match wins and losses",
+       "SemiFinal: schools doesn't match result pairs",
+       "Round2A: schools should be winners from Round1 +/- wildcard (nil)",
+       "QuarterFinal: schools should be winners from Round2A +/- wildcard (Frensham)",
+       "SemiFinal: schools should be winners from QuarterFinal +/- wildcard (nil)",
+       "Round2B wildcard exists but Round2A wildcard does not"]
+    end
+  end
 end # Debating
 

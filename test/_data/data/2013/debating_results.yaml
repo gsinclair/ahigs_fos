@@ -88,12 +88,14 @@ Debating (Junior):
 
 Debating (Senior):
 
+  # Round 1: we remove Armidale from the Schools so that there is a mismatch.
+
   Round1:
     Schools: >
       Canberra SCEGGS Wenona Tangara Queenwood Meriden Santa Frensham
-      Kincoppal Brigidine Normanhurst StVincents Armidale MLC StCatherines
-      Pymble OLMC Abbotsleigh Danebank Ascham StPatricks Monte Tara
-      PLCS Ravenswood
+      Kincoppal Kirribilli Brigidine Normanhurst StVincents MLC
+      StCatherines Pymble OLMC Abbotsleigh Danebank Ascham StPatricks Monte
+      Tara PLCS Ravenswood
     Results:
       - Canberra    def SCEGGS
       - Wenona      def Tangara
@@ -109,8 +111,10 @@ Debating (Senior):
       - Monte       def Tara
       - PLCS        def Ravenswood
 
+  # Round 2A: we remove the wildcard so that Danebank's sudden appearance
+  # triggers a validation error.
+
   Round2A:
-    Wildcard: Danebank (added)
     Schools: >
       Canberra Wenona Queenwood Santa Kincoppal Brigidine StVincents
       MLC Pymble Abbotsleigh Ascham Monte PLCS Danebank
@@ -123,38 +127,48 @@ Debating (Senior):
       - Monte       def Ascham
       - PLCS        def Danebank
 
+  # Round 2B: there is a wildcard here that is not in Round 2A.
+
   Round2B:
     Wildcard: Danebank (removed)
     Schools: >
       SCEGGS Tangara Meriden Frensham Kirribilli Normanhurst
       Armidale StCatherines OLMC StPatricks Tara Ravenswood
     Results:
-      - SCEGGS      def Tangara
-      - Frensham    def Meriden
-      - Kincoppal   def Normanhurst
-      - StVincents  def Armidale
-      - OLMC        def StPatricks
-      - Tara        def Ravenswood
+      - SCEGGS        def Tangara
+      - Frensham      def Meriden
+      - Kirribilli    def Normanhurst
+      - StCatherines  def Armidale
+      - OLMC          def StPatricks
+      - Tara          def Ravenswood
+
+  # QuarterFinal: we replace Monte with Meriden, a school that didn't win
+  # the previous round.
 
   QuarterFinal:
     Wildcard: Frensham (added)
     Schools: >
-      Canberra Santa Kincoppal StVincents Pymble Monte PLCS Frensham
+      Canberra Santa Kincoppal StVincents Pymble Meriden PLCS Frensham
     Results:
-      - Kincoppal   def Monte
+      - Kincoppal   def Meriden
       - Frensham    def PLCS
       - Pymble      def Canberra
       - StVincents  def Santa
 
+  # SemiFinal: we add a school (OLMC)
+
   SemiFinal:
     Schools: >
-      Kincoppal Monte Pymble StVincents
+      Kincoppal Frensham Pymble StVincents OLMC
     Results:
       - Kincoppal   def Pymble
-      - StVincents  def Monte
+      - StVincents  def Frensham
+
+  # GrandFinal: no change
 
   GrandFinal:
     Schools: >
       Kincoppal StVincents
     Results:
       - Kincoppal     def StVincents
+

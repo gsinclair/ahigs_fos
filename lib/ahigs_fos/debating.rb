@@ -138,8 +138,8 @@ module AhigsFos
         if (wc = r2.wildcard)
           wc_sch, action = wc
           case action
-          when :added   then [r2_expected + Set[wc_sch], wc_sch]
-          when :removed then [r2_expected - Set[wc_sch], wc_sch]
+          when :added   then [r2_expected + Set[wc_sch], wc_sch.abbreviation]
+          when :removed then [r2_expected - Set[wc_sch], wc_sch.abbreviation]
           end
         else
           [r2_expected, "nil"]
@@ -194,8 +194,6 @@ module AhigsFos
         unless r2awc[1] == :added
           errors << "Round 2A wildcard must be an _addition_"
         end
-        pp round(:Round1).losses.map { |x| x.abbreviation }
-        pp round(:Round2A).wildcard
         unless round(:Round1).losses.include? r2awc[0]
           errors << "Round 2A wildcard must be a Round 1 loser"
         end
