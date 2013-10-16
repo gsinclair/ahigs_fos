@@ -301,7 +301,7 @@ module AhigsFos
         _validate_debating_data(data)
         debating_results = {}
         ["Debating (Junior)", "Debating (Senior)"].each do |x|
-          debating_results[x] = DebatingResults.from_results_data(data[x])
+          debating_results[x] = DebatingResults.from_results_data(data[x], festival_info)
         end
         debating_results
       else

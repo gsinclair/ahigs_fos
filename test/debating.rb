@@ -137,5 +137,11 @@ D "Debating" do
        "Round2B wildcard exists but Round2A wildcard does not"]
     end
   end
+
+  D "Results (including debating)" do
+    @f = FestivalInfo.new(AhigsFosTest::DIRECTORIES_YAML, "2013")
+    @r = Results.new(@f)
+    Ko @r, Results
+  end
 end # Debating
 
