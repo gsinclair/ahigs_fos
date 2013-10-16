@@ -174,6 +174,29 @@ module AhigsFos
 
   # This is the main class in this file. It combines the section results and the school results,
   # and methods to quuery these.
+  #
+  # NOTE: how should debating results be handled. Should @section_results look like this?
+  #
+  #   { "Reading (Junior)"  => SectionResult,
+  #     "Reading (Senior)"  => SectionResult,
+  #     "Debating (Junior)" => DebatingResult,
+  #     ... }
+  #
+  # That kind of data structure seems good, but the naming of @section_results and SectionResult
+  # is a clash.  @section_results seems like the right name; SectionResult doesn't.  But what?
+  # NonDebatingSectionResult?  Should I have SectionResult::Debating and SectionResult::NonDebating?
+  # PlaceGettingSectionResult?  That last one is an accurate and general description.  Maybe
+  # SectionResult::Debating and SectionResult::PlaceGetting.
+  #
+  # Anyway, assuming this kind of (mixed) data structure, could @school_results do its thing?
+  # Well, it must!  It needs the number of points from each section and not much else..
+  #
+  # And then there is the line in bin/ahigs_fos.rb:
+  #
+  #   report = Report::Report.new(results, festival_info)
+  #
+  # I think the reporting code can be smart enough to treat debating and non-debating results
+  # separately.
   class Results
     def initialize(festival_info)
       @festival_info = festival_info
