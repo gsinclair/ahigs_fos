@@ -68,6 +68,10 @@ module AhigsFos
     	@festival_info = festival_info
     end
 
+    def debating?
+      true
+    end
+
     def results_for_school(school)
       school_results = []
       if @results[:Round1].schools.include? school

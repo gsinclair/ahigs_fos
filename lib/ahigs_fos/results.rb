@@ -200,12 +200,13 @@ module AhigsFos
   class Results
     def initialize(festival_info)
       @festival_info = festival_info
-      @section_results = _process_section_results(festival_info)
+      @place_getting_section_results = _process_section_results(festival_info)
         # -> { "Readings (Junior)" => SectionResult,
         #      "Current Affairs" => SectionResult, ... }
       @debating_results = _process_debating_results(festival_info)
         # -> { "Debating (Junior)" => DebatingResult,
         #      "Debating (Senior)" => DebatingResult }
+      @section_results = @debating_results.merge @place_getting_section_results
       @school_results = _process_school_results(festival_info, @section_results, @debating_results)
         # -> { "Ascham" => SchoolResults, "Monte" => SchoolResults, ... }
       debug "Results object created"
@@ -219,6 +220,7 @@ module AhigsFos
       out.string
     end
     alias to_s inspect
+
     def for_section(str)
       if @festival_info.section? str
         @section_results[str]
@@ -226,27 +228,32 @@ module AhigsFos
         Err.invalid_section(str)
       end
     end
-    # -> [15,0,5,10,5,5,5]
-    # todo -- maybe can this; we have SchoolResults and FestivalAwardsLeaderboard
-    def results_for_school(school, division)
-      section_results(division).map { |sec|
-        sec && sec.points_for_school(school) || 0
-      }
-    end
-    # -> 45
-    # todo -- maybe can this; we have SchoolResults and FestivalAwardsLeaderboard
-    def points_for_school(school, division)
-      results_for_school(school, division).sum
-    end
+    
+    # # -> [15,0,5,10,5,5,5]
+    # # todo -- maybe can this; we have SchoolResults and FestivalAwardsLeaderboard
+    # def results_for_school(school, division)
+    #   section_results(division).map { |sec|
+    #     sec && sec.points_for_school(school) || 0
+    #   }
+    # end
+
+    # # -> 45
+    # # todo -- maybe can this; we have SchoolResults and FestivalAwardsLeaderboard
+    # def points_for_school(school, division)
+    #   results_for_school(school, division).sum
+    # end
+    
     def section_results(division)
       @festival_info.sections(division).map { |sec|
-        @section_results[sec]
+        for_section(sec)
       }
     end
+
     # Yields: position (1-5), SchoolResult
     def top_five_schools(division, &block)
       leaderboard(division).top_schools(20, &block)
     end
+    
     # Yields: school, junior, senior, total
     def all_schools_by_total_desc
       leaderboard(:all).schools(1).each do |sch|
@@ -256,10 +263,13 @@ module AhigsFos
         yield sch, jnr, snr, tot
       end
     end
+    
     def leaderboard(division)
       FestivalAwardsLeaderboard.new(division, @school_results.values)
     end
+    
     private
+    
     def _process_section_results(festival_info)
       path = @festival_info.dirs.current_year_data_directory + "results.yaml"
       data = YAML.load(path.read)
@@ -283,6 +293,7 @@ module AhigsFos
       end
       section_results
     end
+    
     def _process_debating_results(festival_info)
       if festival_info.debating_included?
         path = @festival_info.dirs.current_year_data_directory + "debating_results.yaml"
@@ -297,6 +308,7 @@ module AhigsFos
         {}
       end
     end
+    
     def _process_school_results(festival_info, section_results, debating_results)
       # NOTE: we need to do something with the debating_results parameter
       school_results = {}
@@ -315,6 +327,7 @@ module AhigsFos
       end
       school_results
     end
+    
     # 'data' is expected to be an array of hashes, each of which contains
     # keys "Sections", "Places", and optionally "Participants" or
     # "Nonparticipants".
@@ -328,13 +341,16 @@ module AhigsFos
         err 'invalid key'
       end
     end
+    
     def _validate_debating_data(data)
       err '(debating) expect keys for junior and senior debating' unless 
         data.keys.sort == ["Debating (Junior)", "Debating (Senior)"]
       err '(debating) values are not hashes with Round1, Round2A etc.' unless
         data.values.all? { |x| Hash === x and x.key?('Round1') }
     end
+    
     def err(str) Err.invalid_results_data(str) end
+      
   end  # class Results
 
 
@@ -361,6 +377,9 @@ module AhigsFos
       out.string
     end
     alias to_s inspect
+    def debating?
+      false
+    end
     # Return the result and the number of points. Examples:
     #   [3, 20]
     #   [:p, 5]   (participated)
