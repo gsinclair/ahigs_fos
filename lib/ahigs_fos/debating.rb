@@ -1,5 +1,36 @@
 
 module AhigsFos
+
+  # Compiles errors with an efficient API.
+  class ErrorCompiler
+    def initialize(errors)
+      @errors = errors
+    end
+    def unless(positive_condition, message)
+      unless positive_condition
+        @errors << message
+        yield if block_given?
+      end
+    end
+    def if(positive_condition, message)
+      if positive_condition
+        @errors << message
+        yield if block_given?
+      end
+    end
+    def error(msg)
+      @errors << msg
+    end
+    def <<(msg)
+      @errors << msg
+    end
+    def ErrorCompiler.with_errors(errors)
+      yield ErrorCompiler.new(errors)
+      errors
+    end
+  end
+
+
 	# DebatingResults contains a hash:
 	#   { :Round1 => DebatingRound, :Round2A => DebatingRound, ... }
 	# It is expected that it will be created via DebatingResults.from_results_data(hash)
@@ -64,9 +95,11 @@ module AhigsFos
     # Returns a list of errors (strings), hopefully empty.
     def validation_errors
       errors = []
-      check_schools_consistency_in_each_round(errors)
-      check_legitimate_progress_through_rounds(errors)
-      check_wildcards(errors)
+      ErrorCompiler.with_errors(errors) do |e|
+        check_schools_consistency_in_each_round(e)
+        check_legitimate_progress_through_rounds(e)
+        check_wildcards(e)
+      end
       errors
     end
 
@@ -87,45 +120,40 @@ module AhigsFos
       end
     end
 
-    def check_schools_consistency_in_each_round(errors)
+    def check_schools_consistency_in_each_round(e)
       each_round do |name, results|
-        unless results.schools == (results.wins + results.losses)
-          errors << "#{name}: schools doesn't match wins and losses"
-        end
-        unless results.schools == results.pairs.to_a.flatten.to_set
-          errors << "#{name}: schools doesn't match result pairs"
-        end
-        unless results.wins.intersection(results.losses).empty?
-          errors << "#{name}: at least one school has both won and lost"
-        end
+        e.unless (results.schools == (results.wins + results.losses)),
+                 "#{name}: schools doesn't match wins and losses"
+        e.unless (results.schools == results.pairs.to_a.flatten.to_set),
+                 "#{name}: schools doesn't match result pairs"
+        e.unless (results.wins.intersection(results.losses).empty?),
+                 "#{name}: at least one school has both won and lost"
         wildcard = results.wildcard
         if wildcard
           wc_school, added_or_removed = wildcard
           case added_or_removed
           when :added
-            unless results.schools.include? wc_school
-              errors << "#{name}: wildcard school #{school.abbreviation} should be included in schools list"
-            end
+            e.unless (results.schools.include? wc_school),
+                     "#{name}: wildcard school #{wc_school.abbreviation} should be included in schools list"
           when :removed
-            if results.schools.include? wc_school
-              errors << "#{name}: wildcard school #{school.abbreviation} ('removed') should NOT be included in schools list"
-            end
+            e.if (results.schools.include? wc_school),
+                 "#{name}: wildcard school #{wc_school.abbreviation} ('removed') should NOT be included in schools list"
           end
         end
       end
     end
 
-    def check_legitimate_progress_through_rounds(errors)
-      check_progress_from_one_round_to_next(:Round1, :win, :Round2A, errors)
-      check_progress_from_one_round_to_next(:Round1, :lose, :Round2B, errors)
-      check_progress_from_one_round_to_next(:Round2A, :win, :QuarterFinal, errors)
-      check_progress_from_one_round_to_next(:QuarterFinal, :win, :SemiFinal, errors)
-      check_progress_from_one_round_to_next(:SemiFinal, :win, :GrandFinal, errors)
+    def check_legitimate_progress_through_rounds(e)
+      check_progress_from_one_round_to_next(:Round1, :win, :Round2A, e)
+      check_progress_from_one_round_to_next(:Round1, :lose, :Round2B, e)
+      check_progress_from_one_round_to_next(:Round2A, :win, :QuarterFinal, e)
+      check_progress_from_one_round_to_next(:QuarterFinal, :win, :SemiFinal, e)
+      check_progress_from_one_round_to_next(:SemiFinal, :win, :GrandFinal, e)
     end
 
     # Checks the winners (or losers, as appropriate) from r1 make up the schools in r2,
     # modulo any wildcard.
-    def check_progress_from_one_round_to_next(r1, win_or_lose, r2, errors)
+    def check_progress_from_one_round_to_next(r1, win_or_lose, r2, e)
       _r1, _r2 = r1, r2              # preserve the round _names_
       r1, r2 = round(r1), round(r2)
       # winners from first round should be the participants in the second round, modulo any wildcards
@@ -144,71 +172,38 @@ module AhigsFos
         else
           [r2_expected, "nil"]
         end
-      unless r2.schools == r2_expected
-        errors << "#{_r2}: schools should be winners from #{_r1} +/- wildcard (#{wc_sch})"
-      end
+      e.unless (r2.schools == r2_expected),
+               "#{_r2}: schools should be winners from #{_r1} +/- wildcard (#{wc_sch})"
     end
 
-    def check_blah_blah(errors)
-      with_errors(errors) do |e|
-        e.unless (qwfc[1] == :added),  "Quarter final wildcard must be an _addition_"
-      end
-    end
-
-    # Compiles errors with an efficient API.
-    class ErrorCompiler
-      def initialize(errors)
-        @errors = errors
-      end
-      def unless(positive_condition, message)
-        unless positive_condition
-          @errors << message
-          yield if block_given?
-        end
-      end
-      def <<(msg)
-        @errors << msg
-      end
-    end
-
-    def with_errors(errors)
-      yield ErrorCompiler.new(errors)
-      errors
-    end
 
     # Checks specific things about wildcards.  General wildcard checks are done elsewhere.
-    def check_wildcards(errors)
+    def check_wildcards(e)
       # The quarter-final wildcard, if any, must be a Round 2B winner.
       # (And it must be an addition.)
       if (qfwc = round(:QuarterFinal).wildcard)
-        unless qfwc[1] == :added
-          errors << "Quarter final wildcard must be an _addition_"
-        end
-        unless round(:Round2B).wins.include? qfwc[0]
-          errors << "Quarter final wildcard must be a Round 2B winner"
-        end
+        e.unless (qfwc[1] == :added),
+                 "Quarter final wildcard must be an _addition_"
+        e.unless (round(:Round2B).wins.include? qfwc[0]),
+                 "Quarter final wildcard must be a Round 2B winner"
       end
       # The Round 2A wildcard, if any, must be a Round 1 loser.  (Must be :added)
       # If it exists, it must also exist in Round 2B.
       if (r2awc = round(:Round2A).wildcard)
-        unless r2awc[1] == :added
-          errors << "Round 2A wildcard must be an _addition_"
-        end
-        unless round(:Round1).losses.include? r2awc[0]
-          errors << "Round 2A wildcard must be a Round 1 loser"
-        end
+        e.unless (r2awc[1] == :added),
+                 "Round 2A wildcard must be an _addition_"
+        e.unless (round(:Round1).losses.include? r2awc[0]),
+                 "Round 2A wildcard must be a Round 1 loser"
       end
       # The Round 2B wildcard, if any, must be the same as Round 2A, but :removed.
       if (r2bwc = round(:Round2B).wildcard)
-        unless r2bwc[1] == :removed
-          errors << "Round 2B wildcard must be a _removal_"
-        end
+        e.unless (r2bwc[1] == :removed),
+                 "Round 2B wildcard must be a _removal_"
         if r2awc
-          unless r2awc[0] == r2bwc[0]
-            errors << "Round2B wildcard must be same school as Round2A wildcard"
-          end
+          e.unless (r2awc[0] == r2bwc[0]),
+                   "Round2B wildcard must be same school as Round2A wildcard"
         else
-          errors << "Round2B wildcard exists but Round2A wildcard does not"
+          e.error  "Round2B wildcard exists but Round2A wildcard does not"
         end
       end
     end  # check_wildcards
@@ -254,5 +249,7 @@ module AhigsFos
       end
       DebatingRound.new(schools, wildcard, pairs, wins, losses)
 		end
-	end
-end
+
+	end  # class DebatingResults
+
+end  # module AhigsFos
