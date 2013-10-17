@@ -54,28 +54,28 @@ Debating (Junior):
       - OLMC          def StPatricks
       - Tara          def Ravenswood
 
-  QuarterFinal:
-    Wildcard: Frensham (added)
-    Schools: >
-      Canberra Santa Kincoppal StVincents Pymble Monte PLCS Frensham
-    Results:
-      - Kincoppal   def Monte
-      - Frensham    def PLCS
-      - Pymble      def Canberra
-      - StVincents  def Santa
-
-  SemiFinal:
-    Schools: >
-      Kincoppal Frensham Pymble StVincents
-    Results:
-      - Kincoppal   def Pymble
-      - StVincents  def Frensham
-
-  GrandFinal:
-    Schools: >
-      Kincoppal StVincents
-    Results:
-      - Kincoppal     def StVincents
+#  QuarterFinal:
+#    Wildcard: Frensham (added)
+#    Schools: >
+#      Canberra Santa Kincoppal StVincents Pymble Monte PLCS Frensham
+#    Results:
+#      - Kincoppal   def Monte
+#      - Frensham    def PLCS
+#      - Pymble      def Canberra
+#      - StVincents  def Santa
+#
+#  SemiFinal:
+#    Schools: >
+#      Kincoppal Frensham Pymble StVincents
+#    Results:
+#      - Kincoppal   def Pymble
+#      - StVincents  def Frensham
+#
+#  GrandFinal:
+#    Schools: >
+#      Kincoppal StVincents
+#    Results:
+#      - Kincoppal     def StVincents
 
 
 # =============================================================================

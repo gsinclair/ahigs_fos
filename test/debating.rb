@@ -86,16 +86,16 @@ D "Debating" do
     D "Calculation of school results and points" do
       D "Various participating schools" do
         r = @dr.result_for_school(s.kincoppal)
-        Eq r.outcome, [:p, :Round1, :Round2A, :QuarterFinal, :SemiFinal, :GrandFinal]
+        Eq r.outcome, [:p, :r1, :r2a, :qf, :sf, :gf]
         Eq r.points,  20
         r = @dr.result_for_school(s.ravenswood)
         Eq r.outcome, [:p]
         Eq r.points,  3
         r = @dr.result_for_school(s.tara)
-        Eq r.outcome, [:p, :Round2B]
+        Eq r.outcome, [:p, :r2b]
         Eq r.points,  5
         r = @dr.result_for_school(s.frensham)
-        Eq r.outcome, [:p, :Round2B, :QuarterFinal]
+        Eq r.outcome, [:p, :r2b, :qf]
         Eq r.points,  8
       end
       D "Non-participating schools" do
