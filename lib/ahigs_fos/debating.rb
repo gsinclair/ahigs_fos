@@ -54,18 +54,34 @@ module AhigsFos
     ABBREV = {:Round1 => :r1, :Round2A => :r2a, :Round2B => :r2b,
               :QuarterFinal => :qf, :SemiFinal => :sf, :GrandFinal => :gf }
 
-		# data: hash containing 'Round1', 'Round2', etc. from debating_results.yaml file.
-		def DebatingResults.from_results_data(data, festival_info)
-			x = ROUNDS.graph { |round|
-				[round, DebatingRound.from_hash(data[round.to_s], festival_info)]
-			}
-			DebatingResults.new(x, festival_info)
-		end
+    # data: hash containing 'Round1', 'Round2', etc. from debating_results.yaml file.
+    def DebatingResults.from_results_data(data, festival_info)
+      x = ROUNDS.graph { |round|
+        if data.key? round.to_s
+          [round, DebatingRound.from_hash(data[round.to_s], festival_info)]
+        end
+      }
+      x.delete(nil)
+      DebatingResults.new(x, festival_info)
+    end
 
     # rounds: { :Round1 => DebatingRound, :Round2A => DebatingRound, ... }
     def initialize(rounds, festival_info)
     	@results = rounds
     	@festival_info = festival_info
+    end
+
+    def completed_rounds
+      ROUNDS.select { |r| @results.key? r }
+    end
+
+    # This isn't used yet.
+    def status
+      case completed_rounds.size
+      when 0           then :hasnt_started
+      when ROUNDS.size then :completed
+      else                  :in_progress
+      end
     end
 
     def debating?
@@ -75,7 +91,7 @@ module AhigsFos
     def total_points
       f = @festival_info
       participation = round(:Round1).schools.size * f.points_for_participation
-      points_for_winning = ROUNDS.map { |r|
+      points_for_winning = completed_rounds.map { |r|
         round(r).wins.size * f.debating_points_for(r)
       }
       participation + points_for_winning.sum
@@ -134,7 +150,7 @@ module AhigsFos
 
     # Yields the name and results for each round (e.g. :QuarterFinal, <DebatingRound>)
     def each_round
-      ROUNDS.each do |r|
+      completed_rounds.each do |r|
         yield [r, @results[r]]
       end
     end
