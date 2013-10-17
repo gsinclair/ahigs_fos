@@ -146,6 +146,26 @@ module AhigsFos
       end
       pr line.indent(2)
     end
+    def report_status(section)
+      line = section.ljust(33) + " : "
+      results = @results.for_section(section)
+      if results.nil?
+        line += "waiting"
+      else
+        pts = results.total_points
+        status =
+          if results.debating? and results.status == :in_progress
+            "in progress (#{pts} points so far)"
+          else
+            "completed (#{pts} points total)"
+          end
+        line += status
+        if not results.debating? and results.tie?
+          line += " TIE"
+        end
+      end
+      pr line.indent(2)
+    end
   end  # class Report::Status
 
   # ====================================================================== #
