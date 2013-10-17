@@ -73,7 +73,12 @@ module AhigsFos
     end
 
     def total_points
-      45  # to satisfy Report::Status
+      f = @festival_info
+      participation = round(:Round1).schools.size * f.points_for_participation
+      points_for_winning = ROUNDS.map { |r|
+        round(r).wins.size * f.debating_points_for(r)
+      }
+      participation + points_for_winning.sum
     end
 
     def result_for_school(school)
@@ -221,7 +226,10 @@ module AhigsFos
         end
       end
     end  # check_wildcards
+
 	end  # class DebatingResults
+
+  # ========================================================================================== #
 
 	# Contains the results of one round of debating.
 	#   schools:  the set of schools that competed in this round
@@ -264,6 +272,6 @@ module AhigsFos
       DebatingRound.new(schools, wildcard, pairs, wins, losses)
 		end
 
-	end  # class DebatingResults
+	end  # class DebatingRound
 
 end  # module AhigsFos
