@@ -107,13 +107,18 @@ module AhigsFos
       @year
     end
     # ["Reading (Junior)", "Reading (Senior)", ...]
-    def sections(division=nil)
-      case division
-      when :junior   then @sections[:junior]
-      when :senior   then @sections[:senior]
-      when nil, :all then @sections[:all]
+    # Legitimate flags (as symbols): junior, senior, all (assumed), debating, non_debating
+    def sections(*flags)
+      division = flags.find(:all) { |f| [:junior, :senior, :all].include? f }
+      debating = flags.include? :debating
+      non_debating = flags.include? :non_debating
+      sections = @sections[division]
+      if flags.include? :debating
+        sections.select { |s| s =~ /Debating/ }
+      elsif flags.include? :non_debating
+        sections.reject { |s| s =~ /Debating/ }
       else
-        Err.argument_error("FestivalInfo#sections: #{division}")
+        sections
       end
     end
     def section?(str)

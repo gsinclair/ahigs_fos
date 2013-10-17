@@ -72,6 +72,10 @@ module AhigsFos
       true
     end
 
+    def total_points
+      45  # to satisfy Report::Status
+    end
+
     def result_for_school(school)
       outcome, points = [], []
       if @results[:Round1].schools.include? school
@@ -80,11 +84,19 @@ module AhigsFos
       end
       each_round do |name, result|
         if result.wins.include? school
-          outcome << name
+          outcome << ABBREV[name]
           points  << points_for_round(name)
         end        	
       end
       Result.new(outcome, points.sum)
+    end
+
+    # Unfortunately we need this to satisfy Results#all_schools_by_total_desc.
+    # In other words, this mimics Results#points_for_school, which has a comment saying
+    # I'd like to get rid of it in favour of SchoolResults and Leaderboard.
+    # It seems that DebatingResults is mimicing both SectionResults and Results, and I don't like it.
+    def points_for_school(school)
+      result_for_school(school).points
     end
 
     def round(name)

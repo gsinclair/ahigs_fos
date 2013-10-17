@@ -229,19 +229,19 @@ module AhigsFos
       end
     end
     
-    # # -> [15,0,5,10,5,5,5]
-    # # todo -- maybe can this; we have SchoolResults and FestivalAwardsLeaderboard
-    # def results_for_school(school, division)
-    #   section_results(division).map { |sec|
-    #     sec && sec.points_for_school(school) || 0
-    #   }
-    # end
+    # -> [15,0,5,10,5,5,5]
+    # todo -- maybe can this; we have SchoolResults and FestivalAwardsLeaderboard
+    def results_for_school(school, division)
+      section_results(division).map { |sec|
+        sec && sec.points_for_school(school) || 0
+      }
+    end
 
-    # # -> 45
-    # # todo -- maybe can this; we have SchoolResults and FestivalAwardsLeaderboard
-    # def points_for_school(school, division)
-    #   results_for_school(school, division).sum
-    # end
+    # -> 45
+    # todo -- maybe can this; we have SchoolResults and FestivalAwardsLeaderboard
+    def points_for_school(school, division)
+      results_for_school(school, division).sum
+    end
     
     def section_results(division)
       @festival_info.sections(division).map { |sec|
@@ -506,7 +506,6 @@ module AhigsFos
     # division: junior, senior or all (symbol)
     # school_results: [ SchoolResult ]
     def initialize(division, school_results)
-      pp school_results
       @division = division
       @leaderboard = school_results.sort_by { |r|
         [ -r.score(division), r.school.abbreviation.downcase ]

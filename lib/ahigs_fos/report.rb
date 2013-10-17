@@ -57,6 +57,8 @@ module AhigsFos
       nl 2
       pr summary
       nl 2
+      pr debating
+      nl 2
       pr sections
       nl 2
       pr schools
@@ -78,6 +80,7 @@ module AhigsFos
     def header()     Report::Header.new(@results, @festival_info).report end
     def status()     Report::Status.new(@results, @festival_info).report end
     def summary()   Report::Summary.new(@results, @festival_info).report end
+    def debating() Report::Debating.new(@results, @festival_info).report end
     def sections() Report::Sections.new(@results, @festival_info).report end
     def schools()   Report::Schools.new(@results, @festival_info).report end
     def footer()     Report::Footer.new(@results, @festival_info).report end
@@ -137,7 +140,7 @@ module AhigsFos
       else
         pts = results.total_points
         line += "completed (#{pts} points total)"
-        if results.tie?
+        if not results.debating? and results.tie?
           line += " TIE"
         end
       end
@@ -220,11 +223,24 @@ module AhigsFos
 
   # ====================================================================== #
 
+  class Report::Debating
+    def report
+      pr heading("Debating")
+      if @festival_info.debating_included?
+        # ...
+      else
+        pr "Debating was not included in #{@festival_info.year}"
+      end
+    end
+  end
+
+  # ====================================================================== #
+
   class Report::Sections
     def report
       pr heading("Sections")
       [:junior, :senior].each do |division|
-        @festival_info.sections(division).each do |section|
+        @festival_info.sections(division, :non_debating).each do |section|
           results = @results.for_section(section)
           next if results.nil?
           nl
@@ -343,9 +359,11 @@ module AhigsFos
     def _fmt_results(result)
       outcome = result.outcome
       desc =
-        case result.outcome
+        case (r = result.outcome)
         when Integer then "#{_ordinal(outcome)} place"
         when Symbol  then "#{outcome}"
+        when Array   then _fmt_debating_result(r)
+          # This is a debating result -- we should be detecting/handling this more elegantly.
         else
           Err.invalid_section_result(outcome)
         end
@@ -360,6 +378,17 @@ module AhigsFos
       when 5 then "5th"
       else
         Err.invalid_place(n)
+      end
+    end
+    def _fmt_debating_result(r)
+      if r.empty?
+        "dnp"
+      elsif true
+        r.map { |x| x.to_s }.join(', ')
+      else
+        # Alternative rendering, just of the highest achievement.
+        r = r.last.to_s
+        r.sub(/([12])/) { " #{$1}" }.sub(/([a-z])([A-Z])/) { "#{$1} #{$2}" }
       end
     end
   end  # class Report::Schools

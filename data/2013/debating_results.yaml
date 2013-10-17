@@ -47,12 +47,12 @@ Debating (Junior):
       SCEGGS Tangara Meriden Frensham Kirribilli Normanhurst
       Armidale StCatherines OLMC StPatricks Tara Ravenswood
     Results:
-      - SCEGGS      def Tangara
-      - Frensham    def Meriden
-      - Kincoppal   def Normanhurst
-      - StVincents  def Armidale
-      - OLMC        def StPatricks
-      - Tara        def Ravenswood
+      - SCEGGS        def Tangara
+      - Frensham      def Meriden
+      - Kirribilli    def Normanhurst
+      - StCatherines  def Armidale
+      - OLMC          def StPatricks
+      - Tara          def Ravenswood
 
   QuarterFinal:
     Wildcard: Frensham (added)
@@ -66,10 +66,10 @@ Debating (Junior):
 
   SemiFinal:
     Schools: >
-      Kincoppal Monte Pymble StVincents
+      Kincoppal Frensham Pymble StVincents
     Results:
       - Kincoppal   def Pymble
-      - StVincents  def Monte
+      - StVincents  def Frensham
 
   GrandFinal:
     Schools: >
@@ -86,14 +86,14 @@ Debating (Junior):
 
 # The data for senior debating is identical to the data for junior debating.
 
-Debating (Junior):
+Debating (Senior):
 
   Round1:
     Schools: >
       Canberra SCEGGS Wenona Tangara Queenwood Meriden Santa Frensham
-      Kincoppal Brigidine Normanhurst StVincents Armidale MLC StCatherines
-      Pymble OLMC Abbotsleigh Danebank Ascham StPatricks Monte Tara
-      PLCS Ravenswood
+      Kincoppal Kirribilli Brigidine Normanhurst StVincents Armidale MLC
+      StCatherines Pymble OLMC Abbotsleigh Danebank Ascham StPatricks Monte
+      Tara PLCS Ravenswood
     Results:
       - Canberra    def SCEGGS
       - Wenona      def Tangara
@@ -129,12 +129,12 @@ Debating (Junior):
       SCEGGS Tangara Meriden Frensham Kirribilli Normanhurst
       Armidale StCatherines OLMC StPatricks Tara Ravenswood
     Results:
-      - SCEGGS      def Tangara
-      - Frensham    def Meriden
-      - Kincoppal   def Normanhurst
-      - StVincents  def Armidale
-      - OLMC        def StPatricks
-      - Tara        def Ravenswood
+      - SCEGGS        def Tangara
+      - Frensham      def Meriden
+      - Kirribilli    def Normanhurst
+      - StCatherines  def Armidale
+      - OLMC          def StPatricks
+      - Tara          def Ravenswood
 
   QuarterFinal:
     Wildcard: Frensham (added)
@@ -148,13 +148,15 @@ Debating (Junior):
 
   SemiFinal:
     Schools: >
-      Kincoppal Monte Pymble StVincents
+      Kincoppal Frensham Pymble StVincents
     Results:
       - Kincoppal   def Pymble
-      - StVincents  def Monte
+      - StVincents  def Frensham
 
   GrandFinal:
     Schools: >
       Kincoppal StVincents
     Results:
       - Kincoppal     def StVincents
+
+

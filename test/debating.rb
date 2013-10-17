@@ -125,7 +125,6 @@ D "Debating" do
       E(AhigsFos::ArgumentError) { @dr.round(:non_existent) }
     end
     D "Validation errors" do
-      pp @dr.validation_errors
       T true
       Eq @dr.validation_errors,
       ["Round1: schools doesn't match wins and losses",
