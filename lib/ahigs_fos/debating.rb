@@ -191,6 +191,11 @@ module AhigsFos
     def check_progress_from_one_round_to_next(r1, win_or_lose, r2, e)
       _r1, _r2 = r1, r2              # preserve the round _names_
       r1, r2 = round(r1), round(r2)
+      if r1.nil? or r2.nil?
+        # It's legitimate for a round to be nil -- i.e. the data hasn't been entered yet.
+        # If the data hasn't been entered, it can't be invalid.
+        return
+      end
       # winners from first round should be the participants in the second round, modulo any wildcards
       r2_expected =
         case win_or_lose
@@ -216,7 +221,7 @@ module AhigsFos
     def check_wildcards(e)
       # The quarter-final wildcard, if any, must be a Round 2B winner.
       # (And it must be an addition.)
-      if (qfwc = round(:QuarterFinal).wildcard)
+      if round(:QuarterFinal) and (qfwc = round(:QuarterFinal).wildcard)
         e.unless (qfwc[1] == :added),
                  "Quarter final wildcard must be an _addition_"
         e.unless (round(:Round2B).wins.include? qfwc[0]),
@@ -224,14 +229,14 @@ module AhigsFos
       end
       # The Round 2A wildcard, if any, must be a Round 1 loser.  (Must be :added)
       # If it exists, it must also exist in Round 2B.
-      if (r2awc = round(:Round2A).wildcard)
+      if round(:Round2A) and (r2awc = round(:Round2A).wildcard)
         e.unless (r2awc[1] == :added),
                  "Round 2A wildcard must be an _addition_"
         e.unless (round(:Round1).losses.include? r2awc[0]),
                  "Round 2A wildcard must be a Round 1 loser"
       end
       # The Round 2B wildcard, if any, must be the same as Round 2A, but :removed.
-      if (r2bwc = round(:Round2B).wildcard)
+      if round(:Round2B) and (r2bwc = round(:Round2B).wildcard)
         e.unless (r2bwc[1] == :removed),
                  "Round 2B wildcard must be a _removal_"
         if r2awc

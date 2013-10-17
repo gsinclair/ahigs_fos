@@ -138,6 +138,32 @@ D "Debating" do
     end
   end
 
+  D "Incomplete data" do
+    path = @f.dirs.current_year_data_directory + "debating_results_incomplete.yaml"
+    data = YAML.load(path.read)
+    Eq data.keys.sort, ["Debating (Junior)", "Debating (Senior)"]
+    @dr = DebatingResults.from_results_data(data["Debating (Junior)"], @f)
+    D "Results data loaded" do
+      Ko @dr, DebatingResults
+      Ko @dr.round(:Round1), DebatingRound
+      Ko @dr.round(:Round2A), DebatingRound
+      Ko @dr.round(:Round2B), DebatingRound
+      N  @dr.round(:QuarterFinal)
+      N  @dr.round(:SemiFinal)
+      N  @dr.round(:GrandFinal)
+      E(AhigsFos::ArgumentError) { @dr.round(:non_existent) }
+    end
+    D "completed_rounds" do
+      Eq @dr.completed_rounds, [:Round1, :Round2A, :Round2B]
+    end
+    D "total_points" do
+      Eq @dr.total_points, (26*3 + 13*2 + 7*2 + 6*2)
+    end
+    D "validation is OK even though not all rounds have finished" do
+      Eq @dr.validation_errors, []
+    end
+  end
+
   D "Results (including debating)" do
     @f = FestivalInfo.new(AhigsFosTest::DIRECTORIES_YAML, "2013")
     @r = Results.new(@f)
