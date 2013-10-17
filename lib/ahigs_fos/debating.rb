@@ -53,6 +53,8 @@ module AhigsFos
     ROUNDS = [:Round1, :Round2A, :Round2B, :QuarterFinal, :SemiFinal, :GrandFinal]
     ABBREV = {:Round1 => :r1, :Round2A => :r2a, :Round2B => :r2b,
               :QuarterFinal => :qf, :SemiFinal => :sf, :GrandFinal => :gf }
+    NICE_NAME = {Round1: "Round 1", Round2A: "Round 2A", Round2B: "Round 2B",
+                 QuarterFinal: "Quarter Final", SemiFinal: "Semi Final", GrandFinal: "Grand Final"}
 
     # data: hash containing 'Round1', 'Round2', etc. from debating_results.yaml file.
     def DebatingResults.from_results_data(data, festival_info)
@@ -75,6 +77,15 @@ module AhigsFos
       ROUNDS.select { |r| @results.key? r }
     end
 
+    # For each round, yields the nice name, the result (DebatingRound) and the points for winning.
+    # e.g. -> "Quarter Final", <DebatingRound object>, 3
+    def each_round_result
+      each_round do |name, round|
+        points = @festival_info.debating_points_for(name)
+        yield [NICE_NAME[name], round, points]
+      end
+    end
+
     # This isn't used yet.
     def status
       case completed_rounds.size
@@ -86,6 +97,22 @@ module AhigsFos
 
     def debating?
       true
+    end
+
+    def participants
+      if round(:Round1)
+        round(:Round1).schools
+      else
+        Set ["No participation information available yet"]
+      end
+    end
+
+    def nonparticipants
+      if round(:Round1)
+        @festival_info.schools_set - round(:Round1).schools
+      else
+        Set ["No participation information available yet"]
+      end
     end
 
     def total_points

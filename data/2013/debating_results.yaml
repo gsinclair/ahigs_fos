@@ -27,6 +27,7 @@ Debating (Junior):
       - Monte       def Tara
       - PLCS        def Ravenswood
 
+  # Deliberate mistake (Kincoppal -> Kirribilli) to test validation errors in report.
   Round2A:
     Wildcard: Danebank (added)
     Schools: >
@@ -35,7 +36,7 @@ Debating (Junior):
     Results:
       - Canberra    def Wenona
       - Santa       def Queenwood
-      - Kincoppal   def Brigidine
+      - Kirribilli   def Brigidine
       - StVincents  def MLC
       - Pymble      def Abbotsleigh
       - Monte       def Ascham

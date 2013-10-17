@@ -41,6 +41,34 @@ module AhigsFos
       h = t.hour % 12
       Time.now.strftime("%d %b %Y (#{h}.%M%P)")  # 20 May 2012 (1.37pm)
     end
+        # Change the string, up to and not including a bracket, to upper case.
+    def upcase(string)
+      string.split.map { |word|
+        if word.start_with? '('
+          word
+        else
+          word.upcase
+        end
+      }.join(' ')
+    end
+    def wrap(schools, limit)
+      if schools.empty?
+        return ""
+      end
+      schools = schools.map { |sch| sch.abbreviation }.sort_by { |str| str.downcase }
+      lines = []
+      lines << schools.shift.dup
+      loop do
+        if schools.empty?
+          return lines.join("\n")
+        end
+        if lines.last.length + 1 + schools.first.size <= limit
+          lines.last << " " << schools.shift.dup
+        else
+          lines << schools.shift.dup
+        end
+      end
+    end
   end  # class Report::Base
 
   # ====================================================================== #
@@ -246,11 +274,46 @@ module AhigsFos
   class Report::Debating
     def report
       pr heading("Debating")
+      nl
       if @festival_info.debating_included?
-        # ...
+        [:junior, :senior].each do |division|
+          @festival_info.sections(division, :debating).each do |section|
+            _debating_results(section)
+          end
+        end
       else
+        nl
         pr "Debating was not included in #{@festival_info.year}"
       end
+      string
+    end
+    def _debating_results(section)
+      results = @results.for_section(section)
+      nl 2
+      pr "  Section: #{upcase(section)}"
+      pr "  Participants (#{@festival_info.points_for_participation}):"
+      pr wrap(results.participants, 76).indent(4)
+      pr "  Non-participants:"
+      pr wrap(results.nonparticipants, 76).indent(4)
+      results.each_round_result do |name, round, points|
+        pr "  #{name} (+#{points}):"
+        width = round.wins.map { |sch| sch.abbreviation.size }.max
+        round.pairs.each do |winner, loser|
+          raise "Logic error" unless round.wins.include? winner
+          pr "    #{_fmt_school(winner)}  def  #{_fmt_school(loser)}"
+        end
+      end
+      unless (ve = results.validation_errors).empty?
+        nl
+        pr "  Validation errors:"
+        ve.each do |e|
+          pr e.indent(4)
+        end
+      end
+    end
+    def _fmt_school(school)
+      width = @festival_info.max_abbreviation_length
+      school.abbreviation.ljust(width)
     end
   end
 
@@ -264,46 +327,18 @@ module AhigsFos
           results = @results.for_section(section)
           next if results.nil?
           nl
-          pr "  Section: #{_upcase(section)}"
+          pr "  Section: #{upcase(section)}"
           pr "  Places:"
           results.places do |pos, school, pts|
             pr "    #{pos}. #{school.abbreviation} (#{pts})"
           end
           pr "  Participants (#{@festival_info.points_for_participation}):"
-          pr _wrap(results.participants, 76).indent(4)
+          pr wrap(results.participants, 76).indent(4)
           pr "  Non-participants:"
-          pr _wrap(results.nonparticipants, 76).indent(4)
+          pr wrap(results.nonparticipants, 76).indent(4)
         end
       end
       string
-    end
-    # Change the string, up to and not including a bracket, to upper case.
-    def _upcase(string)
-      string.split.map { |word|
-        if word.start_with? '('
-          word
-        else
-          word.upcase
-        end
-      }.join(' ')
-    end
-    def _wrap(schools, limit)
-      if schools.empty?
-        return ""
-      end
-      schools = schools.map { |sch| sch.abbreviation }.sort_by { |str| str.downcase }
-      lines = []
-      lines << schools.shift.dup
-      loop do
-        if schools.empty?
-          return lines.join("\n")
-        end
-        if lines.last.length + 1 + schools.first.size <= limit
-          lines.last << " " << schools.shift.dup
-        else
-          lines << schools.shift.dup
-        end
-      end
     end
   end  # class Report::Sections
 
