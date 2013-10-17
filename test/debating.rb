@@ -85,22 +85,23 @@ D "Debating" do
     end
     D "Calculation of school results and points" do
       D "Various participating schools" do
-        r = @dr.results_for_school(s.kincoppal)
-        Eq r, [[:p,3], [:r1,2], [:r2a,2], [:qf,3], [:sf,5], [:gf,5]]
-        r = @dr.results_for_school(s.ravenswood)
-        Eq r, [[:p,3]]
-        r = @dr.results_for_school(s.tara)
-        Eq r, [[:p,3], [:r2b,2]]
-        r = @dr.results_for_school(s.frensham)
-        Eq r, [[:p,3], [:r2b,2], [:qf,3]]
-        Eq @dr.points_for_school(s.kincoppal), 20
-        Eq @dr.points_for_school(s.ravenswood), 3
-        Eq @dr.points_for_school(s.tara), 5
-        Eq @dr.points_for_school(s.frensham), 8
+        r = @dr.result_for_school(s.kincoppal)
+        Eq r.outcome, [:p, :Round1, :Round2A, :QuarterFinal, :SemiFinal, :GrandFinal]
+        Eq r.points,  20
+        r = @dr.result_for_school(s.ravenswood)
+        Eq r.outcome, [:p]
+        Eq r.points,  3
+        r = @dr.result_for_school(s.tara)
+        Eq r.outcome, [:p, :Round2B]
+        Eq r.points,  5
+        r = @dr.result_for_school(s.frensham)
+        Eq r.outcome, [:p, :Round2B, :QuarterFinal]
+        Eq r.points,  8
       end
       D "Non-participating schools" do
-        Eq @dr.results_for_school(s.roseville), []
-        Eq @dr.points_for_school(s.roseville),  0
+        r = @dr.result_for_school(s.roseville)
+        Eq r.outcome, []
+        Eq r.points,  0
       end
     end
     D "No validation errors for this data" do

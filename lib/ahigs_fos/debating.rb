@@ -72,21 +72,19 @@ module AhigsFos
       true
     end
 
-    def results_for_school(school)
-      school_results = []
+    def result_for_school(school)
+      outcome, points = [], []
       if @results[:Round1].schools.include? school
-        school_results << [:p, points_for_participation]
+        outcome << :p
+        points  << points_for_participation
       end
       each_round do |name, result|
         if result.wins.include? school
-          school_results << [ABBREV[name], points_for_round(name)]
+          outcome << name
+          points  << points_for_round(name)
         end        	
       end
-      school_results
-    end
-
-    def points_for_school(school)
-    	results_for_school(school).map { |x| x[1] }.sum
+      Result.new(outcome, points.sum)
     end
 
     def round(name)
