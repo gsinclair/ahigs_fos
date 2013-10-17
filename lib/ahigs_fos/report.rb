@@ -7,6 +7,7 @@ module AhigsFos
     class Status < Base; end
     class Summary < Base; end
     class Sections < Base; end
+    class Debating < Base; end
     class Schools < Base; end
     class Footer < Base; end
   end
