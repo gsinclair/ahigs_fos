@@ -6,54 +6,54 @@
 
 Debating (Junior):
 
-  Round1:
-    Schools: >
-      Canberra SCEGGS Wenona Tangara Queenwood Meriden Santa Frensham
-      Kincoppal Kirribilli Brigidine Normanhurst StVincents Armidale MLC
-      StCatherines Pymble OLMC Abbotsleigh Danebank Ascham StPatricks Monte
-      Tara PLCS Ravenswood
-    Results:
-      - Canberra    def SCEGGS
-      - Wenona      def Tangara
-      - Queenwood   def Meriden
-      - Santa       def Frensham
-      - Kincoppal   def Kirribilli
-      - Brigidine   def Normanhurst
-      - StVincents  def Armidale
-      - MLC         def StCatherines
-      - Pymble      def OLMC
-      - Abbotsleigh def Danebank
-      - Ascham      def StPatricks
-      - Monte       def Tara
-      - PLCS        def Ravenswood
+  # Round1:
+  #   Schools: >
+  #     Canberra SCEGGS Wenona Tangara Queenwood Meriden Santa Frensham
+  #     Kincoppal Kirribilli Brigidine Normanhurst StVincents Armidale MLC
+  #     StCatherines Pymble OLMC Abbotsleigh Danebank Ascham StPatricks Monte
+  #     Tara PLCS Ravenswood
+  #   Results:
+  #     - Canberra    def SCEGGS
+  #     - Wenona      def Tangara
+  #     - Queenwood   def Meriden
+  #     - Santa       def Frensham
+  #     - Kincoppal   def Kirribilli
+  #     - Brigidine   def Normanhurst
+  #     - StVincents  def Armidale
+  #     - MLC         def StCatherines
+  #     - Pymble      def OLMC
+  #     - Abbotsleigh def Danebank
+  #     - Ascham      def StPatricks
+  #     - Monte       def Tara
+  #     - PLCS        def Ravenswood
 
-  # Deliberate mistake (Kincoppal -> Kirribilli) to test validation errors in report.
-  Round2A:
-    Wildcard: Danebank (added)
-    Schools: >
-      Canberra Wenona Queenwood Santa Kincoppal Brigidine StVincents
-      MLC Pymble Abbotsleigh Ascham Monte PLCS Danebank
-    Results:
-      - Canberra    def Wenona
-      - Santa       def Queenwood
-      - Kirribilli   def Brigidine
-      - StVincents  def MLC
-      - Pymble      def Abbotsleigh
-      - Monte       def Ascham
-      - PLCS        def Danebank
+  # # Deliberate mistake (Kincoppal -> Kirribilli) to test validation errors in report.
+  # Round2A:
+  #   Wildcard: Danebank (added)
+  #   Schools: >
+  #     Canberra Wenona Queenwood Santa Kincoppal Brigidine StVincents
+  #     MLC Pymble Abbotsleigh Ascham Monte PLCS Danebank
+  #   Results:
+  #     - Canberra    def Wenona
+  #     - Santa       def Queenwood
+  #     - Kirribilli   def Brigidine
+  #     - StVincents  def MLC
+  #     - Pymble      def Abbotsleigh
+  #     - Monte       def Ascham
+  #     - PLCS        def Danebank
 
-  Round2B:
-    Wildcard: Danebank (removed)
-    Schools: >
-      SCEGGS Tangara Meriden Frensham Kirribilli Normanhurst
-      Armidale StCatherines OLMC StPatricks Tara Ravenswood
-    Results:
-      - SCEGGS        def Tangara
-      - Frensham      def Meriden
-      - Kirribilli    def Normanhurst
-      - StCatherines  def Armidale
-      - OLMC          def StPatricks
-      - Tara          def Ravenswood
+  # Round2B:
+  #   Wildcard: Danebank (removed)
+  #   Schools: >
+  #     SCEGGS Tangara Meriden Frensham Kirribilli Normanhurst
+  #     Armidale StCatherines OLMC StPatricks Tara Ravenswood
+  #   Results:
+  #     - SCEGGS        def Tangara
+  #     - Frensham      def Meriden
+  #     - Kirribilli    def Normanhurst
+  #     - StCatherines  def Armidale
+  #     - OLMC          def StPatricks
+  #     - Tara          def Ravenswood
 
 #  QuarterFinal:
 #    Wildcard: Frensham (added)
@@ -144,20 +144,20 @@ Debating (Senior):
     Results:
       - Kincoppal   def Monte
       - Frensham    def PLCS
-      - Pymble      def Canberra
-      - StVincents  def Santa
+  #     - Pymble      def Canberra
+  #     - StVincents  def Santa
 
-  SemiFinal:
-    Schools: >
-      Kincoppal Frensham Pymble StVincents
-    Results:
-      - Kincoppal   def Pymble
-      - StVincents  def Frensham
+  # SemiFinal:
+  #   Schools: >
+  #     Kincoppal Frensham Pymble StVincents
+  #   Results:
+  #     - Kincoppal   def Pymble
+  #     - StVincents  def Frensham
 
-  GrandFinal:
-    Schools: >
-      Kincoppal StVincents
-    Results:
-      - Kincoppal     def StVincents
+  # GrandFinal:
+  #   Schools: >
+  #     Kincoppal StVincents
+  #   Results:
+  #     - Kincoppal     def StVincents
 
 

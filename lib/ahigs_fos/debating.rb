@@ -58,13 +58,17 @@ module AhigsFos
 
     # data: hash containing 'Round1', 'Round2', etc. from debating_results.yaml file.
     def DebatingResults.from_results_data(data, festival_info)
-      x = ROUNDS.graph { |round|
-        if data.key? round.to_s
-          [round, DebatingRound.from_hash(data[round.to_s], festival_info)]
-        end
-      }
-      x.delete(nil)
-      DebatingResults.new(x, festival_info)
+      if data
+        x = ROUNDS.graph { |round|
+          if data.key? round.to_s
+            [round, DebatingRound.from_hash(data[round.to_s], festival_info)]
+          end
+        }
+        x.delete(nil)
+        DebatingResults.new(x, festival_info)
+      else
+        DebatingResults.new({}, festival_info)
+      end
     end
 
     # rounds: { :Round1 => DebatingRound, :Round2A => DebatingRound, ... }
@@ -103,7 +107,7 @@ module AhigsFos
       if round(:Round1)
         round(:Round1).schools
       else
-        Set ["No participation information available yet"]
+        Set["No participation information available yet"]
       end
     end
 
@@ -111,30 +115,34 @@ module AhigsFos
       if round(:Round1)
         @festival_info.schools_set - round(:Round1).schools
       else
-        Set ["No participation information available yet"]
+        Set["No participation information available yet"]
       end
     end
 
     def total_points
-      f = @festival_info
-      participation = round(:Round1).schools.size * f.points_for_participation
-      points_for_winning = completed_rounds.map { |r|
-        round(r).wins.size * f.debating_points_for(r)
-      }
-      participation + points_for_winning.sum
+      if status == :hasnt_started
+        0
+      else
+        f = @festival_info
+        participation = round(:Round1).schools.size * f.points_for_participation
+        points_for_winning = completed_rounds.map { |r|
+          round(r).wins.size * f.debating_points_for(r)
+        }
+        participation + points_for_winning.sum
+      end
     end
 
     def result_for_school(school)
       outcome, points = [], []
-      if @results[:Round1].schools.include? school
+      if participants.include? school
         outcome << :p
         points  << points_for_participation
-      end
-      each_round do |name, result|
-        if result.wins.include? school
-          outcome << ABBREV[name]
-          points  << points_for_round(name)
-        end        	
+        each_round do |name, result|
+          if result.wins.include? school
+            outcome << ABBREV[name]
+            points  << points_for_round(name)
+          end
+        end
       end
       Result.new(outcome, points.sum)
     end

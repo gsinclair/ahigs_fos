@@ -345,8 +345,8 @@ module AhigsFos
     def _validate_debating_data(data)
       err '(debating) expect keys for junior and senior debating' unless 
         data.keys.sort == ["Debating (Junior)", "Debating (Senior)"]
-      err '(debating) values are not hashes with Round1, Round2A etc.' unless
-        data.values.all? { |x| Hash === x and x.key?('Round1') }
+      # err '(debating) values are not hashes with Round1, Round2A etc.' unless
+      #   data.values.all? { |x| Hash === x and x.key?('Round1') }
     end
     
     def err(str) Err.invalid_results_data(str) end

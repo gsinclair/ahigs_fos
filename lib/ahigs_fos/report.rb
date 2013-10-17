@@ -182,7 +182,9 @@ module AhigsFos
       else
         pts = results.total_points
         status =
-          if results.debating? and results.status == :in_progress
+          if results.debating? and results.status == :hasnt_started
+            "waiting"
+          elsif results.debating? and results.status == :in_progress
             "in progress (#{pts} points so far)"
           else
             "completed (#{pts} points total)"
@@ -291,23 +293,27 @@ module AhigsFos
       results = @results.for_section(section)
       nl 2
       pr "  Section: #{upcase(section)}"
-      pr "  Participants (#{@festival_info.points_for_participation}):"
-      pr wrap(results.participants, 76).indent(4)
-      pr "  Non-participants:"
-      pr wrap(results.nonparticipants, 76).indent(4)
-      results.each_round_result do |name, round, points|
-        pr "  #{name} (+#{points}):"
-        width = round.wins.map { |sch| sch.abbreviation.size }.max
-        round.pairs.each do |winner, loser|
-          raise "Logic error" unless round.wins.include? winner
-          pr "    #{_fmt_school(winner)}  def  #{_fmt_school(loser)}"
+      if results.status == :hasnt_started
+        pr "    [awaiting data]"
+      else
+        pr "  Participants [#{results.participants.size}] (#{@festival_info.points_for_participation} pts):"
+        pr wrap(results.participants, 76).indent(4)
+        pr "  Non-participants:"
+        pr wrap(results.nonparticipants, 76).indent(4)
+        results.each_round_result do |name, round, points|
+          pr "  #{name} (+#{points} pts):"
+          width = round.wins.map { |sch| sch.abbreviation.size }.max
+          round.pairs.each do |winner, loser|
+            raise "Logic error" unless round.wins.include? winner
+            pr "    #{_fmt_school(winner)}  def  #{_fmt_school(loser)}"
+          end
         end
-      end
-      unless (ve = results.validation_errors).empty?
-        nl
-        pr "  Validation errors:"
-        ve.each do |e|
-          pr e.indent(4)
+        unless (ve = results.validation_errors).empty?
+          nl
+          pr "  Validation errors:"
+          ve.each do |e|
+            pr e.indent(4)
+          end
         end
       end
     end
