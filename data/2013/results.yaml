@@ -35,49 +35,45 @@
 
 # ------------------ J u n i o r ----------------------------------- #
 
-##
-## NOTE: The results are dummy results to test the software for 2013.
-##
-
 - Section: Reading (Junior)
-  Places: "1. Santa  2. PLCS  3. Armidale  4. SCEGGS  5. Abbotsleigh"
+  Places: ""
   Nonparticipants:
    - Kambala
    - OLMC
    - StPatricks
 
 - Section: Poetry (Junior)
-  Places: "1. Monte  2. Brigidine  3. Ravenswood  4. Armidale  5. Normanhurst"
+  Places: ""
   Nonparticipants:
    - OLMC
 
 - Section: Public Speaking (Junior)
-  Places: "1. PLCS  2. StCatherines  3. Monte  4. SCEGGS  5. Kirribilli"
+  Places: ""
   Nonparticipants: []
 
 # ------------------ S e n i o r ----------------------------------- #
 
 - Section: Reading (Senior) 
-  Places: "1. Brigidine  2. Monte  3. MLC  4. SCEGGS  5. PLCS"
+  Places: ""
   Nonparticipants:
    - Kambala
    - OLMC
    - StPatricks
 
 - Section: Poetry (Senior)
-  Places: "1. Kirribilli  2. SCEGGS  3. Abbotsleigh  4. Ascham  5. Ravenswood"
+  Places: ""
   Nonparticipants:
    - OLMC
 
 - Section: Public Speaking (Senior)
-  Places: "1. Abbotsleigh  2. SCEGGS  3. PLCS  4. StVincents  5. Canberra"
+  Places: ""
   Nonparticipants:
    - Ascham
 
 # ------------------ O t h e r ------------------------------------- #
 
 - Section: Current Affairs
-  Places: "1. Ravenswood  2. SCEGGS  3. MLC  4. Brigidine  5. Kirribilli"
+  Places: ""
   Nonparticipants:
    - Ascham
    - Kincoppal
@@ -86,7 +82,7 @@
    - StPatricks
 
 - Section: Religious and Ethical Questions
-  Places: "1. Normanhurst  2. PLCS  3. Canberra  4. Monte  5. Ravenswood"
+  Places: ""
   Nonparticipants:
    - Ascham
    - OLMC
@@ -96,7 +92,7 @@
 # Kambala and Monte are "TBC" for Drama, but both have submitted student names
 # indicating non-participation.
 - Section: Drama
-  Places: "1. Normanhurst  2. PLCS  3. Canberra  4. Monte  5. Ravenswood"
+  Places: ""
   Nonparticipants:
    - Ascham
    - Kirribilli
