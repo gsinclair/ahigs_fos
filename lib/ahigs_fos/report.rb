@@ -276,7 +276,6 @@ module AhigsFos
   class Report::Debating
     def report
       pr heading("Debating")
-      nl
       if @festival_info.debating_included?
         [:junior, :senior].each do |division|
           @festival_info.sections(division, :debating).each do |section|
@@ -307,6 +306,9 @@ module AhigsFos
             raise "Logic error" unless round.wins.include? winner
             _fmt_debating_pair(winner, loser, round)
           end
+          if round.bye
+            _fmt_debating_pair(round.bye, "-BYE-", round)
+          end
         end
         unless (ve = results.validation_errors).empty?
           nl
@@ -327,8 +329,13 @@ module AhigsFos
       pr text
     end
     def _fmt_school(school)
+      # 'school' can be a School object or a String
       width = @festival_info.max_abbreviation_length
-      school.abbreviation.ljust(width)
+      if school.respond_to? :abbreviation
+        school.abbreviation.ljust(width)
+      else
+        school.ljust(width)
+      end
     end
   end
 
