@@ -138,10 +138,16 @@ module AhigsFos
       if participants.include? school
         outcome << :p
         points  << points_for_participation
-        each_round do |name, result|
-          if result.wins.include? school
+        each_round do |name, round|
+          case round.result_for_school(school)
+          when :win
             outcome << ABBREV[name]
             points  << points_for_round(name)
+          when :bye
+            outcome << :bye
+            points  << points_for_round(name)
+          when :loss, :dnp
+            :nop
           end
         end
       end
@@ -290,18 +296,21 @@ module AhigsFos
 
 	# Contains the results of one round of debating.
 	#   schools:  the set of schools that competed in this round
+  #   bye:      nil, or the school that has a bye in this round
 	#   wildcard: nil, or (for example) a tuple like [Frensham, :added] or [OLMC, :deleted]
 	#             (a school can be added or deleted as a result of a wildcard)
 	#   pairs:    the set of pairings, e.g. Set{ [Monte, Armidale], [MLC, Tara], ... }
-	#   wins:     the set of winning schools
+	#   wins:     the set of winning schools (not including a bye)
 	#   losses:   the set of losing schools
-	class DebatingRound < Struct.new(:schools, :wildcard, :pairs, :wins, :losses)
+	class DebatingRound < Struct.new(:schools, :bye, :wildcard, :pairs, :wins, :losses)
 		def DebatingRound.from_hash(data, festival_info)
-			schools_str = data["Schools"]
-			wildcard_str = data["Wildcard"]
+			schools_str     = data["Schools"]
+      bye_str         = data["Bye"]
+			wildcard_str    = data["Wildcard"]
 			results_str_arr = data["Results"]
-			schools_list = schools_str.strip.split(/\s+/).map { |s| festival_info.school(s) }
-      schools = schools_list.to_set
+			schools_list    = schools_str.strip.split(/\s+/).map { |s| festival_info.school(s) }
+      schools         = schools_list.to_set
+      bye = bye_str && festival_info.school(bye_str)
       # Wildcard string is like "Danebank (added)" or "OLMC (removed)"
       wildcard =
         if wildcard_str.nil?
@@ -326,8 +335,18 @@ module AhigsFos
       		Err.invalid_debating_result(result_str)
       	end
       end
-      DebatingRound.new(schools, wildcard, pairs, wins, losses)
+      DebatingRound.new(schools, bye, wildcard, pairs, wins, losses)
 		end
+
+    # Either :win, :bye, :loss or :dnp
+    def result_for_school(school)
+      if wins.include? school           then :win
+      elsif bye == school               then :bye
+      elsif losses.include? school      then :loss
+      elsif not schools.include? school then :dnp
+      else raise "Logic error"
+      end
+    end
 
 	end  # class DebatingRound
 
