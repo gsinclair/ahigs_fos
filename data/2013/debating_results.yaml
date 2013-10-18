@@ -7,13 +7,17 @@
 Debating (Junior):
 
   Round1:
+    Ready?: true
+    Bye: Frensham
     Schools: >
-      xyz
+      Brigidine Normanhurst Pymble OLMC MLC StCatherines Monte Tara Danebank
+      Abbotsleigh Ascham StPatricks Armidale StVincents PLCS Ravenswood Meriden
+      Santa Tangara Wenona Kincoppal Kirribilli Canberra SCEGGS Frensham
     Results:
       - Brigidine      def Normanhurst
       - Pymble         def OLMC
       - MLC            def StCatherines
-      - Monte          def Tara             # didn't receive proper scorecard
+      - Monte          def Tara
       - Danebank       def Abbotsleigh
       - Ascham         def StPatricks
       - Armidale       def StVincents
@@ -24,20 +28,23 @@ Debating (Junior):
       - Canberra       def SCEGGS
 
   Round2A:
+    Ready?: false
     Wildcard:
     Schools: >
-      xyz
+      Brigidine Pymble MLC Monte Danebank Ascham Armidale PLCS Meriden
+      Tangara Kincoppal Canberra
     Results:
-      - xyz             def xyz
 
   Round2B:
+    Ready?: false
     Wildcard:
     Schools: >
-      xyz
+      Normanhurst OLMC StCatherines Tara Abbotsleigh StPatricks StVincents
+      Ravenswood Santa Wenona Kirribilli SCEGGS
     Results:
-      - xyz             def xyz
 
   QuarterFinal:
+    Ready?: false
     Wildcard:
     Schools: >
       xyz
@@ -45,12 +52,14 @@ Debating (Junior):
       - xyz             def xyz
 
   SemiFinal:
+    Ready?: false
     Schools: >
       xyz
     Results:
       - xyz             def xyz
 
   GrandFinal:
+    Ready?: false
     Schools: >
       xyz
     Results:
@@ -67,8 +76,12 @@ Debating (Junior):
 Debating (Senior):
 
   Round1:
+    Ready?: true
+    Bye: Frensham
     Schools: >
-      xyz
+      Brigidine Normanhurst Pymble OLMC MLC StCatherines Monte Tara Danebank
+      Abbotsleigh Ascham StPatricks Armidale StVincents PLCS Ravenswood Meriden
+      Santa Tangara Wenona Kincoppal Kirribilli Canberra SCEGGS Frensham
     Results:
       - Ascham          def StPatricks
       - Normanhurst     def OLMC
@@ -84,20 +97,23 @@ Debating (Senior):
       - Canberra        def Kincoppal
 
   Round2A:
+    Ready?: false
     Wildcard:
     Schools: >
-      xyz
+      Ascham Normanhurst MLC Tangara Abbotsleigh Tara SCEGGS Pymble Brigidine
+      Meriden Monte Canberra
     Results:
-      - xyz             def xyz
 
   Round2B:
+    Ready?: false
     Wildcard:
     Schools: >
-      xyz
+      StPatricks OLMC Wenona PLCS Kirribilli Santa StCatherines Danebank
+      Ravenswood StVincents Armidale Kincoppal
     Results:
-      - xyz             def xyz
 
   QuarterFinal:
+    Ready?: false
     Wildcard:
     Schools: >
       xyz
@@ -105,12 +121,14 @@ Debating (Senior):
       - xyz             def xyz
 
   SemiFinal:
+    Ready?: false
     Schools: >
       xyz
     Results:
       - xyz             def xyz
 
   GrandFinal:
+    Ready?: false
     Schools: >
       xyz
     Results:
