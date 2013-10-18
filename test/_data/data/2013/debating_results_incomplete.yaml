@@ -1,0 +1,90 @@
+# =============================================================================
+#
+#                                 J  U  N  I  O  R
+#
+# =============================================================================
+
+Debating (Junior):
+
+  Round1:
+    Schools: >
+      Canberra SCEGGS Wenona Tangara Queenwood Meriden Santa Frensham
+      Kincoppal Kirribilli Brigidine Normanhurst StVincents Armidale MLC
+      StCatherines Pymble OLMC Abbotsleigh Danebank Ascham StPatricks Monte
+      Tara PLCS Ravenswood
+    Results:
+      - Canberra    def SCEGGS
+      - Wenona      def Tangara
+      - Queenwood   def Meriden
+      - Santa       def Frensham
+      - Kincoppal   def Kirribilli
+      - Brigidine   def Normanhurst
+      - StVincents  def Armidale
+      - MLC         def StCatherines
+      - Pymble      def OLMC
+      - Abbotsleigh def Danebank
+      - Ascham      def StPatricks
+      - Monte       def Tara
+      - PLCS        def Ravenswood
+
+  Round2A:
+    Wildcard: Danebank (added)
+    Schools: >
+      Canberra Wenona Queenwood Santa Kincoppal Brigidine StVincents
+      MLC Pymble Abbotsleigh Ascham Monte PLCS Danebank
+    Results:
+      - Canberra    def Wenona
+      - Santa       def Queenwood
+      - Kincoppal   def Brigidine
+      - StVincents  def MLC
+      - Pymble      def Abbotsleigh
+      - Monte       def Ascham
+      - PLCS        def Danebank
+
+  Round2B:
+    Wildcard: Danebank (removed)
+    Schools: >
+      SCEGGS Tangara Meriden Frensham Kirribilli Normanhurst
+      Armidale StCatherines OLMC StPatricks Tara Ravenswood
+    Results:
+      - SCEGGS        def Tangara
+      - Frensham      def Meriden
+      - Kirribilli    def Normanhurst
+      - StCatherines  def Armidale
+      - OLMC          def StPatricks
+      - Tara          def Ravenswood
+
+
+# =============================================================================
+#
+#                                 S  E  N  I  O  R
+#
+# =============================================================================
+
+# The data for senior debating is identical to the data for junior debating.
+
+Debating (Senior):
+
+  # Round 1: we remove Armidale from the Schools so that there is a mismatch.
+
+  Round1:
+    Schools: >
+      Canberra SCEGGS Wenona Tangara Queenwood Meriden Santa Frensham
+      Kincoppal Kirribilli Brigidine Normanhurst StVincents MLC
+      StCatherines Pymble OLMC Abbotsleigh Danebank Ascham StPatricks Monte
+      Tara PLCS Ravenswood
+    Results:
+      - Canberra    def SCEGGS
+      - Wenona      def Tangara
+      - Queenwood   def Meriden
+      - Santa       def Frensham
+      - Kincoppal   def Kirribilli
+      - Brigidine   def Normanhurst
+      - StVincents  def Armidale
+      - MLC         def StCatherines
+      - Pymble      def OLMC
+      - Abbotsleigh def Danebank
+      - Ascham      def StPatricks
+      - Monte       def Tara
+      - PLCS        def Ravenswood
+
