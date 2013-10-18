@@ -28,20 +28,34 @@ Debating (Junior):
       - Canberra       def SCEGGS
 
   Round2A:
-    Ready?: false
+    Ready?: true
+    Bye: Tangara
     Wildcard:
     Schools: >
-      Brigidine Pymble MLC Monte Danebank Ascham Armidale PLCS Meriden
-      Tangara Kincoppal Canberra
+      Monte Meriden Ascham Armidale Brigidine Frensham
+      Pymble PLCS Canberra Kincoppal MLC Abbotsleigh
+      Tangara
     Results:
+      - Pymble         def Monte
+      - Meriden        def PLCS
+      - Canberra       def Ascham
+      - Kincoppal      def Armidale
+      - MLC            def Brigidine
+      - Abbotsleigh    def Frensham
 
   Round2B:
-    Ready?: false
+    Ready?: true
     Wildcard:
     Schools: >
-      Normanhurst OLMC StCatherines Tara Abbotsleigh StPatricks StVincents
-      Ravenswood Santa Wenona Kirribilli SCEGGS
+      SCEGGS OLMC Santa Wenona Ravenswood Danebank
+      Normanhurst Tara StVincents StPatricks StCatherines Kirribilli
     Results:
+      - SCEGGS         def Normanhurst
+      - Tara           def OLMC
+      - StVincents     def Santa
+      - Wenona         def StPatricks
+      - StCatherines   def Ravenswood
+      - Kirribilli     def Danebank
 
   QuarterFinal:
     Ready?: false
@@ -97,20 +111,33 @@ Debating (Senior):
       - Canberra        def Kincoppal
 
   Round2A:
-    Ready?: false
-    Wildcard:
+    Ready?: true
+    Wildcard: Ascham
     Schools: >
-      Ascham Normanhurst MLC Tangara Abbotsleigh Tara SCEGGS Pymble Brigidine
-      Meriden Monte Canberra
+      Normanhurst Abbotsleigh Brigidine Pymble Tangara Meriden
+      Frensham Tara SCEGGS MLC Canberra Monte
+      Ascham
     Results:
+      - Frensham        def Normanhurst
+      - Abbotsleigh     def Tara
+      - SCEGGS          def Brigidine
+      - Pymble          def MLC
+      - Canberra        def Tangara
+      - Meriden         def Monte
 
   Round2B:
-    Ready?: false
+    Ready?: true
     Wildcard:
     Schools: >
-      StPatricks OLMC Wenona PLCS Kirribilli Santa StCatherines Danebank
-      Ravenswood StVincents Armidale Kincoppal
+      Kirribilli StPatricks PLCS Wenona Armidale StVincents
+      Ravenswood OLMC Santa Kincoppal Danebank StCatherines
     Results:
+      - Ravenswood      def Kirribilli
+      - StPatricks      def OLMC
+      - PLCS            def Santa
+      - Kincoppal       def Wenona
+      - Armidale        def Danebank
+      - StCatherines    def StVincents
 
   QuarterFinal:
     Ready?: false
