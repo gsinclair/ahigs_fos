@@ -305,7 +305,7 @@ module AhigsFos
           width = round.wins.map { |sch| sch.abbreviation.size }.max
           round.pairs.each do |winner, loser|
             raise "Logic error" unless round.wins.include? winner
-            pr "    #{_fmt_school(winner)}  def  #{_fmt_school(loser)}"
+            _fmt_debating_pair(winner, loser, round)
           end
         end
         unless (ve = results.validation_errors).empty?
@@ -316,6 +316,15 @@ module AhigsFos
           end
         end
       end
+    end
+    def _fmt_debating_pair(winner, loser, round)
+      text = "    #{_fmt_school(winner)}  def  #{_fmt_school(loser)}"
+      if (wc = round.wildcard)
+        if wc == [winner, :added] or wc == [loser, :added]
+          text += "    [wc: #{wc[0].abbreviation}]"
+        end
+      end
+      pr text
     end
     def _fmt_school(school)
       width = @festival_info.max_abbreviation_length
