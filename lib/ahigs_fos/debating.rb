@@ -199,9 +199,9 @@ module AhigsFos
 
     def check_schools_consistency_in_each_round(e)
       each_round do |name, results|
-        e.unless (results.schools == (results.wins + results.losses)),
+        e.unless (results.schools == (results.wins + results.losses + Array(results.bye))),
                  "#{name}: schools doesn't match wins and losses"
-        e.unless (results.schools == results.pairs.to_a.flatten.to_set),
+        e.unless (results.schools == results.pairs.to_a.flatten.to_set + Array(results.bye)),
                  "#{name}: schools doesn't match result pairs"
         e.unless (results.wins.intersection(results.losses).empty?),
                  "#{name}: at least one school has both won and lost"
