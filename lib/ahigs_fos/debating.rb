@@ -60,8 +60,9 @@ module AhigsFos
     def DebatingResults.from_results_data(data, festival_info)
       if data
         x = ROUNDS.graph { |round|
-          if data.key? round.to_s
-            [round, DebatingRound.from_hash(data[round.to_s], festival_info)]
+          r = round.to_s
+          if data.key? r and data[r]["Ready?"]
+            [round, DebatingRound.from_hash(data[r], festival_info)]
           end
         }
         x.delete(nil)
