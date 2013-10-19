@@ -344,7 +344,7 @@ module AhigsFos
       elsif bye == school               then :bye
       elsif losses.include? school      then :loss
       elsif not schools.include? school then :dnp
-      else raise "Logic error"
+      else raise "Logic error: can't calculate debating result for school (#{school.abbreviation})"
       end
     end
 

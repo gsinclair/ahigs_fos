@@ -24,6 +24,16 @@ module AhigsFos; class Err
     raise AhigsFos::ArgumentError, msg
   end
 
+  def Err.invalid_value(field, value, example)
+    msg = %{
+      | Invalid value for field.
+      |   Field:   #{field}
+      |   Value:   #{value}
+      |   Example: #{example}
+    }
+    raise AhigsFos::ArgumentError, msg
+  end
+
   def Err.no_configuration_file
     filename = Constants::BASIC_CONFIG_FILE_NAME
     msg = %{
