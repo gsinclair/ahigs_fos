@@ -68,11 +68,12 @@ Debating (Junior):
       - Tangara        def StCatherines
 
   SemiFinal:
-    Ready?: false
+    Ready?: true
     Schools: >
-      xyz
+      Canberra Tangara Kincoppal Ascham
     Results:
-      - xyz             def xyz
+      - Kincoppal       def Canberra
+      - Ascham          def Tangara
 
   GrandFinal:
     Ready?: false
@@ -155,9 +156,10 @@ Debating (Senior):
   SemiFinal:
     Ready?: false
     Schools: >
-      xyz
+      Monte Abbotsleigh Ascham SCEGGS
     Results:
-      - xyz             def xyz
+      - Ascham          def Monte
+      - Abbotsleigh     def SCEGGS
 
   GrandFinal:
     Ready?: false
