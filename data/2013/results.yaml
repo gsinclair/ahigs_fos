@@ -45,9 +45,11 @@
    - StPatricks
 
 - Section: Poetry (Junior)
-  Places: ""
+  Places: "1. Monte  2. PLCS  3. Armidale  4. Brigidine  5. MLC"
   Nonparticipants:
-   - OLMC
+    - Kirribilli
+    - OLMC
+    - StPatricks
 
 - Section: Public Speaking (Junior)
   Places: "1. MLC  2. Wenona  3. StVincents  4. Meriden  5. PLCS"
@@ -88,13 +90,18 @@
 # ------------------ O t h e r ------------------------------------- #
 
 - Section: Current Affairs
-  Places: ""
+  Places: "1. SCEGGS  2. Normanhurst  3. Santa  4. Kambala  5. Roseville"
   Nonparticipants:
-   - Ascham
-   - Kincoppal
-   - OLMC
-   - Queenwood
-   - StPatricks
+    - Abbotsleigh
+    - Ascham
+    - Danebank
+    - Kincoppal
+    - Monte
+    - OLMC
+    - Queenwood
+    - StPatricks
+    - Tangara
+    - Tara
 
 - Section: Religious and Ethical Questions
   Places: "1. PLCS  2. Canberra  3. StCatherines  4. Meriden  5. Santa"
