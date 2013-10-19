@@ -50,8 +50,10 @@
    - OLMC
 
 - Section: Public Speaking (Junior)
-  Places: ""
-  Nonparticipants: []
+  Places: "1. MLC  2. Wenona  3. StVincents  4. Meriden  5. PLCS"
+  Nonparticipants:
+    - Ascham
+    - Brigidine
 
 # ------------------ S e n i o r ----------------------------------- #
 
