@@ -101,8 +101,14 @@
 # Kambala and Monte are "TBC" for Drama, but both have submitted student names
 # indicating non-participation.
 - Section: Drama
-  Places: ""
+  Places: "1. Frensham  2. Wenona  3. Queenwood  4. PLCS  5. Brigidine"
   Nonparticipants:
    - Ascham
+   - Danebank
+   - Kambala
    - Kirribilli
+   - Normanhurst
+   - Monte
+   - OLMC
    - Roseville
+   - Santa
