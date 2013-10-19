@@ -30,7 +30,7 @@ module AhigsFos; class Err
       |   Field:   #{field}
       |   Value:   #{value}
       |   Example: #{example}
-    }
+    }.trim
     raise AhigsFos::ArgumentError, msg
   end
 
