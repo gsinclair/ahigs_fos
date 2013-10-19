@@ -76,11 +76,11 @@ Debating (Junior):
       - Ascham          def Tangara
 
   GrandFinal:
-    Ready?: false
+    Ready?: true
     Schools: >
-      xyz
+      Kincoppal Ascham
     Results:
-      - xyz             def xyz
+      - Ascham          def Kincoppal
 
 # =============================================================================
 #
