@@ -162,9 +162,9 @@ Debating (Senior):
       - Abbotsleigh     def SCEGGS
 
   GrandFinal:
-    Ready?: false
+    Ready?: true
     Schools: >
-      xyz
+      Ascham Abbotsleigh
     Results:
-      - xyz             def xyz
+      - Abbotsleigh     def Ascham
 
