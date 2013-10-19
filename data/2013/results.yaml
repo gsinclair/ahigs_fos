@@ -36,10 +36,12 @@
 # ------------------ J u n i o r ----------------------------------- #
 
 - Section: Reading (Junior)
-  Places: ""
+  Places: "1. Santa  2. Brigidine  3. Abbotsleigh  4. PLCS  5. SCEGGS"
   Nonparticipants:
+   - Ascham
    - Kambala
    - OLMC
+   - Queenwood
    - StPatricks
 
 - Section: Poetry (Junior)
@@ -54,11 +56,14 @@
 # ------------------ S e n i o r ----------------------------------- #
 
 - Section: Reading (Senior) 
-  Places: ""
+  Places: "1. Brigidine  2. SCEGGS  3. PLCS  4. Kirribilli  5. Pymble"
   Nonparticipants:
+   - Ascham
    - Kambala
    - OLMC
+   - Queenwood
    - StPatricks
+   - Tara
 
 - Section: Poetry (Senior)
   Places: ""
