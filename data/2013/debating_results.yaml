@@ -56,11 +56,16 @@ Debating (Junior):
       - Kirribilli     def Danebank
 
   QuarterFinal:
-    Ready?: false
+    Ready?: true
+    Wildcard: Ascham (added)
     Schools: >
-      xyz
+      Canberra Abbotsleigh Ascham StCatherines
+      Pymble Kincoppal Meriden Tangara
     Results:
-      - xyz             def xyz
+      - Canberra       def Pymble
+      - Kincoppal      def Abbotsleigh
+      - Ascham         def Meriden
+      - Tangara        def StCatherines
 
   SemiFinal:
     Ready?: false
@@ -136,12 +141,16 @@ Debating (Senior):
       - StCatherines    def StVincents
 
   QuarterFinal:
-    Ready?: false
-    Wildcard:
+    Ready?: true
+    Wildcard: StPatricks (added)
     Schools: >
-      xyz
+      Canberra SCEGGS Frensham StPatricks
+      Abbotsleigh Pymble Monte Ascham
     Results:
-      - xyz             def xyz
+      - Abbotsleigh     def Canberra
+      - SCEGGS          def Pymble
+      - Monte           def Frensham
+      - Ascham          def StPatricks
 
   SemiFinal:
     Ready?: false
