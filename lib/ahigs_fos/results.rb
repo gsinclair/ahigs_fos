@@ -53,7 +53,11 @@ module AhigsFos
       words = string.split
       # There must be exactly 10 words: five place markers and the school for
       # each.
-      err 'Place marker must have 10 words', string unless words.size == 10
+      # Update 2013-10-21: Current Affairs only awarded 3 places in 2013 because of
+      # the change to the way they ran it.  So I need to relax this.  I'll emit a warning
+      # for now.  Better solution: make this method aware of the section and enforce the
+      # requirement for CA (from 2013 onwards).
+      warn('Place marker must have 10 words', string) unless words.size == 10
       words.each_slice(2) do |place, school_abbreviation|
         unless place =~ /\A([1-5]\.)\Z/
           err 'Place number must be 1-5', string
@@ -67,7 +71,8 @@ module AhigsFos
         end
         hash[school] = place_number
       end
-      _check_valid_place_numbers(hash, string)
+      # Suspending this because it doesn't work with Current Affairs.
+      # _check_valid_place_numbers(hash, string)
       hash
     end
     def _check_valid_place_numbers(hash, string)
@@ -89,6 +94,9 @@ module AhigsFos
     end
     def err(message, string)
       Err.invalid_place_string(message, string)
+    end
+    def warn(message, string)
+      STDERR.puts "Warning: #{message}; #{string}"
     end
   end  # class Places
 
