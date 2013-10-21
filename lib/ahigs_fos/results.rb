@@ -166,13 +166,14 @@ module AhigsFos
   # The result that a school achieved in one section.
   # Contains the outcome (1,2,3,4,5,:p,:dnp) and the points (e.g. 30,25,...,5,0).
   # Used (only) as a return value from SectionResult#result_for_school.
+  # The SchoolResult object processes these objects to determine eligibility for awards.
   class Result
     attr_reader :outcome, :points
     def initialize(outcome, points)
       @outcome, @points = outcome, points
     end
     def participated?
-      outcome == :p or Integer === outcome
+      outcome == :p or Integer === outcome or (Array === outcome and outcome.first == :p)
     end
     def to_a
       [@outcome, @points]
@@ -215,7 +216,7 @@ module AhigsFos
         # -> { "Debating (Junior)" => DebatingResult,
         #      "Debating (Senior)" => DebatingResult }
       @section_results = @debating_results.merge @place_getting_section_results
-      @school_results = _process_school_results(festival_info, @section_results, @debating_results)
+      @school_results = _process_school_results(festival_info, @section_results)
         # -> { "Ascham" => SchoolResults, "Monte" => SchoolResults, ... }
       debug "Results object created"
     end
@@ -317,8 +318,7 @@ module AhigsFos
       end
     end
     
-    def _process_school_results(festival_info, section_results, debating_results)
-      # NOTE: we need to do something with the debating_results parameter
+    def _process_school_results(festival_info, section_results)
       school_results = {}
       festival_info.schools_set.each do |school|
         results = {}
@@ -330,7 +330,6 @@ module AhigsFos
               sr.result_for_school(school)
             end
         end
-        # This next line could include debating results for the school.
         school_results[school] = SchoolResults.new(festival_info, school, results)
       end
       school_results
@@ -452,6 +451,14 @@ module AhigsFos
   #   s = SchoolResults.new(<Monte>, { "Current Affairs" => Result,
   #                                    "Readings (Junior) => Result, ... })
   class SchoolResults
+    NUM_SECTIONS_COUNTED = {
+      2013 => { junior: 4, senior: 5, overall: 11 },
+      2012 => { junior: 3, senior: 4, overall: 9 }
+    }
+    NUM_SECTIONS_REQUIRED_FULL_PARTICIPATION = {
+      2013 => 6,
+      2012 => 5
+    }
     attr_reader :school
     def initialize(festival_info, school, results_hash)
       @festival_info = festival_info
@@ -473,7 +480,8 @@ module AhigsFos
     def full_participant?
       n_entered = @results.values.count { |r| r && r.participated? }
       ca, req = "Current Affairs", "Religious and Ethical Questions"
-      n_entered >= 5 and [ca, req].any? { |sec|
+      n_required = NUM_SECTIONS_REQUIRED_FULL_PARTICIPATION[@festival_info.year]
+      n_entered >= n_required and [ca, req].any? { |sec|
         (r = @results[sec]) && r.participated?
       }
     end
@@ -483,9 +491,9 @@ module AhigsFos
       # todo -- configure this in festival_info.yaml
       case division
       when :junior
-        n_entered == 3
+        n_entered >= NUM_SECTIONS_COUNTED[@festival_info.year][:junior]
       when :senior
-        n_entered >= 4
+        n_entered >= NUM_SECTIONS_COUNTED[@festival_info.year][:senior]
       when :all
         full_participant?
       end
@@ -496,8 +504,8 @@ module AhigsFos
     def score(division)
       # todo -- configure this in festival_info.yaml
       n = case division
-          when :junior then 3
-          when :senior then 3
+          when :junior then NUM_SECTIONS_COUNTED[@festival_info.year][:junior]
+          when :senior then NUM_SECTIONS_COUNTED[@festival_info.year][:senior]
           when :all then @results.size
           end
       point_list(division).sort.reverse.take(n).sum
